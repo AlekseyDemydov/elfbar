@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import s from './BasketMenu.module.scss';
 import { ReactComponent as BasketLogo } from '../img/basket.svg';
+import {  NavLink } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function BasketMenu({ orders, onUpdateOrder }) {
@@ -27,7 +28,7 @@ function BasketMenu({ orders, onUpdateOrder }) {
   }, [orders]);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+
 
   const handleBuyClick = () => {
     setShow(true);
@@ -79,7 +80,13 @@ function BasketMenu({ orders, onUpdateOrder }) {
             <p>Кошик порожній</p>
           )}
           <p>Загальна вартість: {totalPrice}</p>
-          <Button onClick={handleShow}>Підтвердити замовлення</Button>
+          <NavLink
+          to={`/elfbar/basket`}
+         
+        >
+          <Button onClick={handleClose}>Підтвердити замовлення</Button>
+        </NavLink>
+          
         </Offcanvas.Body>
       </Offcanvas>
     </>

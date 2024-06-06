@@ -64,14 +64,20 @@ const List = ({ products, handleDelete }) => {
   const handleBuy = productId => {
     const selectedFlavor = selectedFlavors[productId];
     const count = productCounts[productId]?.[selectedFlavor];
-    if (count > 0 && selectedFlavor) {
-      const product = products.find(prod => prod._id === productId);
+    const product = products.find(prod => prod._id === productId);
+  
+    if (product.flavor.filter(flavor => flavor !== '').length > 0 && !selectedFlavor) {
+      alert('Даний продукт має смак, оберіть його для покупки');
+      return;
+    }
+  
+    if (count && count > 0 && (product.flavor || !selectedFlavor)) {
       const existingOrders = [...orders];
-
+  
       const existingOrderIndex = existingOrders.findIndex(
         order => order.name === product.name && order.flavor === selectedFlavor
       );
-
+  
       if (existingOrderIndex > -1) {
         existingOrders[existingOrderIndex].count += count;
         // existingOrders[existingOrderIndex].price += product.price * count;
@@ -84,11 +90,11 @@ const List = ({ products, handleDelete }) => {
         };
         existingOrders.push(order);
       }
-
+  
       localStorage.setItem('orders', JSON.stringify(existingOrders));
       setOrders(existingOrders);
     } else {
-      alert('Оберіть смак для продукту');
+      alert('Оберіть смак для продукту або перевірте наявність');
     }
   };
 
