@@ -2,7 +2,7 @@
   "name": "elfbar",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://AlekseyDemydov.github.io/elfbar/",
+  "homepage": "https://AlekseyDemydov.github.io/elfbar",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
     "@testing-library/jest-dom": "^5.16.3",
