@@ -1,0 +1,19 @@
+.container {
+  // width: 1600px;
+  // background-color: white;
+  // margin: 0 auto;
+  padding: 0px 45px 0 45px;
+  @media screen and (max-width: 401px) {
+    width: 380px;
+    padding: 0 5px;
+  }
+}
+.body {
+  // padding: 50px;
+  min-height: 400px;
+  margin-top: 80px;
+  @media screen and (max-width: 401px) {
+    padding: 20px;
+    margin-top: 50px;
+  }
+}

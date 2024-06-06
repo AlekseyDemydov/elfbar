@@ -1,0 +1,25 @@
+import { CartProvider } from 'react-use-cart';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Layout } from './Layout/Layout';
+import  Main  from 'pages/Main/Main';
+import AddProduct from 'pages/AddProduct/AddProduct';
+import ProductDetail from 'pages/ProductDetail/ProductDetail';
+// import EditProduct from 'pages/EditProduct/EditProduct'; // Імпортуємо компонент EditProduct
+import AdminLogin from 'pages/AdminLogin/AdminLogin';
+
+export const App = () => {
+  return (
+    <CartProvider>
+      <Routes>
+        <Route path="/elfbar" element={<Layout />}>
+          <Route index element={<Main />} />
+          <Route path="admin" element={<AdminLogin />} />
+          <Route path="products/add" element={<AddProduct />} />
+          <Route path="products/:id" element={<ProductDetail />} />
+          <Route path="products/:id/edit" element={<AddProduct />} /> {/* Додаємо маршрут для EditProduct */}
+        </Route>
+        <Route path="*" element={<Navigate to="/elfbar" replace />} />
+      </Routes>
+    </CartProvider>
+  );
+};
