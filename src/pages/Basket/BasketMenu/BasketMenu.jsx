@@ -12,6 +12,7 @@ function BasketMenu({ orders, onUpdateOrder }) {
   const [basketOrders, setBasketOrders] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [productsDetails, setProductsDetails] = useState([]); // Поправив тут назву стейту
+console.log(productsDetails)
 
   useEffect(() => {
     const fetchProductsDetails = async () => {
