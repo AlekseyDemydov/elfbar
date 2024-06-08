@@ -5,103 +5,69 @@ import BasketMenu from 'pages/Basket/BasketMenu/BasketMenu';
 
 const List = ({ products, handleDelete }) => {
   const [error, setError] = useState(null);
-  const [selectedFlavors, setSelectedFlavors] = useState({});
-  const [productCounts, setProductCounts] = useState({});
   const [orders, setOrders] = useState([]);
   const userEmail = localStorage.getItem('adminEmail') || '';
 
-  useEffect(() => {
-    const counts = {};
-    products.forEach(product => {
-      counts[product._id] = {};
-      product.flavor.forEach(flavor => {
-        counts[product._id][flavor] = 1;
-      });
-    });
-    setProductCounts(counts);
+  // Стан для зберігання кількості кожного продукту
+  const [productCounts, setProductCounts] = useState({});
 
+  // Стан для зберігання обраного смаку для кожного продукту
+  const [selectedFlavors, setSelectedFlavors] = useState({});
+
+  useEffect(() => {
     const storedOrders = JSON.parse(localStorage.getItem('orders')) || [];
     setOrders(storedOrders);
-  }, [products]);
+  }, []);
 
+  // Обробник подій для збереження кількості продукту
+  const handleQuantityChange = (productId, quantity) => {
+    setProductCounts(prevCounts => ({
+      ...prevCounts,
+      [productId]: quantity
+    }));
+  };
+
+  // Обробник подій для збереження обраного смаку продукту
   const handleFlavorChange = (productId, flavor) => {
     setSelectedFlavors(prevSelectedFlavors => ({
       ...prevSelectedFlavors,
-      [productId]: flavor,
+      [productId]: flavor
     }));
   };
 
-  const handleCountChange = (productId, flavor, count) => {
-    setProductCounts(prevCounts => ({
-      ...prevCounts,
-      [productId]: {
-        ...prevCounts[productId],
-        [flavor]: Math.max(count, 1),
-      },
-    }));
-  };
-
-  const incrementCount = (productId, flavor) => {
-    setProductCounts(prevCounts => ({
-      ...prevCounts,
-      [productId]: {
-        ...prevCounts[productId],
-        [flavor]: (prevCounts[productId][flavor] || 0) + 1,
-      },
-    }));
-  };
-
-  const decrementCount = (productId, flavor) => {
-    setProductCounts(prevCounts => ({
-      ...prevCounts,
-      [productId]: {
-        ...prevCounts[productId],
-        [flavor]: Math.max((prevCounts[productId][flavor] || 1) - 1, 1),
-      },
-    }));
-  };
-
+  // Обробник події для додавання продукту в кошик
   const handleBuy = productId => {
     const selectedFlavor = selectedFlavors[productId];
-    const count = productCounts[productId]?.[selectedFlavor];
+    const count = productCounts[productId] || 1;
     const product = products.find(prod => prod._id === productId);
   
-    if (product.flavor.filter(flavor => flavor !== '').length > 0 && !selectedFlavor) {
-      alert('Даний продукт має смак, оберіть його для покупки');
+    if (product.flavor.length > 0 && !selectedFlavor && product.flavor[0].trim() !== '') {
+      alert('Оберіть смак для продукту');
       return;
     }
+
+    const existingOrders = [...orders];
+    const existingOrderIndex = existingOrders.findIndex(
+      order => order.name === product.name && order.flavor === selectedFlavor
+    );
   
-    if (count && count > 0 && (product.flavor || !selectedFlavor)) {
-      const existingOrders = [...orders];
-  
-      const existingOrderIndex = existingOrders.findIndex(
-        order => order.name === product.name && order.flavor === selectedFlavor
-      );
-  
-      if (existingOrderIndex > -1) {
-        existingOrders[existingOrderIndex].count += count;
-        // existingOrders[existingOrderIndex].price += product.price * count;
-      } else {
-        const order = {
-          name: product.name,
-          flavor: selectedFlavor,
-          count: count,
-          price: product.price,
-        };
-        existingOrders.push(order);
-      }
-  
-      localStorage.setItem('orders', JSON.stringify(existingOrders));
-      setOrders(existingOrders);
+    if (existingOrderIndex > -1) {
+      existingOrders[existingOrderIndex].count += count;
     } else {
-      alert('Оберіть смак для продукту або перевірте наявність');
+      const order = {
+        name: product.name,
+        flavor: selectedFlavor,
+        count: count,
+        price: product.price,
+      };
+      existingOrders.push(order);
     }
+  
+    localStorage.setItem('orders', JSON.stringify(existingOrders));
+    setOrders(existingOrders);
   };
 
-  const updateOrders = updatedOrders => {
-    setOrders(updatedOrders);
-  };
-
+  // Перевірка наявності помилки
   if (error) {
     setError(error);
     return <div className={styles.error}>{error}</div>;
@@ -112,9 +78,7 @@ const List = ({ products, handleDelete }) => {
       <ul className={styles.list}>
         {products.map(product => {
           const selectedFlavor = selectedFlavors[product._id] || '';
-          const count = selectedFlavor
-            ? productCounts[product._id][selectedFlavor]
-            : 1;
+          const count = productCounts[product._id] || 1;
 
           return (
             <li key={product._id} className={styles.item}>
@@ -133,7 +97,7 @@ const List = ({ products, handleDelete }) => {
                   <ul>
                     {product.description.quantity && (
                       <li className={styles.listDesc}>
-                        ✔Кількість тягu: {product.description.quantity}
+                        ✔Кількість тягу: {product.description.quantity}
                       </li>
                     )}
                     {product.description.strength && (
@@ -165,17 +129,15 @@ const List = ({ products, handleDelete }) => {
                 </div>
               </Link>
               <div className={styles.price}>{product.price} грн</div>
-              {product.flavor.filter(flavor => flavor !== '').length > 0 && (
+              {product.flavor.filter(flavor => flavor.trim() !== '').length > 0 && (
                 <select
                   value={selectedFlavor}
-                  onChange={e =>
-                    handleFlavorChange(product._id, e.target.value)
-                  }
+                  onChange={e => handleFlavorChange(product._id, e.target.value)}
                 >
                   <option value="">Оберіть смак</option>
                   {product.flavor.map(
                     (flavor, index) =>
-                      flavor !== '' && (
+                      flavor.trim() !== '' && (
                         <option key={index} value={flavor}>
                           {flavor}
                         </option>
@@ -186,26 +148,21 @@ const List = ({ products, handleDelete }) => {
               <div className={styles.btnBuyCount}>
                 <div className={styles.boxCount}>
                   <button
-                    onClick={() => decrementCount(product._id, selectedFlavor)}
+                    onClick={() => handleQuantityChange(product._id, count - 1)}
                     className={styles.btnInc}
+                    disabled={count <= 1}
                   >
                     -
                   </button>
                   <input
                     type="number"
                     value={count}
-                    onChange={e =>
-                      handleCountChange(
-                        product._id,
-                        selectedFlavor,
-                        parseInt(e.target.value)
-                      )
-                    }
+                    onChange={e => handleQuantityChange(product._id, parseInt(e.target.value))}
                     min="1"
                     className={styles.btnNumb}
                   />
                   <button
-                    onClick={() => incrementCount(product._id, selectedFlavor)}
+                    onClick={() => handleQuantityChange(product._id, count + 1)}
                     className={styles.btnInc}
                   >
                     +
@@ -231,7 +188,7 @@ const List = ({ products, handleDelete }) => {
         })}
       </ul>
       {orders.length > 0 && (
-        <BasketMenu orders={orders} onUpdateOrder={updateOrders} />
+        <BasketMenu orders={orders} onUpdateOrder={setOrders} />
       )}
     </div>
   );

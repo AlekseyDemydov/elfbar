@@ -8,6 +8,7 @@ const Basket = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
+  const [phone, setPhone] = useState('');
 
   useEffect(() => {
     const ordersFromStorage = localStorage.getItem('orders');
@@ -35,8 +36,8 @@ const Basket = () => {
     updateTotalPrice(orders);
   }, [orders]);
 
-  const TOKEN = '5929832704:AAH-RXP0_n5acEoTgDqHJjUWgdvN7ORkM2U';
-  const CHAT = '-1001889830077';
+  const TOKEN = '6860224388:AAH_jiGlu9A8kRh7aYaRDWqmLJbqttDKeTs';
+  const CHAT = '-1002208287237';
   const URI_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
 
   const Send = e => {
@@ -44,21 +45,23 @@ const Basket = () => {
 
     if (name === '') {
       Notiflix.Notify.failure('введіть ім`я');
-    } else if (message === '') {
+    } else if ( phone === '') {
+      Notiflix.Notify.failure('введіть номер');
+    }else if (message === '') {
       Notiflix.Notify.failure('введіть повідомлення');
     } else if (orders.length === 0) {
       Notiflix.Notify.failure('Ваш кошик порожній');
     } else {
       let orderMessage = '';
       orders.forEach(order => {
-        orderMessage += `<b>${order.name}</b> - ${order.count} шт., ${order.price} грн\n`;
+        orderMessage += `<b>${order.name}</b> Смак: ${order.flavor} - ${order.count} шт., ${order.price} грн\n`;
       });
 
       axios
         .post(URI_API, {
           chat_id: CHAT,
           parse_mode: 'html',
-          text: `<b>Новий заказ</b>\n<b>Ім'я: </b>${name}\n<b>Повідомлення: </b>${message}\n<b>Замовлення:\n</b>${orderMessage}\n<b>Загальна сума: </b>${totalPrice} грн`,
+          text: `<b>Новий заказ</b>\n<b>Ім'я: </b>${name}\n<b>номер: </b>${phone}\n<b>Повідомлення: </b>${message}\n<b>Замовлення:\n</b>${orderMessage}\n<b>Загальна сума: </b>${totalPrice} грн`,
         })
         .then(res => {
           Notiflix.Notify.success('Замовлення відправлено');
@@ -100,6 +103,13 @@ const Basket = () => {
             onChange={e => setName(e.target.value)}
             className={s.input}
             placeholder="Введіть ім'я"
+          />
+          <input
+            type="tel"
+            value={phone}
+            onChange={e => setPhone(e.target.value)}
+            className={s.input}
+            placeholder="Введіть номер телефону"
           />
           <input
             type="text"
