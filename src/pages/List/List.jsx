@@ -95,7 +95,7 @@ const List = ({ products, handleDelete }) => {
               >
                 <img
                   crossOrigin="anonymous"
-                  src={`http://localhost:4444${product.imageUrl}`}
+                  src={`${process.env.REACT_APP_API_URL}${product.imageUrl}`}
                   alt={product.name}
                   className={styles.image}
                 />

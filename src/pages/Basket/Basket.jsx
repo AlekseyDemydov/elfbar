@@ -91,7 +91,7 @@ const Basket = () => {
         <div key={index} className={s.orderItem}>
           <img
             crossOrigin="anonymous"
-            src={`http://localhost:4444${order.imageUrl}`}
+            src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`}
             alt={order.name}
             className={s.productImage}
           />

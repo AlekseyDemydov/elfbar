@@ -15,7 +15,7 @@ const Main = () => {
 
   const handleDelete = productId => {
     axios
-      .delete(`http://localhost:4444/products/${productId}`)
+      .delete(`${process.env.REACT_APP_API_URL}/products/${productId}`)
       .then(response => {
         console.log(response.data);
         setProducts(prevProducts =>
@@ -42,7 +42,7 @@ const Main = () => {
   useEffect(() => {
     // Отримання списку продуктів з сервера
     axios
-      .get('http://localhost:4444/products')
+      .get('${process.env.REACT_APP_API_URL}/products')
       .then(response => {
         let sortedProducts = response.data;
 
@@ -69,7 +69,7 @@ const Main = () => {
   useEffect(() => {
     // Отримання списку продуктів з сервера
     axios
-      .get('http://localhost:4444/products')
+      .get('${process.env.REACT_APP_API_URL}/products')
       .then(response => {
         let sortedProducts = response.data;
 
@@ -103,7 +103,7 @@ const Main = () => {
   useEffect(() => {
     // Отримання списку продуктів з сервера
     axios
-      .get('http://localhost:4444/products')
+      .get('${process.env.REACT_APP_API_URL}/products')
       .then(response => {
         let sortedProducts = response.data;
         // Сортування за кількістю
