@@ -3,22 +3,28 @@ import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import s from './BasketMenu.module.scss';
 import { ReactComponent as BasketLogo } from '../img/basket.svg';
-import {  NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function BasketMenu({ orders, onUpdateOrder }) {
   const [show, setShow] = useState(false);
   const [basketOrders, setBasketOrders] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [productsDetails, setProductsDetails] = useState([]); // Поправив тут назву стейту
 
   useEffect(() => {
-    const storedOrders = localStorage.getItem('orders');
-    if (storedOrders) {
-      const parsedOrders = JSON.parse(storedOrders);
-      setBasketOrders(parsedOrders);
-      const total = parsedOrders.reduce((acc, order) => acc + (order.price * order.count), 0);
-      setTotalPrice(total);
-    }
+    const fetchProductsDetails = async () => {
+      try {
+        const response = await axios.get('http://localhost:4444/products');
+        const productsDetails = response.data;
+        setProductsDetails(productsDetails); // Поправив тут також
+      } catch (error) {
+        console.error('Помилка при отриманні деталей продуктів:', error);
+      }
+    };
+  
+    fetchProductsDetails();
   }, []);
 
   useEffect(() => {
@@ -28,7 +34,6 @@ function BasketMenu({ orders, onUpdateOrder }) {
   }, [orders]);
 
   const handleClose = () => setShow(false);
-
 
   const handleBuyClick = () => {
     setShow(true);
@@ -65,11 +70,17 @@ function BasketMenu({ orders, onUpdateOrder }) {
           {basketOrders && basketOrders.length > 0 ? (
             basketOrders.map((order, index) => (
               <div key={index} className={s.orderItem}>
+                <img
+                crossOrigin="anonymous"
+                  src={`http://localhost:4444${order.imageUrl}`} // Викликаємо функцію для отримання URL зображення за ідентифікатором продукту
+                  alt={order.name}
+                  className={s.productImage}
+                />
                 <p>{order.name}</p>
                 <p>Смак: {order.flavor}</p>
                 <p>Ціна за одиницю: {order.price}</p> 
                 <div className={s.quantityControl}>
-                  <button onClick={() => handleQuantityChange(index, order.count - 1)}>-</button>
+                  <button onClick={() => handleQuantityChange(index, order.count - 1)}disabled={order.count <= 1}>-</button>
                   <span>{order.count}</span>
                   <button onClick={() => handleQuantityChange(index, order.count + 1)}>+</button>
                 </div>
@@ -80,13 +91,9 @@ function BasketMenu({ orders, onUpdateOrder }) {
             <p>Кошик порожній</p>
           )}
           <p>Загальна вартість: {totalPrice}</p>
-          <NavLink
-          to={`/elfbar/basket`}
-         
-        >
-          <Button onClick={handleClose}>Підтвердити замовлення</Button>
-        </NavLink>
-          
+          <NavLink to={`/elfbar/basket`}>
+            <Button onClick={handleClose}>Підтвердити замовлення</Button>
+          </NavLink>
         </Offcanvas.Body>
       </Offcanvas>
     </>

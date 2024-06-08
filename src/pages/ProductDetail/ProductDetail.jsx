@@ -8,22 +8,18 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
-  // Стан для зберігання обраного смаку для кожного продукту
-  const [selectedFlavors, setSelectedFlavors] = useState({});;
-  // const [orders, setOrders] = useState([]);
+  const [selectedFlavors, setSelectedFlavors] = useState({});
   
   const userEmail = localStorage.getItem('adminEmail') || '';
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:4444/products/${id}`
-        );
+        const response = await axios.get(`http://localhost:4444/products/${id}`);
         setProduct(response.data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching product details:', error);
+        console.error('Помилка при отриманні деталей продукту:', error);
         setLoading(false);
       }
     };
@@ -41,12 +37,12 @@ const ProductDetail = () => {
   const handleQuantityChange = quantity => {
     setQuantity(quantity);
   };
+
   const handleBuy = () => {
     const count = quantity;
-    // const productId = product._id;
-    const selectedFlavorValue = selectedFlavors[product._id]; // Витягуємо обраний смак для поточного продукту зі стану
+    const selectedFlavorValue = selectedFlavors[product._id];
     
-    // Перевірка чи обрано смак для продукту
+    // Перевірка чи обрано смак для продукту, якщо він доступний
     if (product.flavor.length > 0 && !selectedFlavorValue && product.flavor[0].trim() !== '') {
       alert('Оберіть смак для продукту');
       return;
@@ -60,18 +56,24 @@ const ProductDetail = () => {
     
     // Створення нового замовлення
     const order = {
+      id: product._id, // Передача ідентифікатора продукту
       name: product.name,
-      flavor: selectedFlavorValue,
       count: count,
       price: product.price,
+      imageUrl: product.imageUrl // Додаємо зображення продукту
     };
-    
+
+    // Додаємо flavor тільки якщо він обраний
+    if (selectedFlavorValue) {
+      order.flavor = selectedFlavorValue;
+    }
+
     // Отримання існуючих замовлень з локального сховища
     const existingOrders = JSON.parse(localStorage.getItem('orders')) || [];
     
-    // Пошук чи існує замовлення з таким самим продуктом і смаком
+    // Пошук чи існує замовлення з таким самим продуктом і смаком (якщо обраний)
     const existingOrderIndex = existingOrders.findIndex(
-      order => order.name === product.name && order.flavor === selectedFlavorValue
+      existingOrder => existingOrder.id === order.id && (!order.flavor || existingOrder.flavor === order.flavor)
     );
     
     // Якщо замовлення вже існує, оновити кількість
@@ -84,9 +86,6 @@ const ProductDetail = () => {
     
     // Збереження замовлень в локальному сховищі
     localStorage.setItem('orders', JSON.stringify(existingOrders));
-    
-    // Оновлення стану замовлень
-    // setOrders(existingOrders);
   };
 
   if (isLoading) {
@@ -107,53 +106,55 @@ const ProductDetail = () => {
       <div>
         <h2>{product.name}</h2>
         <div className={s.description}>
-                  <div className={s.title}>{product.name}</div>
-                  <ul>
-                    {product.description.quantity && (
-                      <li className={s.listDesc}>
-                        ✔Кількість тягу: {product.description.quantity}
-                      </li>
-                    )}
-                    {product.description.strength && (
-                      <li className={s.listDesc}>
-                        ✔Міцність: {product.description.strength}
-                      </li>
-                    )}
-                    {product.description.type && (
-                      <li className={s.listDesc}>
-                        ✔Тип: {product.description.type}
-                      </li>
-                    )}
-                    {product.description.charging && (
-                      <li className={s.listDesc}>
-                        ✔Зарядка: {product.description.charging}
-                      </li>
-                    )}
-                    {product.description.volume && (
-                      <li className={s.listDesc}>
-                        ✔Об'єм: {product.description.volume}
-                      </li>
-                    )}
-                    {product.description.resistance && (
-                      <li className={s.listDesc}>
-                        ✔Опір: {product.description.resistance}
-                      </li>
-                    )}
-                  </ul>
-                </div>
+          <div className={s.title}>{product.name}</div>
+          <ul>
+            {product.description.quantity && (
+              <li className={s.listDesc}>
+                ✔Кількість тягу: {product.description.quantity}
+              </li>
+            )}
+            {product.description.strength && (
+              <li className={s.listDesc}>
+                ✔Міцність: {product.description.strength}
+              </li>
+            )}
+            {product.description.type && (
+              <li className={s.listDesc}>
+                ✔Тип: {product.description.type}
+              </li>
+            )}
+            {product.description.charging && (
+              <li className={s.listDesc}>
+                ✔Зарядка: {product.description.charging}
+              </li>
+            )}
+            {product.description.volume && (
+              <li className={s.listDesc}>
+                ✔Об'єм: {product.description.volume}
+              </li>
+            )}
+            {product.description.resistance && (
+              <li className={s.listDesc}>
+                ✔Опір: {product.description.resistance}
+              </li>
+            )}
+          </ul>
+        </div>
         <p>Ціна: {product.price} грн</p>
         {product.flavor.filter(flavor => flavor.trim() !== '').length > 0 && (
-          <select value={selectedFlavors[product._id] || ''} onChange={e => handleFlavorChange(product._id, e.target.value)}>
-          <option value="">Оберіть смак</option>
-          {product.flavor.map(
-            (flavor, index) =>
+          <select
+            value={selectedFlavors[product._id] || ''}
+            onChange={e => handleFlavorChange(product._id, e.target.value)}
+          >
+            <option value="">Оберіть смак</option>
+            {product.flavor.map((flavor, index) =>
               flavor.trim() !== '' && (
                 <option key={index} value={flavor}>
                   {flavor}
                 </option>
               )
-          )}
-        </select>
+            )}
+          </select>
         )}
         <div className={s.btnBuyCount}>
           <div className={s.boxCount}>

@@ -1,0 +1,85 @@
+$primary-color: #007bff;
+$danger-color: #dc3545;
+
+.Basket {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .orderItem {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 80px;
+      height: 80px;
+      margin-right: 20px;
+    }
+
+    p {
+      margin: 5px 0;
+    }
+
+    .quantityControl {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+
+      button {
+        font-size: 1rem;
+        padding: 5px 10px;
+        background-color: $primary-color;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: darken($primary-color, 10%);
+        }
+      }
+
+      span {
+        margin: 0 10px;
+      }
+    }
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+
+    input {
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 10px;
+      font-size: 1rem;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    }
+  }
+
+  .error {
+    color: $danger-color;
+    margin-top: 10px;
+  }
+}

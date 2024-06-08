@@ -41,11 +41,16 @@ const List = ({ products, handleDelete }) => {
     const count = productCounts[productId] || 1;
     const product = products.find(prod => prod._id === productId);
   
+    if (!product) {
+      console.error("Продукт не знайдено");
+      return;
+    }
+  
     if (product.flavor.length > 0 && !selectedFlavor && product.flavor[0].trim() !== '') {
       alert('Оберіть смак для продукту');
       return;
     }
-
+  
     const existingOrders = [...orders];
     const existingOrderIndex = existingOrders.findIndex(
       order => order.name === product.name && order.flavor === selectedFlavor
@@ -55,10 +60,12 @@ const List = ({ products, handleDelete }) => {
       existingOrders[existingOrderIndex].count += count;
     } else {
       const order = {
+        id: product._id,
         name: product.name,
         flavor: selectedFlavor,
         count: count,
         price: product.price,
+        imageUrl: product.imageUrl // Додайте зображення продукту до об'єкту замовлення
       };
       existingOrders.push(order);
     }
