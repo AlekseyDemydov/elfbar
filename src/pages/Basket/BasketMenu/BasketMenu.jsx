@@ -17,7 +17,7 @@ console.log(productsDetails)
   useEffect(() => {
     const fetchProductsDetails = async () => {
       try {
-        const response = await axios.get('${process.env.REACT_APP_API_URL}/products');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/products`);
         const productsDetails = response.data;
         setProductsDetails(productsDetails); // Поправив тут також
       } catch (error) {

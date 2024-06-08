@@ -100,7 +100,7 @@ const AddProduct = () => {
       if (id) {
         await axios.put(`${process.env.REACT_APP_API_URL}/products/${id}`, productDataToSubmit);
       } else {
-        await axios.post("${process.env.REACT_APP_API_URL}/products", productDataToSubmit);
+        await axios.post(`${process.env.REACT_APP_API_URL}/products`, productDataToSubmit);
       }
       navigate("/elfbar");
     } catch (error) {

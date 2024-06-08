@@ -42,7 +42,7 @@ const Main = () => {
   useEffect(() => {
     // Отримання списку продуктів з сервера
     axios
-      .get('${process.env.REACT_APP_API_URL}/products')
+      .get(`${process.env.REACT_APP_API_URL}/products`)
       .then(response => {
         let sortedProducts = response.data;
 
@@ -69,7 +69,7 @@ const Main = () => {
   useEffect(() => {
     // Отримання списку продуктів з сервера
     axios
-      .get('${process.env.REACT_APP_API_URL}/products')
+      .get(`${process.env.REACT_APP_API_URL}/products`)
       .then(response => {
         let sortedProducts = response.data;
 
@@ -103,7 +103,7 @@ const Main = () => {
   useEffect(() => {
     // Отримання списку продуктів з сервера
     axios
-      .get('${process.env.REACT_APP_API_URL}/products')
+      .get(`${process.env.REACT_APP_API_URL}/products`)
       .then(response => {
         let sortedProducts = response.data;
         // Сортування за кількістю
