@@ -17,7 +17,8 @@ console.log(productsDetails)
   useEffect(() => {
     const fetchProductsDetails = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/products`);
+        // const response = await axios.get(`${process.env.REACT_APP_API_URL}/products`);
+        const response = await axios.get(`http://localhost:4444/products`);
         const productsDetails = response.data;
         setProductsDetails(productsDetails); // Поправив тут також
       } catch (error) {
@@ -73,7 +74,8 @@ console.log(productsDetails)
               <div key={index} className={s.orderItem}>
                 <img
                 crossOrigin="anonymous"
-                  src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`} // Викликаємо функцію для отримання URL зображення за ідентифікатором продукту
+                  // src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`} // Викликаємо функцію для отримання URL зображення за ідентифікатором продукту
+                  src={`http://localhost:4444${order.imageUrl}`}
                   alt={order.name}
                   className={s.productImage}
                 />
