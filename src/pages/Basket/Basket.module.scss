@@ -1,85 +1,158 @@
-$primary-color: #007bff;
-$danger-color: #dc3545;
-
 .Basket {
-  max-width: 600px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   padding: 20px;
+  gap: 20px;
 
-  h2 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+  .form {
+    flex: 1;
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .btmForm {
+      width: 100%;
+      padding: 10px;
+      background-color: #28a745;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: #218838;
+      }
+    }
   }
 
-  .orderItem {
-    border-bottom: 1px solid #ccc;
-    padding: 10px 0;
-    display: flex;
-    align-items: center;
+  .orderBox {
+    flex: 2;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-    img {
-      width: 80px;
-      height: 80px;
-      margin-right: 20px;
+    h2 {
+      margin-bottom: 20px;
     }
 
-    p {
-      margin: 5px 0;
-    }
-
-    .quantityControl {
+    .orderItem {
       display: flex;
       align-items: center;
-      margin-top: 10px;
+      justify-content: space-between;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 10px;
+      background-color: #fff;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
-      button {
-        font-size: 1rem;
-        padding: 5px 10px;
-        background-color: $primary-color;
-        color: white;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s;
+      &:last-child {
+        border-bottom: none;
+      }
 
-        &:hover {
-          background-color: darken($primary-color, 10%);
+      .productImage {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 10px;
+        border-radius: 4px;
+      }
+
+      .productTitle {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        p {
+          margin: 0;
+          font-size: 0.9em;
+        }
+
+        .flavor {
+          color: #666;
+          font-size: 0.8em;
+        }
+        .productName{
+          font-size: large;
+          font-weight: 600;
         }
       }
 
-      span {
-        margin: 0 10px;
+      .quantityControl {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex: 1;
+        justify-content: center;
+
+        .btnControl {
+          background-color: transparent;
+          border: 1px solid #454546;
+          color: #454546;
+          cursor: pointer;
+          border-radius: 50%;
+          width: 30px;
+          height: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 18px;
+          line-height: 1;
+          &:disabled {
+            border-color: #ccc;
+            color: #ccc;
+            cursor: not-allowed;
+          }
+        }
+
+        .btnminus::before {
+          content: '-';
+        }
+
+        .btnplus::before {
+          content: '+';
+        }
+
+        span {
+          padding: 0 10px;
+        }
+      }
+
+      .totalPrice {
+        width: 80px;
+        text-align: right;
+        flex: 1;
+        margin: 0 10px 0 0;
+      }
+
+      .btnDel {
+        background-color: transparent;
+        border: 1px solid #dc3545;
+        color: #dc3545;
+        cursor: pointer;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        line-height: 1;
+
+        &::before {
+          content: 'x';
+        }
       }
     }
-  }
-
-  .form {
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-
-    input {
-      margin-bottom: 10px;
-      padding: 10px;
-      font-size: 1rem;
-    }
-
-    button {
-      padding: 10px;
-      font-size: 1rem;
-      background-color: $primary-color;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.3s;
-
-      &:hover {
-        background-color: darken($primary-color, 10%);
-      }
-    }
-  }
-
-  .error {
-    color: $danger-color;
-    margin-top: 10px;
   }
 }

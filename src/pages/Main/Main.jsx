@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../../axios';
-
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 import banner from './img/banner.jpg';
 import s from './Main.module.scss';
 import List from 'pages/List/List';
+import './Main.css';
 
 const Main = () => {
   const [products, setProducts] = useState([]);
   const [types, setTypes] = useState([]);
   const [quantitys, setQuantity] = useState([]);
-  const [sortByQuantity, setSortByQuantity] = useState('quantity_high_to_low');
+  const [sortByQuantity, setSortByQuantity] = useState('');
   const [sortByType, setSortByType] = useState('');
   const [error, setError] = useState(null);
 
   const handleDelete = productId => {
     axios
-      // .delete(`${process.env.REACT_APP_API_URL}/products/${productId}`)
       .delete(`http://localhost:4444/products/${productId}`)
       .then(response => {
         console.log(response.data);
@@ -28,44 +29,30 @@ const Main = () => {
       });
   };
 
-
-
-  const handleSortByTypeChange = event => {
-    setSortByType(event.target.value);
-  };
-
   const handleSortByQuantityChange = event => {
     setSortByQuantity(event.target.value);
   };
 
   useEffect(() => {
-    // Отримання списку продуктів з сервера
     axios
-      // .get(`${process.env.REACT_APP_API_URL}/products`)
       .get('http://localhost:4444/products')
       .then(response => {
         let sortedProducts = response.data;
 
-        // Отримання унікальних типів продуктів
         const uniqueTypes = [
           ...new Set(sortedProducts.map(product => product.description.type)),
         ];
         setTypes(uniqueTypes);
 
-        // Фільтрація продуктів за типом, якщо sortByType задано
         if (sortByType) {
           sortedProducts = sortedProducts.filter(
             product => product.description.type === sortByType
           );
         }
 
-        
-
-        // Оновлення стану products
         setProducts(sortedProducts);
       })
       .catch(error => {
-        // Обробка помилок під час отримання даних
         console.error('Помилка при завантаженні продуктів:', error);
         setError(
           'Не вдалося завантажити список продуктів. Будь ласка, спробуйте пізніше.'
@@ -74,33 +61,30 @@ const Main = () => {
   }, [sortByType]);
 
   useEffect(() => {
-    // Отримання списку продуктів з сервера
     axios
-      // .get(`${process.env.REACT_APP_API_URL}/products`)
       .get('http://localhost:4444/products')
       .then(response => {
         let sortedProducts = response.data;
 
-        // Отримання унікальних типів продуктів
-        const uniqueQuantity = [
-          ...new Set(sortedProducts.map(product => product.description.quantity)),
+        let uniqueQuantity = [
+          ...new Set(
+            sortedProducts.map(product => product.description.quantity)
+          ),
         ];
+
+        uniqueQuantity = uniqueQuantity.filter(quantity => quantity !== '');
+
         setQuantity(uniqueQuantity);
 
-        // Фільтрація продуктів за типом, якщо sortByQuantity задано
         if (sortByQuantity) {
           sortedProducts = sortedProducts.filter(
             product => product.description.quantity === sortByQuantity
           );
         }
 
-        
-
-        // Оновлення стану products
         setProducts(sortedProducts);
       })
       .catch(error => {
-        // Обробка помилок під час отримання даних
         console.error('Помилка при завантаженні продуктів:', error);
         setError(
           'Не вдалося завантажити список продуктів. Будь ласка, спробуйте пізніше.'
@@ -108,34 +92,7 @@ const Main = () => {
       });
   }, [sortByQuantity]);
 
-  // useEffect(() => {
-  //   // Отримання списку продуктів з сервера
-  //   axios
-  //     // .get(`${process.env.REACT_APP_API_URL}/products`)
-  //     .get('http://localhost:4444/products')
-  //     .then(response => {
-  //       let sortedProducts = response.data;
-  //       // Сортування за кількістю
-  //       if (sortByQuantity === 'quantity_high_to_low') {
-  //         sortedProducts.sort((a, b) => b.description.quantity - a.description.quantity);
-  //       } else if (sortByQuantity === 'quantity_low_to_high') {
-  //         sortedProducts.sort((a, b) => a.description.quantity - b.description.quantity);
-  //       }
-
-  //       // Оновлення стану products
-  //       setProducts(sortedProducts);
-  //     })
-  //     .catch(error => {
-  //       // Обробка помилок під час отримання даних
-  //       console.error('Помилка при завантаженні продуктів:', error);
-  //       setError(
-  //         'Не вдалося завантажити список продуктів. Будь ласка, спробуйте пізніше.'
-  //       );
-  //     });
-  // }, [sortByQuantity]);
-
   if (error) {
-    setError(error);
     return <div>{error}</div>;
   }
 
@@ -144,32 +101,50 @@ const Main = () => {
       <img src={banner} alt="banner" className={s.banner} />
 
       <div className={s.sortContainer}>
-      <div>
-          <h3>Сортувати за кількістю:</h3>
-          <select value={sortByQuantity} onChange={handleSortByQuantityChange}>
-            <option value="">Всі</option>
-            {quantitys.map(quantity => (
-              <option key={quantity} value={quantity}>
-                {quantity}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <h3>Сортувати за типом:</h3>
-          <select value={sortByType} onChange={handleSortByTypeChange}>
-            <option value="">Всі</option>
+        <div className={s.sortType}>
+          <Tabs
+            activeKey={sortByType}
+            onSelect={k => setSortByType(k)}
+            id="controlled-tab-example"
+            className="mb-3"
+            variant="tabs"
+          >
+            <Tab eventKey="" title="Всі"></Tab>
             {types.map(type => (
-              <option key={type} value={type}>
-                {type}
-              </option>
+              <Tab eventKey={type} title={type} key={type}></Tab>
             ))}
-          </select>
+          </Tabs>
         </div>
       </div>
 
       <div className={s.listContainer}>
-        <List products={products} handleDelete={handleDelete} />
+        <div className={s.sortQuantity}>
+          <h3>Кількість тяг:</h3>
+          <label>
+            <input
+              type="checkbox"
+              value=""
+              checked={sortByQuantity === ''}
+              onChange={handleSortByQuantityChange}
+            />
+            Всі
+          </label>
+          {quantitys.map(quantity => (
+            <label key={quantity}>
+              <input
+                type="checkbox"
+                value={quantity}
+                checked={sortByQuantity === quantity}
+                onChange={handleSortByQuantityChange}
+              />
+              {quantity}
+            </label>
+          ))}
+        </div>
+        <div className={s.listBox}>
+          <List products={products} handleDelete={handleDelete} />
+        </div>
+        
       </div>
     </>
   );

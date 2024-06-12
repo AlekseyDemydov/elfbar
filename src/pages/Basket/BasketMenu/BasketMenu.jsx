@@ -12,7 +12,7 @@ function BasketMenu({ orders, onUpdateOrder }) {
   const [basketOrders, setBasketOrders] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [productsDetails, setProductsDetails] = useState([]); // Поправив тут назву стейту
-console.log(productsDetails)
+  console.log(productsDetails);
 
   useEffect(() => {
     const fetchProductsDetails = async () => {
@@ -25,13 +25,16 @@ console.log(productsDetails)
         console.error('Помилка при отриманні деталей продуктів:', error);
       }
     };
-  
+
     fetchProductsDetails();
   }, []);
 
   useEffect(() => {
     setBasketOrders(orders);
-    const total = orders.reduce((acc, order) => acc + (order.price * order.count), 0);
+    const total = orders.reduce(
+      (acc, order) => acc + order.price * order.count,
+      0
+    );
     setTotalPrice(total);
   }, [orders]);
 
@@ -41,7 +44,7 @@ console.log(productsDetails)
     setShow(true);
   };
 
-  const handleDelete = (index) => {
+  const handleDelete = index => {
     const updatedOrders = [...basketOrders];
     updatedOrders.splice(index, 1);
     setBasketOrders(updatedOrders);
@@ -59,9 +62,9 @@ console.log(productsDetails)
 
   return (
     <>
-      <button onClick={handleBuyClick} className={s.btnBasket}> 
-        <BasketLogo className={s.imgBasket} />  
-        <span className={s.btnLenght}>{basketOrders.length}</span> 
+      <button onClick={handleBuyClick} className={s.btnBasket}>
+        <BasketLogo className={s.imgBasket} />
+        <span className={s.btnLenght}>{basketOrders.length}</span>
       </button>
 
       <Offcanvas show={show} onHide={handleClose}>
@@ -72,30 +75,46 @@ console.log(productsDetails)
           {basketOrders && basketOrders.length > 0 ? (
             basketOrders.map((order, index) => (
               <div key={index} className={s.orderItem}>
-                <img
+              <img
                 crossOrigin="anonymous"
-                  // src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`} // Викликаємо функцію для отримання URL зображення за ідентифікатором продукту
-                  src={`http://localhost:4444${order.imageUrl}`}
-                  alt={order.name}
-                  className={s.productImage}
-                />
-                <p>{order.name}</p>
-                <p>Смак: {order.flavor}</p>
-                <p>Ціна за одиницю: {order.price}</p> 
-                <div className={s.quantityControl}>
-                  <button onClick={() => handleQuantityChange(index, order.count - 1)}disabled={order.count <= 1}>-</button>
-                  <span>{order.count}</span>
-                  <button onClick={() => handleQuantityChange(index, order.count + 1)}>+</button>
-                </div>
-                <Button onClick={() => handleDelete(index)} variant="danger">Видалити</Button>
+                // src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`} // Викликаємо функцію для отримання URL зображення за ідентифікатором продукту
+                src={`http://localhost:4444${order.imageUrl}`}
+                alt={order.name}
+                className={s.productImage}
+              />
+              <div className={s.productTitle}>
+                <p className={s.productName}>{order.name}</p>
+                <p className={s.flavor}>Смак: {order.flavor}</p>
               </div>
+
+              <div className={s.quantityControl}>
+                <button
+                  onClick={() => handleQuantityChange(index, order.count - 1)}
+                  disabled={order.count <= 1}
+                  className={`${s.btnminus} ${s.btnControl}`}
+                ></button>
+                <span>{order.count}</span>
+                <button
+                  onClick={() => handleQuantityChange(index, order.count + 1)}
+                  className={`${s.btnplus} ${s.btnControl}`}
+                ></button>
+              </div>
+              <p className={s.totalPrice}> {order.price} грн</p>
+              <Button
+                onClick={() => handleDelete(index)}
+                variant="danger"
+                className={s.btnDel}
+              >
+                
+              </Button>
+            </div>
             ))
           ) : (
             <p>Кошик порожній</p>
           )}
-          <p>Загальна вартість: {totalPrice}</p>
+          <p className={s.totalPricee}>Загальна вартість: {totalPrice} грн</p>
           <NavLink to={`/elfbar/basket`}>
-            <Button onClick={handleClose}>Підтвердити замовлення</Button>
+            <Button onClick={handleClose} className={s.btnDone}>Підтвердити замовлення</Button>
           </NavLink>
         </Offcanvas.Body>
       </Offcanvas>

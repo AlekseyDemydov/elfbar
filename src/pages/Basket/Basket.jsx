@@ -26,14 +26,14 @@ const Basket = () => {
     localStorage.setItem('orders', JSON.stringify(updatedOrders));
   };
 
-  const handleDelete = (index) => {
+  const handleDelete = index => {
     const updatedOrders = [...orders];
     updatedOrders.splice(index, 1);
     setOrders(updatedOrders);
     localStorage.setItem('orders', JSON.stringify(updatedOrders));
   };
 
-  const updateTotalPrice = (updatedOrders) => {
+  const updateTotalPrice = updatedOrders => {
     const totalPrice = updatedOrders.reduce((acc, curr) => {
       return acc + curr.price * curr.count;
     }, 0);
@@ -48,7 +48,7 @@ const Basket = () => {
   const CHAT = '-1002208287237';
   const URI_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
 
-  const Send = (e) => {
+  const Send = e => {
     e.preventDefault();
 
     if (name === '') {
@@ -61,7 +61,7 @@ const Basket = () => {
       Notiflix.Notify.failure('Ваш кошик порожній');
     } else {
       let orderMessage = '';
-      orders.forEach((order) => {
+      orders.forEach(order => {
         orderMessage += `<b>${order.name}</b> Смак: ${order.flavor} - ${order.count} шт., ${order.price} грн\n`;
       });
 
@@ -71,43 +71,65 @@ const Basket = () => {
           parse_mode: 'html',
           text: `<b>Новий заказ</b>\n<b>Ім'я: </b>${name}\n<b>номер: </b>${phone}\n<b>Повідомлення: </b>${message}\n<b>Замовлення:\n</b>${orderMessage}\n<b>Загальна сума: </b>${totalPrice} грн`,
         })
-        .then((res) => {
+        .then(res => {
           Notiflix.Notify.success('Замовлення відправлено');
           setOrders([]);
           setTotalPrice(0);
           localStorage.removeItem('orders');
         })
-        .catch((err) => {
-          Notiflix.Notify.failure('Виникла помилка під час відправки замовлення');
+        .catch(err => {
+          Notiflix.Notify.failure(
+            'Виникла помилка під час відправки замовлення'
+          );
         });
     }
   };
 
   return (
     <div className={s.Basket}>
-      <h2>Ваші замовлення:</h2>
-      {orders.length === 0 && <p>кошик порожній </p>}
-      {orders.map((order, index) => (
-        <div key={index} className={s.orderItem}>
-          <img
-            crossOrigin="anonymous"
-            // src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`}
-            src={`http://localhost:4444${order.imageUrl}`}
-            alt={order.name}
-            className={s.productImage}
-          />
-          <p>{order.name}</p>
-          <p>Смак: {order.flavor}</p>
-          <p>Ціна за одиницю: {order.price}</p>
-          <div className={s.quantityControl}>
-            <button onClick={() => handleQuantityChange(index, order.count - 1)} disabled={order.count <= 1}>-</button>
-            <span>{order.count}</span>
-            <button onClick={() => handleQuantityChange(index, order.count + 1)}>+</button>
-          </div>
-          <Button onClick={() => handleDelete(index)} variant="danger">Видалити</Button>
-          </div>
-        ))}
-      {orders.length > 0 && <p>Загальна вартість: {totalPrice}</p>}
+      <div className={s.orderBox}>
+        <h2>Ваші замовлення:</h2>
+        {orders.length === 0 && <p>кошик порожній </p>}
+        <div>
+          {orders.map((order, index) => (
+            <div key={index} className={s.orderItem}>
+              <img
+                crossOrigin="anonymous"
+                // src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`} // Викликаємо функцію для отримання URL зображення за ідентифікатором продукту
+                src={`http://localhost:4444${order.imageUrl}`}
+                alt={order.name}
+                className={s.productImage}
+              />
+              <div className={s.productTitle}>
+                <p className={s.productName}>{order.name}</p>
+                <p className={s.flavor}>Смак: {order.flavor}</p>
+              </div>
+
+              <div className={s.quantityControl}>
+                <button
+                  onClick={() => handleQuantityChange(index, order.count - 1)}
+                  disabled={order.count <= 1}
+                  className={`${s.btnminus} ${s.btnControl}`}
+                ></button>
+                <span>{order.count}</span>
+                <button
+                  onClick={() => handleQuantityChange(index, order.count + 1)}
+                  className={`${s.btnplus} ${s.btnControl}`}
+                ></button>
+              </div>
+              <p className={s.totalPrice}> {order.price} грн</p>
+              <Button
+                onClick={() => handleDelete(index)}
+                variant="danger"
+                className={s.btnDel}
+              >
+                
+              </Button>
+            </div>
+          ))}
+          {orders.length > 0 && <p>Загальна вартість: {totalPrice}</p>}
+        </div>
+      </div>
 
       {orders.length > 0 && (
         <form id="form" className={s.form}>

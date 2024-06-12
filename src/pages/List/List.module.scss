@@ -1,6 +1,7 @@
 .product-list {
   display: flex;
   justify-content: center;
+  width: 100%;
 
   h2 {
     text-align: center;
@@ -26,8 +27,7 @@
     border-radius: 5px;
     background-color: #fff;
     transition: box-shadow 0.3s ease;
-    width: 360px;
-    height: 615px;
+   
     &:hover {
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
