@@ -15,8 +15,9 @@ const Basket = () => {
   const [selectedCity, setSelectedCity] = useState(null); // Додали стани для зберігання вибраних значень
   const [selectedStreet, setSelectedStreet] = useState(null);
   const [selectedHouseNumber, setSelectedHouseNumber] = useState(null);
+  const [selectedWarehouse, setSelectedWarehouse] = useState(null);
   const [receiverName, setReceiverName] = useState('');
-  // console.log(selectedHouseNumber)
+  // console.log(selectedWarehouse.Description);
 
   useEffect(() => {
     const ordersFromStorage = localStorage.getItem('orders');
@@ -64,27 +65,36 @@ const Basket = () => {
       Notiflix.Notify.failure('введіть номер');
     } else if (phone.length !== 13) {
       Notiflix.Notify.failure('номер має містити 13 символів');
-    } else if (message === '') {
-      Notiflix.Notify.failure('введіть повідомлення');
     } else if (orders.length === 0) {
       Notiflix.Notify.failure('Ваш кошик порожній');
-    } else if (!selectedCity) {
-      Notiflix.Notify.failure('Виберіть місто доставки');
-    } else if (!selectedStreet) {
-      Notiflix.Notify.failure('Виберіть вулицю доставки');
-    } else if (!selectedHouseNumber) {
-      Notiflix.Notify.failure('Виберіть номер будинку доставки');
     } else {
       let orderMessage = '';
-      orders.forEach(order => {
-        orderMessage += `<b>${order.name}</b> Смак: ${order.flavor} - ${order.count} шт., ${order.price} грн\n`;
-      });
+orders.forEach(order => {
+  orderMessage += `➤<b>${order.name}</b>`;
+  if (order.flavor) {
+    orderMessage += `\n<b>Смак: ${order.flavor}</b>`;
+  }
+  orderMessage += ` - ${order.count} шт., ${order.price} грн\n`;
+});
 
       axios
         .post(URI_API, {
           chat_id: CHAT,
           parse_mode: 'html',
-          text: `<b>Новий заказ</b>\n<b>Ім'я: </b>${receiverName}\n<b>номер: </b>${phone}\n<b>Повідомлення: </b>${message}\n<b>Замовлення:\n</b>${orderMessage}\n<b>Загальна сума: </b>${totalPrice} грн \n\n <b>Доставка :</b>\n<b>Місто :</b> ${selectedCity.Description}\n<b>Вулиця :</b> ${selectedStreet.Description}\n<b>Будинок :</b> ${selectedHouseNumber.Description}\n `,
+          text:
+            `<b>Новий заказ</b>\n<b>Ім'я: </b>${receiverName}\n<b>номер: </b>${phone}\n<b>Повідомлення: </b>${message}\n<b>Замовлення:\n</b>${orderMessage}\n<b>Загальна сума: </b>${totalPrice} грн \n\n <b>Доставка :</b>\n` +
+            (selectedWarehouse && selectedWarehouse.Description
+              ? `<b>Відділення нової пошти :</b> ${selectedWarehouse.Description}\n`
+              : '') +
+            (selectedCity && selectedCity.Description
+              ? `<b>Місто :</b> ${selectedCity.Description}\n`
+              : '') +
+            (selectedStreet && selectedStreet.Description
+              ? `<b>Вулиця :</b> ${selectedStreet.Description}\n`
+              : '') +
+            (selectedHouseNumber && selectedHouseNumber.Description
+              ? `<b>Будинок :</b> ${selectedHouseNumber.Description}\n`
+              : ''),
         })
         .then(res => {
           Notiflix.Notify.success('Замовлення відправлено');
@@ -96,6 +106,7 @@ const Basket = () => {
           setSelectedCity(null);
           setSelectedStreet(null);
           setSelectedHouseNumber(null);
+          setSelectedWarehouse(null);
           localStorage.removeItem('orders');
         })
         .catch(err => {
@@ -201,7 +212,7 @@ const Basket = () => {
             onUpdateCity={setSelectedCity}
             onUpdateStreet={setSelectedStreet}
             onUpdateHouseNumber={setSelectedHouseNumber}
-            
+            onUpdateWarehouses={setSelectedWarehouse}
           />
 
           <button type="submit" onClick={Send} className={s.btmForm}>

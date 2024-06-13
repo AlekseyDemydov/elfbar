@@ -19,7 +19,7 @@ const Main = () => {
     axios
       .delete(`http://localhost:4444/products/${productId}`)
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         setProducts(prevProducts =>
           prevProducts.filter(product => product._id !== productId)
         );
