@@ -2,14 +2,21 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Notiflix from 'notiflix';
 import { Button } from 'react-bootstrap'; // імпорт Button
+
 import s from './Basket.module.scss';
+
+import CityInput from './NP/NovaPoshta';
 
 const Basket = () => {
   const [orders, setOrders] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [name, setName] = useState('');
   const [message, setMessage] = useState('');
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState('+380');
+  const [selectedCity, setSelectedCity] = useState(null); // Додали стани для зберігання вибраних значень
+  const [selectedStreet, setSelectedStreet] = useState(null);
+  const [selectedHouseNumber, setSelectedHouseNumber] = useState(null);
+  const [receiverName, setReceiverName] = useState('');
+  // console.log(selectedHouseNumber)
 
   useEffect(() => {
     const ordersFromStorage = localStorage.getItem('orders');
@@ -51,14 +58,22 @@ const Basket = () => {
   const Send = e => {
     e.preventDefault();
 
-    if (name === '') {
+    if (receiverName === '') {
       Notiflix.Notify.failure('введіть ім`я');
-    } else if (phone === '') {
+    } else if (phone === '+380') {
       Notiflix.Notify.failure('введіть номер');
+    } else if (phone.length !== 13) {
+      Notiflix.Notify.failure('номер має містити 13 символів');
     } else if (message === '') {
       Notiflix.Notify.failure('введіть повідомлення');
     } else if (orders.length === 0) {
       Notiflix.Notify.failure('Ваш кошик порожній');
+    } else if (!selectedCity) {
+      Notiflix.Notify.failure('Виберіть місто доставки');
+    } else if (!selectedStreet) {
+      Notiflix.Notify.failure('Виберіть вулицю доставки');
+    } else if (!selectedHouseNumber) {
+      Notiflix.Notify.failure('Виберіть номер будинку доставки');
     } else {
       let orderMessage = '';
       orders.forEach(order => {
@@ -69,12 +84,18 @@ const Basket = () => {
         .post(URI_API, {
           chat_id: CHAT,
           parse_mode: 'html',
-          text: `<b>Новий заказ</b>\n<b>Ім'я: </b>${name}\n<b>номер: </b>${phone}\n<b>Повідомлення: </b>${message}\n<b>Замовлення:\n</b>${orderMessage}\n<b>Загальна сума: </b>${totalPrice} грн`,
+          text: `<b>Новий заказ</b>\n<b>Ім'я: </b>${receiverName}\n<b>номер: </b>${phone}\n<b>Повідомлення: </b>${message}\n<b>Замовлення:\n</b>${orderMessage}\n<b>Загальна сума: </b>${totalPrice} грн \n\n <b>Доставка :</b>\n<b>Місто :</b> ${selectedCity.Description}\n<b>Вулиця :</b> ${selectedStreet.Description}\n<b>Будинок :</b> ${selectedHouseNumber.Description}\n `,
         })
         .then(res => {
           Notiflix.Notify.success('Замовлення відправлено');
           setOrders([]);
           setTotalPrice(0);
+          setPhone('+380');
+          setReceiverName('');
+          setMessage('');
+          setSelectedCity(null);
+          setSelectedStreet(null);
+          setSelectedHouseNumber(null);
           localStorage.removeItem('orders');
         })
         .catch(err => {
@@ -83,6 +104,33 @@ const Basket = () => {
           );
         });
     }
+  };
+  const handlePhoneChange = event => {
+    let inputPhone = event.target.value.trim();
+
+    // Вилучення всіх нецифрових символів з введеного номеру
+    let formattedPhone = inputPhone.replace(/\D/g, '');
+
+    // Перевірка і додавання префіксу "+380", якщо його немає
+    if (!formattedPhone.startsWith('+380')) {
+      formattedPhone = '+380' + formattedPhone.substring(3); // Відкидаємо перші 3 символи
+    }
+
+    // Обмеження довжини номера телефону до 13 символів
+    if (formattedPhone.length > 13) {
+      formattedPhone = formattedPhone.slice(0, 13);
+    }
+
+    // Форматування телефону у вигляді "(99) 999-99-99"
+    if (formattedPhone.length > 3) {
+      formattedPhone = formattedPhone.replace(
+        /^380(\d{2})(\d{3})(\d{2})(\d{2})$/,
+        '($1) $2-$3-$4'
+      );
+    }
+
+    // Встановлення форматованого номера телефону у стан компоненту
+    setPhone(formattedPhone);
   };
 
   return (
@@ -122,9 +170,7 @@ const Basket = () => {
                 onClick={() => handleDelete(index)}
                 variant="danger"
                 className={s.btnDel}
-              >
-                
-              </Button>
+              ></Button>
             </div>
           ))}
           {orders.length > 0 && <p>Загальна вартість: {totalPrice}</p>}
@@ -133,20 +179,16 @@ const Basket = () => {
 
       {orders.length > 0 && (
         <form id="form" className={s.form}>
-          <input
-            type="text"
-            value={name}
-            onChange={e => setName(e.target.value)}
-            className={s.input}
-            placeholder="Введіть ім'я"
-          />
+          <p>Ваш номер телефону</p>
           <input
             type="tel"
             value={phone}
-            onChange={e => setPhone(e.target.value)}
+            onChange={handlePhoneChange}
             className={s.input}
-            placeholder="Введіть номер телефону"
+            pattern="[0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}"
+            placeholder="(99) 999-99-99"
           />
+
           <input
             type="text"
             value={message}
@@ -154,6 +196,14 @@ const Basket = () => {
             className={s.input}
             placeholder="Введіть повідомлення"
           />
+          <CityInput
+            onUpdateReceiver={setReceiverName}
+            onUpdateCity={setSelectedCity}
+            onUpdateStreet={setSelectedStreet}
+            onUpdateHouseNumber={setSelectedHouseNumber}
+            
+          />
+
           <button type="submit" onClick={Send} className={s.btmForm}>
             Відправити замовлення
           </button>

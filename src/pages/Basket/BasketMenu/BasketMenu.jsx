@@ -5,6 +5,7 @@ import s from './BasketMenu.module.scss';
 import { ReactComponent as BasketLogo } from '../img/basket.svg';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
+// import './Basket.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function BasketMenu({ orders, onUpdateOrder }) {
@@ -67,7 +68,7 @@ function BasketMenu({ orders, onUpdateOrder }) {
         <span className={s.btnLenght}>{basketOrders.length}</span>
       </button>
 
-      <Offcanvas show={show} onHide={handleClose}>
+      <Offcanvas show={show} onHide={handleClose}  style={{ width: '600px' }}>
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Кошик</Offcanvas.Title>
         </Offcanvas.Header>
