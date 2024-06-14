@@ -80,6 +80,9 @@
     align-items: center;
     margin-bottom: 5px;
   }
+  .delivery-methods {
+   margin-bottom: 15px;
+  }
   .inputs-container {
     position: relative;
     input {

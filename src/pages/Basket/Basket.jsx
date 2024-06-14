@@ -184,7 +184,7 @@ orders.forEach(order => {
               ></Button>
             </div>
           ))}
-          {orders.length > 0 && <p>Загальна вартість: {totalPrice}</p>}
+          {orders.length > 0 && <p className={s.price}>Загальна вартість: {totalPrice} грн</p>}
         </div>
       </div>
 
@@ -205,7 +205,7 @@ orders.forEach(order => {
             value={message}
             onChange={e => setMessage(e.target.value)}
             className={s.input}
-            placeholder="Введіть повідомлення"
+            placeholder="Коментарій (необов'язково)"
           />
           <CityInput
             onUpdateReceiver={setReceiverName}

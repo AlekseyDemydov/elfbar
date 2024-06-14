@@ -393,13 +393,16 @@ const CityInput = ({
       )}
       {deliveryMethod === 'postomat' && warehouses.length > 0 && (
         <div className={styles['inputs-container']}>
+          <label>
+          Пункт отримання
           <input
             type="text"
             value={warehouseInputValue}
             onChange={e => handleWarehouseSearch(e.target.value)}
-            placeholder="Введіть поштомат..."
+            placeholder="Виберіть пункт отримання"
             className={styles['input-field']}
           />
+          </label>
           {warehouseSuggestions.length > 0 && (
             <ul className={styles['suggestions-list']}>
               {warehouseSuggestions.map(warehouse => (
@@ -413,18 +416,23 @@ const CityInput = ({
               ))}
             </ul>
           )}
+          <label >
+          Одержувач (ПІБ повністю)
           <input
             type="text"
             value={receiverName}
             onChange={handleReceiverNameChange}
-            placeholder="Одержувач (ПІБ повністю)"
+            placeholder="Іван Іванович Іваненко"
             className={styles['input-field']}
           />
+          </label>
         </div>
       )}
       {deliveryMethod === 'courier' && (
         <div className={styles['inputs-container']}>
           <div className={styles['street-input']}>
+            <label>
+              Вулиця
             <input
               type="text"
               value={streetInputValue}
@@ -432,6 +440,8 @@ const CityInput = ({
               placeholder="Введіть вулицю..."
               className={styles['input-field']}
             />
+            </label>
+            
             {showStreetSuggestions && streets.length > 0 && (
               <ul className={styles['suggestions-list']}>
                 {streets.map(street => (
@@ -447,13 +457,17 @@ const CityInput = ({
             )}
           </div>
           <div className={styles['house-number-input']}>
-            <input
+            <label>
+              Будинок
+              <input
               type="text"
               value={houseNumberInputValue}
               onChange={e => handleHouseNumberSearch(e.target.value)}
               placeholder="Введіть номер будинку..."
               className={styles['input-field']}
             />
+            </label>
+            
             {showHouseNumberSuggestions && houseNumbers.length > 0 && (
               <ul className={styles['suggestions-list']}>
                 {houseNumbers.map(houseNumber => (
@@ -468,13 +482,16 @@ const CityInput = ({
               </ul>
             )}
           </div>
+          <label >
+          Одержувач (ПІБ повністю)
           <input
             type="text"
             value={receiverName}
             onChange={handleReceiverNameChange}
-            placeholder="Одержувач (ПІБ повністю)"
+            placeholder="Іван Іванович Іваненко"
             className={styles['input-field']}
           />
+          </label>
         </div>
       )}
     </div>

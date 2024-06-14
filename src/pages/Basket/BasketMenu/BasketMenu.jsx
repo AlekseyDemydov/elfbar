@@ -68,7 +68,7 @@ function BasketMenu({ orders, onUpdateOrder }) {
         <span className={s.btnLenght}>{basketOrders.length}</span>
       </button>
 
-      <Offcanvas show={show} onHide={handleClose}  style={{ width: '600px' }}>
+      <Offcanvas show={show} onHide={handleClose} style={{ width: '600px' }} placement="end">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Кошик</Offcanvas.Title>
         </Offcanvas.Header>
@@ -76,46 +76,55 @@ function BasketMenu({ orders, onUpdateOrder }) {
           {basketOrders && basketOrders.length > 0 ? (
             basketOrders.map((order, index) => (
               <div key={index} className={s.orderItem}>
-              <img
-                crossOrigin="anonymous"
-                // src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`} // Викликаємо функцію для отримання URL зображення за ідентифікатором продукту
-                src={`http://localhost:4444${order.imageUrl}`}
-                alt={order.name}
-                className={s.productImage}
-              />
-              <div className={s.productTitle}>
-                <p className={s.productName}>{order.name}</p>
-                <p className={s.flavor}>Смак: {order.flavor}</p>
-              </div>
+                <div  className={s.contr}>
+                  <img
+                    crossOrigin="anonymous"
+                    // src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`} // Викликаємо функцію для отримання URL зображення за ідентифікатором продукту
+                    src={`http://localhost:4444${order.imageUrl}`}
+                    alt={order.name}
+                    className={s.productImage}
+                  />
+                  <div className={s.productTitle}>
+                    <p className={s.productName}>{order.name}</p>
+                    <p className={s.flavor}>Смак: {order.flavor}</p>
+                  </div>
+                </div>
 
-              <div className={s.quantityControl}>
-                <button
-                  onClick={() => handleQuantityChange(index, order.count - 1)}
-                  disabled={order.count <= 1}
-                  className={`${s.btnminus} ${s.btnControl}`}
-                ></button>
-                <span>{order.count}</span>
-                <button
-                  onClick={() => handleQuantityChange(index, order.count + 1)}
-                  className={`${s.btnplus} ${s.btnControl}`}
-                ></button>
+                <div className={s.contr}>
+                  <div className={s.quantityControl}>
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(index, order.count - 1)
+                      }
+                      disabled={order.count <= 1}
+                      className={`${s.btnminus} ${s.btnControl}`}
+                    ></button>
+                    <span>{order.count}</span>
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(index, order.count + 1)
+                      }
+                      className={`${s.btnplus} ${s.btnControl}`}
+                    ></button>
+                  </div>
+                  <p className={s.totalPrice}> {order.price} грн</p>
+                </div>
+
+                <Button
+                  onClick={() => handleDelete(index)}
+                  variant="danger"
+                  className={s.btnDel}
+                ></Button>
               </div>
-              <p className={s.totalPrice}> {order.price} грн</p>
-              <Button
-                onClick={() => handleDelete(index)}
-                variant="danger"
-                className={s.btnDel}
-              >
-                
-              </Button>
-            </div>
             ))
           ) : (
             <p>Кошик порожній</p>
           )}
           <p className={s.totalPricee}>Загальна вартість: {totalPrice} грн</p>
           <NavLink to={`/elfbar/basket`}>
-            <Button onClick={handleClose} className={s.btnDone}>Підтвердити замовлення</Button>
+            <Button onClick={handleClose} className={s.btnDone}>
+              Підтвердити замовлення
+            </Button>
           </NavLink>
         </Offcanvas.Body>
       </Offcanvas>
