@@ -7,6 +7,7 @@ import ProductDetail from 'pages/ProductDetail/ProductDetail';
 // import EditProduct from 'pages/EditProduct/EditProduct'; // Імпортуємо компонент EditProduct
 import AdminLogin from 'pages/AdminLogin/AdminLogin';
 import Basket from 'pages/Basket/Basket';
+import { Contacts } from 'pages/Contacts/Contacts';
 
 export const App = () => {
   return (
@@ -14,6 +15,7 @@ export const App = () => {
       <Routes>
         <Route path="/elfbar" element={<Layout />}>
           <Route index element={<Main />} />
+          <Route path="contacts" element={<Contacts />} />
           <Route path="admin" element={<AdminLogin />} />
           <Route path="basket" element={<Basket />} />
           <Route path="products/add" element={<AddProduct />} />

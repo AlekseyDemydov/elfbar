@@ -1,0 +1,10 @@
+.nav-link.active {
+    color: #ff5100!important; /* колір для активного стану */
+  }
+  
+  .nav-link {
+    color: #efecec!important; /* колір для неактивного стану */
+  }
+  .nav-underline .nav-link{
+    border-bottom:none!important;
+  }

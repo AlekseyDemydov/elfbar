@@ -105,7 +105,7 @@ const ProductDetail = () => {
           style={{ maxWidth: '100%', height: 'auto' }}
         />
       )}
-      <div>
+      <div className={s.prodInfo}>
         <h2>{product.name}</h2>
         <div className={s.description}>
           <div className={s.title}>{product.name}</div>
