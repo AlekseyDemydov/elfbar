@@ -17,30 +17,32 @@
     padding: 0;
     justify-items: center;
     width: max-content;
-    @media screen and (max-width: 768px) { 
+    @media screen and (max-width: 768px) {
       grid-template-columns: repeat(2, 1fr);
     }
-    @media screen and (max-width: 480px) { 
+    @media screen and (max-width: 480px) {
       grid-template-columns: repeat(1, 1fr);
     }
   }
 
   .item {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     margin-bottom: 1rem;
     padding: 1rem;
     border: 1px solid #ddd;
     border-radius: 5px;
     background-color: #fff;
     transition: box-shadow 0.3s ease;
-   
+    width: 260px;
+
     &:hover {
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    &:last-child {
-      margin-bottom: 0;
-    }
+    
 
     .link {
       text-decoration: none;
@@ -54,9 +56,7 @@
       div {
         margin-bottom: 0.5rem;
 
-        &:last-child {
-          margin-bottom: 0;
-        }
+      
       }
     }
   }
@@ -76,6 +76,7 @@
 }
 .description {
   padding: 0 30px;
+  height: 180px;
 }
 .listDesc {
   list-style: none;
@@ -102,7 +103,6 @@
   -ms-flex-align: center;
   align-items: center;
   vertical-align: top;
-  margin: 0 4px 8px 0;
   border: 1px solid #777;
   font-size: 14px;
   height: 45px;
@@ -140,23 +140,43 @@ select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  margin-bottom: 10px;
+  width: 100%;
 }
-.btnBuyCount {
-  margin-top: 8px;
+.btnDown {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+ 
+}
+.btnDelete {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #ffffff;
+  background-color: #ff0000;
+  font-weight: 600;
+  text-transform: uppercase;
+  height: 45px;
+  font-size: 14px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border: none;
+}
+.price{
+  height: 50px;
+}
+.imgBox{
+  height: 255px;
+}
+.selectBox{
+  height: 40px;
+  width: 100%;
+}
+.btnBuyCount{
+  height: 70px;
   display: flex;
   justify-content: space-between;
-}
-.btnDelete{
-  position: absolute;
-top: 0;
-left: 0;
-color: #ffffff;
-background-color: #ff0000;
-font-weight: 600;
-text-transform: uppercase;
-height: 45px;
-font-size: 14px;
-padding-left: 30px;
-padding-right: 30px;
-border: none;
+  align-items: flex-end;
 }

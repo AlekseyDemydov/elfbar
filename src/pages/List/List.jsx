@@ -23,7 +23,7 @@ const List = ({ products, handleDelete }) => {
   const handleQuantityChange = (productId, quantity) => {
     setProductCounts(prevCounts => ({
       ...prevCounts,
-      [productId]: quantity
+      [productId]: quantity,
     }));
   };
 
@@ -31,7 +31,7 @@ const List = ({ products, handleDelete }) => {
   const handleFlavorChange = (productId, flavor) => {
     setSelectedFlavors(prevSelectedFlavors => ({
       ...prevSelectedFlavors,
-      [productId]: flavor
+      [productId]: flavor,
     }));
   };
 
@@ -40,22 +40,26 @@ const List = ({ products, handleDelete }) => {
     const selectedFlavor = selectedFlavors[productId];
     const count = productCounts[productId] || 1;
     const product = products.find(prod => prod._id === productId);
-  
+
     if (!product) {
-      console.error("Продукт не знайдено");
+      console.error('Продукт не знайдено');
       return;
     }
-  
-    if (product.flavor.length > 0 && !selectedFlavor && product.flavor[0].trim() !== '') {
+
+    if (
+      product.flavor.length > 0 &&
+      !selectedFlavor &&
+      product.flavor[0].trim() !== ''
+    ) {
       alert('Оберіть смак для продукту');
       return;
     }
-  
+
     const existingOrders = [...orders];
     const existingOrderIndex = existingOrders.findIndex(
       order => order.name === product.name && order.flavor === selectedFlavor
     );
-  
+
     if (existingOrderIndex > -1) {
       existingOrders[existingOrderIndex].count += count;
     } else {
@@ -65,11 +69,11 @@ const List = ({ products, handleDelete }) => {
         flavor: selectedFlavor,
         count: count,
         price: product.price,
-        imageUrl: product.imageUrl // Додайте зображення продукту до об'єкту замовлення
+        imageUrl: product.imageUrl, // Додайте зображення продукту до об'єкту замовлення
       };
       existingOrders.push(order);
     }
-  
+
     localStorage.setItem('orders', JSON.stringify(existingOrders));
     setOrders(existingOrders);
   };
@@ -93,13 +97,16 @@ const List = ({ products, handleDelete }) => {
                 to={`/elfbar/products/${product._id}`}
                 className={styles.link}
               >
-                <img
-                  crossOrigin="anonymous"
-                  // src={`${process.env.REACT_APP_API_URL}${product.imageUrl}`}
-                  src={`http://localhost:4444${product.imageUrl}`}
-                  alt={product.name}
-                  className={styles.image}
-                />
+                <div className={styles.imgBox}>
+                  <img
+                    crossOrigin="anonymous"
+                    // src={`${process.env.REACT_APP_API_URL}${product.imageUrl}`}
+                    src={`http://localhost:4444${product.imageUrl}`}
+                    alt={product.name}
+                    className={styles.image}
+                  />
+                </div>
+
                 <div className={styles.description}>
                   <div className={styles.title}>{product.name}</div>
                   <ul>
@@ -137,51 +144,69 @@ const List = ({ products, handleDelete }) => {
                 </div>
               </Link>
               <div className={styles.price}>{product.price} грн</div>
-              {product.flavor.filter(flavor => flavor.trim() !== '').length > 0 && (
-                <select
-                  value={selectedFlavor}
-                  onChange={e => handleFlavorChange(product._id, e.target.value)}
-                >
-                  <option value="">Оберіть смак</option>
-                  {product.flavor.map(
-                    (flavor, index) =>
-                      flavor.trim() !== '' && (
-                        <option key={index} value={flavor}>
-                          {flavor}
-                        </option>
-                      )
-                  )}
-                </select>
-              )}
-              <div className={styles.btnBuyCount}>
-                <div className={styles.boxCount}>
-                  <button
-                    onClick={() => handleQuantityChange(product._id, count - 1)}
-                    className={styles.btnInc}
-                    disabled={count <= 1}
+
+              <div className={styles.btnDown}>
+                <div className={styles.selectBox}>
+                  {product.flavor.filter(flavor => flavor.trim() !== '').length >
+                  0 && (
+                  <select
+                    value={selectedFlavor}
+                    onChange={e =>
+                      handleFlavorChange(product._id, e.target.value)
+                    }
                   >
-                    -
-                  </button>
-                  <input
-                    type="number"
-                    value={count}
-                    onChange={e => handleQuantityChange(product._id, parseInt(e.target.value))}
-                    min="1"
-                    className={styles.btnNumb}
-                  />
+                    <option value="">Оберіть смак</option>
+                    {product.flavor.map(
+                      (flavor, index) =>
+                        flavor.trim() !== '' && (
+                          <option key={index} value={flavor}>
+                            {flavor}
+                          </option>
+                        )
+                    )}
+                  </select>
+                )}
+                </div>
+                
+                <div className={styles.btnBuyCount}>
+                  <div className={styles.boxCount}>
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(product._id, count - 1)
+                      }
+                      className={styles.btnInc}
+                      disabled={count <= 1}
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      value={count}
+                      onChange={e =>
+                        handleQuantityChange(
+                          product._id,
+                          parseInt(e.target.value)
+                        )
+                      }
+                      min="1"
+                      className={styles.btnNumb}
+                    />
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(product._id, count + 1)
+                      }
+                      className={styles.btnInc}
+                    >
+                      +
+                    </button>
+                  </div>
                   <button
-                    onClick={() => handleQuantityChange(product._id, count + 1)}
-                    className={styles.btnInc}
+                    onClick={() => handleBuy(product._id)}
+                    className={styles.btnBuy}
                   >
-                    +
+                    купити
                   </button>
                 </div>
-                <button
-                  onClick={() => handleBuy(product._id)}
-                  className={styles.btnBuy}
-                >
-                  купити
-                </button>
               </div>
               {userEmail === 'ivan@gmail.com' && (
                 <button
