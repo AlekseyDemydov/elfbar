@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, Link, NavLink } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import logoWhite from './img/logowhite.png'; // Білий логотип
 import logoBlack from './img/logoblack.png'; // Чорний логотип
 import tgblack from './img/tgblack.png';
 import tgwhite from './img/tgwhite.png';
 import s from './Header.module.scss';
-import './Header.css'
-
+import './Header.css';
 
 export const Header = () => {
   const location = useLocation();
   const [expanded, setExpanded] = useState(false);
   const [scrolling, setScrolling] = useState(false);
-
-  const userEmail = localStorage.getItem('adminEmail') || '';
 
   const handleNavClick = () => setExpanded(false);
 
@@ -38,7 +35,9 @@ export const Header = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
+  const handleClick = () => {
+    window.open('https://t.me/your_manager_username', '_blank');
+  };
   return (
     <Navbar
       fixed="top"
@@ -51,20 +50,11 @@ export const Header = () => {
     >
       <Container>
         <Navbar.Brand className="fs-1 linkLogo" as={Link} to="/elfbar">
-          <div>
-            <Link to="/elfbar">
-              <img
-                src={scrolling ? logoWhite : logoBlack}
-                alt="Logo"
-                className={s.logo}
-              />
-            </Link>
-            {userEmail === 'ivan@gmail.com' && (
-              <NavLink to="/elfbar/products/add" className={s.btnCreate}>
-                Створити
-              </NavLink>
-            )}
-          </div>
+          <img
+            src={scrolling ? logoWhite : logoBlack}
+            alt="Logo"
+            className={s.logo}
+          />
         </Navbar.Brand>
         <Navbar.Toggle
           aria-controls="responsive-navbar-nav"
@@ -110,13 +100,13 @@ export const Header = () => {
             </Nav.Link>
           </Nav>
           <div className={s.tgBox}>
-            <a href="https://t.me/DemFam" target="_blank" rel="noreferrer">
+            <div onClick={handleClick}>
               <img
                 src={scrolling ? tgblack : tgwhite}
                 alt="tg"
                 className={s.telegramLink}
               />
-            </a>
+            </div>
 
             <button
               className={`${s.btnSignTG} ${scrolling ? s.scrolledBtn : ''}`}

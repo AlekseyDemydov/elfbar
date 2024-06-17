@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import axios from '../../axios';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
@@ -14,10 +15,11 @@ const Main = () => {
   const [sortByQuantity, setSortByQuantity] = useState('');
   const [sortByType, setSortByType] = useState('');
   const [error, setError] = useState(null);
-
+  const userEmail = localStorage.getItem('adminEmail') || '';
   const handleDelete = productId => {
     axios
-      .delete(`http://localhost:4444/products/${productId}`)
+    .delete(`${process.env.REACT_APP_API_URL}/products/${productId}`)
+      // .delete(`http://localhost:4444/products/${productId}`)
       .then(response => {
         // console.log(response.data);
         setProducts(prevProducts =>
@@ -35,7 +37,8 @@ const Main = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:4444/products')
+    get(`${process.env.REACT_APP_API_URL}/products`)
+      // .get('http://localhost:4444/products')
       .then(response => {
         let sortedProducts = response.data;
 
@@ -62,7 +65,8 @@ const Main = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:4444/products')
+    get(`${process.env.REACT_APP_API_URL}/products`)
+      // .get('http://localhost:4444/products')
       .then(response => {
         let sortedProducts = response.data;
 
@@ -98,6 +102,11 @@ const Main = () => {
 
   return (
     <>
+     {userEmail === 'ivan@gmail.com' && (
+            <NavLink to="/elfbar/products/add" className={s.btnCreate}>
+              Створити
+            </NavLink>
+          )}
       <img src={banner} alt="banner" className={s.banner} />
 
       <div className={s.sortContainer}>

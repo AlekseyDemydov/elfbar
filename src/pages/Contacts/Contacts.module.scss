@@ -1,0 +1,80 @@
+.contactsBox {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; // центрування по вертикалі
+  align-items: center; // центрування по горизонталі
+  padding-top: 50px;
+  h1 {
+    position: relative;
+    display: inline-block;
+    font-size: 32px; // збільшуємо розмір шрифту заголовка
+    color: black; // колір підкреслення
+    margin-bottom: 20px; // збільшуємо відступ підкреслення від тексту
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -8px; // зсув підкреслення вниз
+      left: -12px;
+      width: 120%;
+      height: 2px; // збільшуємо довжину підкреслення
+      background-color: #ff5100; // колір підкреслення
+    }
+  }
+}
+
+.btnContacts {
+  background: linear-gradient(
+    45deg,
+    #00aaff,
+    #00ffaa
+  ); // синьо-зелений градієнт
+  border: none;
+  border-radius: 10px;
+  color: white;
+  padding: 10px 20px;
+  font-size: 20px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.5s ease, box-shadow 0.5s ease; // плавний перехід кольору тексту і тіні
+  width: 550px;
+  height: 80px;
+  margin: 0 auto; // центрування кнопки в контейнері
+
+  // Градієнтна тінь
+  box-shadow: 0 4px 15px rgba(0, 170, 255, 0.5),
+    0 4px 15px rgba(0, 255, 170, 0.5);
+  @media screen and (max-width: 480px) {
+    width: 350px;
+    height: 50px;
+    font-size: 15px;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #00aaff; // синій колір при наведенні
+    transition: opacity 0.5s ease;
+    opacity: 0;
+    z-index: 0;
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+
+  &:hover {
+    color: white; // зберігаємо колір тексту білим при наведенні
+    box-shadow: none; // тінь зникає при наведенні
+  }
+
+  span {
+    position: relative;
+    z-index: 1;
+  }
+}

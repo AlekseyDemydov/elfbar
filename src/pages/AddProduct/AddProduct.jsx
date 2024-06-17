@@ -30,8 +30,8 @@ const AddProduct = () => {
     if (id) {
       const fetchData = async () => {
         try {
-          // const response = await axios.get(`${process.env.REACT_APP_API_URL}/products/${id}`);
-          const response = await axios.get(`http://localhost:4444/products/${id}`);
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/products/${id}`);
+          // const response = await axios.get(`http://localhost:4444/products/${id}`);
           const { data } = response;
           setProductData({
             name: data.name || "",
@@ -99,11 +99,11 @@ const AddProduct = () => {
     try {
       setLoading(true);
       if (id) {
-        // await axios.put(`${process.env.REACT_APP_API_URL}/products/${id}`, productDataToSubmit);
-        await axios.put(`http://localhost:4444/products/${id}`, productDataToSubmit);
+        await axios.put(`${process.env.REACT_APP_API_URL}/products/${id}`, productDataToSubmit);
+        // await axios.put(`http://localhost:4444/products/${id}`, productDataToSubmit);
       } else {
-        // await axios.post(`${process.env.REACT_APP_API_URL}/products`, productDataToSubmit);
-        await axios.post("http://localhost:4444/products", productDataToSubmit);
+        await axios.post(`${process.env.REACT_APP_API_URL}/products`, productDataToSubmit);
+        // await axios.post("http://localhost:4444/products", productDataToSubmit);
       }
       navigate("/elfbar");
     } catch (error) {
@@ -124,8 +124,8 @@ const AddProduct = () => {
         </label>
         <br />
         <label>
-          Кількість:
-          <input type="text" name="description.quantity" value={productData.description.quantity} onChange={handleChange} />
+          Кількість тяг:
+          <input type="text" name="description.quantity" value={productData.description.quantity} onChange={handleChange} placeholder="тільки число"/>
         </label>
         <br />
         <label>
@@ -135,7 +135,7 @@ const AddProduct = () => {
         <br />
         <label>
           Тип:
-          <input type="text" name="description.type" value={productData.description.type} onChange={handleChange} />
+          <input type="text" name="description.type" value={productData.description.type} onChange={handleChange} placeholder="тип писати обов'яково перша літера велика"/>
         </label>
         <br />
         <label>
@@ -154,8 +154,8 @@ const AddProduct = () => {
         </label>
         <br />
         <label>
-          Смак:
-          <textarea name="flavor" value={productData.flavor} onChange={handleChange} />
+          Смак: ❌  ✅
+          <textarea name="flavor" value={productData.flavor} onChange={handleChange} placeholder="Всі смаки треба вводити через Enter"/>
         </label>
         <br />
         <label>
@@ -163,7 +163,7 @@ const AddProduct = () => {
           <input type="number" name="price" value={productData.price} onChange={handleChange} />
         </label>
         <br />
-        <label>
+        <label style={{ display: 'none' }}>
           Зображення URL:
           <input type="text" name="imageUrl" value={productData.imageUrl} onChange={handleChange} />
         </label>
@@ -181,8 +181,8 @@ const AddProduct = () => {
         {productData.imageUrl && (
           <img
             crossOrigin="anonymous"
-            src={`http://localhost:4444${productData.imageUrl}`}
-            // src={`${process.env.REACT_APP_API_URL}${productData.imageUrl}`}
+            // src={`http://localhost:4444${productData.imageUrl}`}
+            src={`${process.env.REACT_APP_API_URL}${productData.imageUrl}`}
             alt="Uploaded"
             className={styles.uploadedImage}
           />

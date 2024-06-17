@@ -100,8 +100,8 @@ const List = ({ products, handleDelete }) => {
                 <div className={styles.imgBox}>
                   <img
                     crossOrigin="anonymous"
-                    // src={`${process.env.REACT_APP_API_URL}${product.imageUrl}`}
-                    src={`http://localhost:4444${product.imageUrl}`}
+                    src={`${process.env.REACT_APP_API_URL}${product.imageUrl}`}
+                    // src={`http://localhost:4444${product.imageUrl}`}
                     alt={product.name}
                     className={styles.image}
                   />
@@ -112,7 +112,7 @@ const List = ({ products, handleDelete }) => {
                   <ul>
                     {product.description.quantity && (
                       <li className={styles.listDesc}>
-                        ✔Кількість тягу: {product.description.quantity}
+                        ✔Кількість тяг: {product.description.quantity}
                       </li>
                     )}
                     {product.description.strength && (

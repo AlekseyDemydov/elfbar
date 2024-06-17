@@ -154,8 +154,8 @@ orders.forEach(order => {
             <div key={index} className={s.orderItem}>
               <img
                 crossOrigin="anonymous"
-                // src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`} // Викликаємо функцію для отримання URL зображення за ідентифікатором продукту
-                src={`http://localhost:4444${order.imageUrl}`}
+                src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`} 
+                // src={`http://localhost:4444${order.imageUrl}`}
                 alt={order.name}
                 className={s.productImage}
               />

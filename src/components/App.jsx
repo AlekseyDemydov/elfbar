@@ -8,6 +8,8 @@ import ProductDetail from 'pages/ProductDetail/ProductDetail';
 import AdminLogin from 'pages/AdminLogin/AdminLogin';
 import Basket from 'pages/Basket/Basket';
 import { Contacts } from 'pages/Contacts/Contacts';
+import { Question } from 'pages/Question/Question';
+import { Feedback } from 'pages/Feedback/Feedback';
 
 export const App = () => {
   return (
@@ -15,6 +17,8 @@ export const App = () => {
       <Routes>
         <Route path="/elfbar" element={<Layout />}>
           <Route index element={<Main />} />
+          <Route path="feedback" element={<Feedback />} />
+          <Route path="question" element={<Question />} />
           <Route path="contacts" element={<Contacts />} />
           <Route path="admin" element={<AdminLogin />} />
           <Route path="basket" element={<Basket />} />

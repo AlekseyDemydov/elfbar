@@ -118,3 +118,16 @@
 .sortQuantity input[type="checkbox"]:checked::before {
   display: block; /* Показати випуклий колір, коли чекбокс відмічено */
 }
+.btnCreate {
+  position: absolute;
+  color: #ffffff;
+  background-color: #00ff15;
+  font-weight: 600;
+  text-transform: uppercase;
+  height: 45px;
+  font-size: 14px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border: none;
+  text-decoration: none;
+}
