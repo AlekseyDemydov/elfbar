@@ -17,7 +17,7 @@ const Dropdown = ({
         dropdownElement.style.setProperty('--dropdown-height', `${dropdownHeight}px`);
       }
     }
-  }, []);
+  }, [openDropdownIndex]); // Додаємо залежність, щоб перераховувати висоту при відкритті
 
   return (
     <div
