@@ -37,7 +37,7 @@ const Main = () => {
 
   useEffect(() => {
     axios
-    get(`${process.env.REACT_APP_API_URL}/products`)
+    .get(`${process.env.REACT_APP_API_URL}/products`)
       // .get('http://localhost:4444/products')
       .then(response => {
         let sortedProducts = response.data;
@@ -65,7 +65,7 @@ const Main = () => {
 
   useEffect(() => {
     axios
-    get(`${process.env.REACT_APP_API_URL}/products`)
+    .get(`${process.env.REACT_APP_API_URL}/products`)
       // .get('http://localhost:4444/products')
       .then(response => {
         let sortedProducts = response.data;
