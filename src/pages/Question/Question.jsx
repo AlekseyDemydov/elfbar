@@ -49,7 +49,7 @@ function Question() {
     <div className="accordion-wrapper">
       <Accordion defaultActiveKey="none">
         <ContextAwareToggle eventKey="0">
-          <span>Як оформити замовлення??</span>
+          <span>Як оформити замовлення?</span>
         </ContextAwareToggle>
         <Accordion.Collapse eventKey="0">
           <Card.Body>
