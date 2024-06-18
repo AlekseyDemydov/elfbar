@@ -5,7 +5,7 @@ import s from './BasketMenu.module.scss';
 import { ReactComponent as BasketLogo } from '../img/basket.svg';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
-// import './Basket.css'
+import config from 'config';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function BasketMenu({ orders, onUpdateOrder }) {
@@ -18,8 +18,8 @@ function BasketMenu({ orders, onUpdateOrder }) {
   useEffect(() => {
     const fetchProductsDetails = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/products`);
-        // const response = await axios.get(`http://localhost:4444/products`);
+        // const response = await axios.get(`${process.env.REACT_APP_API_URL}/products`);
+        const response = await axios.get(`${config.baseURL}/products`);
         const productsDetails = response.data;
         setProductsDetails(productsDetails); // Поправив тут також
       } catch (error) {
@@ -79,8 +79,8 @@ function BasketMenu({ orders, onUpdateOrder }) {
                 <div  className={s.contr}>
                   <img
                     crossOrigin="anonymous"
-                    src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`} 
-                    // src={`http://localhost:4444${order.imageUrl}`}
+                    // src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`} 
+                    src={`${config.baseURL}${order.imageUrl}`}
                     alt={order.name}
                     className={s.productImage}
                   />

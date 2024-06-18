@@ -7,6 +7,7 @@ import banner from './img/banner.jpg';
 import s from './Main.module.scss';
 import List from 'pages/List/List';
 import './Main.css';
+import config from 'config';
 
 const Main = () => {
   const [products, setProducts] = useState([]);
@@ -18,8 +19,8 @@ const Main = () => {
   const userEmail = localStorage.getItem('adminEmail') || '';
   const handleDelete = productId => {
     axios
-    .delete(`${process.env.REACT_APP_API_URL}/products/${productId}`)
-      // .delete(`http://localhost:4444/products/${productId}`)
+    // .delete(`${process.env.REACT_APP_API_URL}/products/${productId}`)
+      .delete(`${config.baseURL}/products/${productId}`)
       .then(response => {
         // console.log(response.data);
         setProducts(prevProducts =>
@@ -37,8 +38,8 @@ const Main = () => {
 
   useEffect(() => {
     axios
-    .get(`${process.env.REACT_APP_API_URL}/products`)
-      // .get('http://localhost:4444/products')
+    // .get(`${process.env.REACT_APP_API_URL}/products`)
+      .get(`${config.baseURL}/products`)
       .then(response => {
         let sortedProducts = response.data;
 
@@ -65,8 +66,8 @@ const Main = () => {
 
   useEffect(() => {
     axios
-    .get(`${process.env.REACT_APP_API_URL}/products`)
-      // .get('http://localhost:4444/products')
+    // .get(`${process.env.REACT_APP_API_URL}/products`)
+      .get(`${config.baseURL}/products`)
       .then(response => {
         let sortedProducts = response.data;
 

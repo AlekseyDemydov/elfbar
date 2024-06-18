@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, NavLink } from 'react-router-dom';
 import s from './ProductDetail.module.scss';
+import config from 'config';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -15,8 +16,8 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/products/${id}`);
-        // const response = await axios.get(`http://localhost:4444/products/${id}`);
+        // const response = await axios.get(`${process.env.REACT_APP_API_URL}/products/${id}`);
+        const response = await axios.get(`${config.baseURL}/products/${id}`);
         setProduct(response.data);
         setLoading(false);
       } catch (error) {
@@ -99,8 +100,8 @@ const ProductDetail = () => {
         <img
           className={s.imgDet}
           crossOrigin="anonymous"
-          src={`${process.env.REACT_APP_API_URL}${product.imageUrl}`}
-          // src={`http://localhost:4444${product.imageUrl}`}
+          // src={`${process.env.REACT_APP_API_URL}${product.imageUrl}`}
+          src={`${config.baseURL}${product.imageUrl}`}
           alt={product.name}
         />
       )}

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from "../../axios";
 import { useNavigate } from "react-router-dom";
 import styles from "./AddProduct.module.scss"; // Шлях до файлу стилів
+import config from '../../config'
 
 const AddProduct = () => {
   const { id } = useParams();
@@ -30,8 +31,8 @@ const AddProduct = () => {
     if (id) {
       const fetchData = async () => {
         try {
-          const response = await axios.get(`${process.env.REACT_APP_API_URL}/products/${id}`);
-          // const response = await axios.get(`http://localhost:4444/products/${id}`);
+          // const response = await axios.get(`${process.env.REACT_APP_API_URL}/products/${id}`);
+          const response = await axios.get(`${config.baseURL}/products/${id}`);
           const { data } = response;
           setProductData({
             name: data.name || "",
@@ -99,11 +100,11 @@ const AddProduct = () => {
     try {
       setLoading(true);
       if (id) {
-        await axios.put(`${process.env.REACT_APP_API_URL}/products/${id}`, productDataToSubmit);
-        // await axios.put(`http://localhost:4444/products/${id}`, productDataToSubmit);
+        // await axios.put(`${process.env.REACT_APP_API_URL}/products/${id}`, productDataToSubmit);
+        await axios.put(`${config.baseURL}/products/${id}`, productDataToSubmit);
       } else {
-        await axios.post(`${process.env.REACT_APP_API_URL}/products`, productDataToSubmit);
-        // await axios.post("http://localhost:4444/products", productDataToSubmit);
+        // await axios.post(`${process.env.REACT_APP_API_URL}/products`, productDataToSubmit);
+        await axios.post(`${config.baseURL}/products`, productDataToSubmit);
       }
       navigate("/elfbar");
     } catch (error) {
@@ -181,8 +182,8 @@ const AddProduct = () => {
         {productData.imageUrl && (
           <img
             crossOrigin="anonymous"
-            // src={`http://localhost:4444${productData.imageUrl}`}
-            src={`${process.env.REACT_APP_API_URL}${productData.imageUrl}`}
+            src={`${config.baseURL}${productData.imageUrl}`}
+            // src={`${process.env.REACT_APP_API_URL}${productData.imageUrl}`}
             alt="Uploaded"
             className={styles.uploadedImage}
           />

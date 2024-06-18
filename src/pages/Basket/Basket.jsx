@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Notiflix from 'notiflix';
 import { Button } from 'react-bootstrap'; // імпорт Button
-
+import config from 'config';
 import s from './Basket.module.scss';
 
 import CityInput from './NP/NovaPoshta';
@@ -154,8 +154,8 @@ orders.forEach(order => {
             <div key={index} className={s.orderItem}>
               <img
                 crossOrigin="anonymous"
-                src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`} 
-                // src={`http://localhost:4444${order.imageUrl}`}
+                // src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`} 
+                src={`${config.baseURL}${order.imageUrl}`}
                 alt={order.name}
                 className={s.productImage}
               />

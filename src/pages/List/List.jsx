@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './List.module.scss';
 import BasketMenu from 'pages/Basket/BasketMenu/BasketMenu';
+import config from 'config';
 
 const List = ({ products, handleDelete }) => {
   const [error, setError] = useState(null);
@@ -100,8 +101,8 @@ const List = ({ products, handleDelete }) => {
                 <div className={styles.imgBox}>
                   <img
                     crossOrigin="anonymous"
-                    src={`${process.env.REACT_APP_API_URL}${product.imageUrl}`}
-                    // src={`http://localhost:4444${product.imageUrl}`}
+                    // src={`${process.env.REACT_APP_API_URL}${product.imageUrl}`}
+                    src={`${config.baseURL}${product.imageUrl}`}
                     alt={product.name}
                     className={styles.image}
                   />
