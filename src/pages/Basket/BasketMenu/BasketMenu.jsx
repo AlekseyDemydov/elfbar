@@ -6,6 +6,9 @@ import { ReactComponent as BasketLogo } from '../img/basket.svg';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import config from 'config';
+import { ReactComponent as Del } from './img/del.svg';
+import { ReactComponent as Plus } from './img/plus.svg';
+import { ReactComponent as Minus } from './img/minus.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function BasketMenu({ orders, onUpdateOrder }) {
@@ -68,7 +71,12 @@ function BasketMenu({ orders, onUpdateOrder }) {
         <span className={s.btnLenght}>{basketOrders.length}</span>
       </button>
 
-      <Offcanvas show={show} onHide={handleClose} style={{ width: '600px' }} placement="end">
+      <Offcanvas
+        show={show}
+        onHide={handleClose}
+        style={{ width: '600px' }}
+        placement="end"
+      >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Кошик</Offcanvas.Title>
         </Offcanvas.Header>
@@ -76,10 +84,10 @@ function BasketMenu({ orders, onUpdateOrder }) {
           {basketOrders && basketOrders.length > 0 ? (
             basketOrders.map((order, index) => (
               <div key={index} className={s.orderItem}>
-                <div  className={s.contr}>
+                <div className={s.contr}>
                   <img
                     crossOrigin="anonymous"
-                    // src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`} 
+                    // src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`}
                     src={`${config.baseURL}${order.imageUrl}`}
                     alt={order.name}
                     className={s.productImage}
@@ -90,7 +98,7 @@ function BasketMenu({ orders, onUpdateOrder }) {
                   </div>
                 </div>
 
-                <div className={s.contr}>
+                <div className={s.contro}>
                   <div className={s.quantityControl}>
                     <button
                       onClick={() =>
@@ -98,23 +106,28 @@ function BasketMenu({ orders, onUpdateOrder }) {
                       }
                       disabled={order.count <= 1}
                       className={`${s.btnminus} ${s.btnControl}`}
-                    ></button>
+                    ><Minus/></button>
                     <span>{order.count}</span>
                     <button
                       onClick={() =>
                         handleQuantityChange(index, order.count + 1)
                       }
                       className={`${s.btnplus} ${s.btnControl}`}
-                    ></button>
+                    ><Plus/></button>
                   </div>
                   <p className={s.totalPrice}> {order.price} грн</p>
                 </div>
-
-                <Button
+                <button
+                  onClick={() => handleDelete(index)}
+                  className={s.btnDel}
+                >
+                  <Del />
+                </button>
+                {/* <Button
                   onClick={() => handleDelete(index)}
                   variant="danger"
                   className={s.btnDel}
-                ></Button>
+                ></Button> */}
               </div>
             ))
           ) : (
