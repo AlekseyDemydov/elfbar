@@ -23,6 +23,9 @@
     position: relative;
     width: 600px;
     height: 80px;
+    @media screen and (max-width: 480px) {
+      width: 100%;
+    }
   }
   
   .accordion-icon {
