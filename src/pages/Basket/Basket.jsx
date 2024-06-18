@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Notiflix from 'notiflix';
-// import { Button } from 'react-bootstrap'; 
+// import { Button } from 'react-bootstrap';
 import config from 'config';
 import { ReactComponent as Del } from './BasketMenu/img/del.svg';
 import { ReactComponent as Plus } from './BasketMenu/img/plus.svg';
@@ -72,13 +72,13 @@ const Basket = () => {
       Notiflix.Notify.failure('Ваш кошик порожній');
     } else {
       let orderMessage = '';
-orders.forEach(order => {
-  orderMessage += `➤<b>${order.name}</b>`;
-  if (order.flavor) {
-    orderMessage += `\n<b>Смак: ${order.flavor}</b>`;
-  }
-  orderMessage += ` - ${order.count} шт., ${order.price} грн\n`;
-});
+      orders.forEach(order => {
+        orderMessage += `➤<b>${order.name}</b>`;
+        if (order.flavor) {
+          orderMessage += `\n<b>Смак: ${order.flavor}</b>`;
+        }
+        orderMessage += ` - ${order.count} шт., ${order.price} грн\n`;
+      });
 
       axios
         .post(URI_API, {
@@ -155,37 +155,43 @@ orders.forEach(order => {
         <div>
           {orders.map((order, index) => (
             <div key={index} className={s.orderItem}>
-              <img
-                crossOrigin="anonymous"
-                // src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`} 
-                src={`${config.baseURL}${order.imageUrl}`}
-                alt={order.name}
-                className={s.productImage}
-              />
-              <div className={s.productTitle}>
-                <p className={s.productName}>{order.name}</p>
-                <p className={s.flavor}>Смак: {order.flavor}</p>
+              <div className={s.infoTitle}>
+                <img
+                  crossOrigin="anonymous"
+                  // src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`}
+                  src={`${config.baseURL}${order.imageUrl}`}
+                  alt={order.name}
+                  className={s.productImage}
+                />
+                <div className={s.productTitle}>
+                  <p className={s.productName}>{order.name}</p>
+                  <p className={s.flavor}>Смак: {order.flavor}</p>
+                </div>
               </div>
 
-              <div className={s.quantityControl}>
-                <button
-                  onClick={() => handleQuantityChange(index, order.count - 1)}
-                  disabled={order.count <= 1}
-                  className={`${s.btnminus} ${s.btnControl}`}
-                ><Minus/></button>
-                <span>{order.count}</span>
-                <button
-                  onClick={() => handleQuantityChange(index, order.count + 1)}
-                  className={`${s.btnplus} ${s.btnControl}`}
-                ><Plus/></button>
+              <div className={s.quantBtn}>
+                <div className={s.quantityControl}>
+                  <button
+                    onClick={() => handleQuantityChange(index, order.count - 1)}
+                    disabled={order.count <= 1}
+                    className={`${s.btnminus} ${s.btnControl}`}
+                  >
+                    <Minus />
+                  </button>
+                  <span>{order.count}</span>
+                  <button
+                    onClick={() => handleQuantityChange(index, order.count + 1)}
+                    className={`${s.btnplus} ${s.btnControl}`}
+                  >
+                    <Plus />
+                  </button>
+                </div>
+                <p className={s.totalPrice}> {order.price} грн</p>
               </div>
-              <p className={s.totalPrice}> {order.price} грн</p>
-              <button
-                  onClick={() => handleDelete(index)}
-                  className={s.btnDel}
-                >
-                  <Del />
-                </button>
+
+              <button onClick={() => handleDelete(index)} className={s.btnDel}>
+                <Del />
+              </button>
               {/* <Button
                 onClick={() => handleDelete(index)}
                 variant="danger"
@@ -193,7 +199,9 @@ orders.forEach(order => {
               ></Button> */}
             </div>
           ))}
-          {orders.length > 0 && <p className={s.price}>Загальна вартість: {totalPrice} грн</p>}
+          {orders.length > 0 && (
+            <p className={s.price}>Загальна вартість: {totalPrice} грн</p>
+          )}
         </div>
       </div>
 
