@@ -84,6 +84,7 @@
   @media screen and (max-width: 480px) {
     display: flex;
     flex-direction: column;
+    width: 100vw;
    }
 }
 .btnBuy{
@@ -165,6 +166,7 @@ select{
     @media screen and (max-width: 480px) {
       font-size: 18px;
       font-weight: 700;
+     
      }
   }
 }

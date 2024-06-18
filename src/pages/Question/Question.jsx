@@ -10,12 +10,9 @@ function ContextAwareToggle({ children, eventKey }) {
   const { activeEventKey } = useContext(AccordionContext);
   const [rotated, setRotated] = useState(false);
 
-  const decoratedOnClick = useAccordionButton(
-    eventKey,
-    () => {
-      setRotated(prevState => !prevState);
-    }
-  );
+  const decoratedOnClick = useAccordionButton(eventKey, () => {
+    setRotated(prevState => !prevState);
+  });
 
   const handleClick = () => {
     decoratedOnClick(); // Викликаємо функцію для зміни стану акордеону
@@ -25,7 +22,9 @@ function ContextAwareToggle({ children, eventKey }) {
 
   return (
     <div className={`accordion-button ${isCurrentEventKey ? 'active' : ''}`}>
-      <Card onClick={handleClick} className={isCurrentEventKey ? 'active' : ''}> {/* Додаємо onClick для відкриття/закриття акордеону */}
+      <Card onClick={handleClick} className={isCurrentEventKey ? 'active' : ''}>
+        {' '}
+        {/* Додаємо onClick для відкриття/закриття акордеону */}
         <Card.Header>
           {children}
           <button
@@ -54,36 +53,34 @@ function Question() {
         </ContextAwareToggle>
         <Accordion.Collapse eventKey="0">
           <Card.Body>
-            Виберіть бажаний смак, кількість та залиште заявку на сайті. Скоро
-            з вами зв'яжеться менеджер для уточнення деталей замовлення. Якщо
-            нам не вдасться зв'язатися з вами по телефону, напишемо вам в
-            Telegram або Viber.
+            Виберіть бажаний смак, кількість та залиште заявку на сайті. Скоро з
+            вами зв'яжеться менеджер для уточнення деталей замовлення. Якщо нам
+            не вдасться зв'язатися з вами по телефону, напишемо вам в Telegram
+            або Viber.
             <br /> <br />
             Також ви можете самостійно{' '}
-            <span onClick={handleClick}>
+            <span onClick={handleClick} className="ourMan">
               написати нашому менеджеру в Telegram
             </span>
           </Card.Body>
         </Accordion.Collapse>
-        
+
         <ContextAwareToggle eventKey="1">
           <span>Як довго йтиме замовлення?</span>
         </ContextAwareToggle>
         <Accordion.Collapse eventKey="1">
           <Card.Body>
             <ul>
+              <li>Замовлення оформлені до 17:00 відправляються цього ж дня</li>
+              <li>Термін доставки займає від 1 до 2 днів.</li>
               <li>
-                Замовлення оформлені до 14:00 відправляються цього ж дня
-              </li>
-              <li>Термін доставки займає від 1 до 4 днів.</li>
-              <li>
-                Доставка здійснюється кур'єрською службою «Нова Пошта» по
-                Україні
+                Доставка здійснюється кур'єрською службами «Нова Пошта» і
+                «Укрпошта» по Україні
               </li>
             </ul>
           </Card.Body>
         </Accordion.Collapse>
-        
+
         <ContextAwareToggle eventKey="2">
           <span>Що робити, якщо ELF BAR не працює?</span>
         </ContextAwareToggle>
@@ -92,25 +89,30 @@ function Question() {
             <ul>
               <li>Не панікуйте!</li>
               <li>
-                <span onClick={handleClick}>Напишіть менеджеру</span> і ми
-                вирішимо вашу проблему!
+                <span onClick={handleClick} className="ourMan">
+                  Напишіть менеджеру
+                </span>{' '}
+                і ми вирішимо вашу проблему!
               </li>
             </ul>
           </Card.Body>
         </Accordion.Collapse>
-        
+
         <ContextAwareToggle eventKey="3">
           <span>У вас оригінальний товар?</span>
         </ContextAwareToggle>
         <Accordion.Collapse eventKey="3">
           <Card.Body>
-            <img src={serf} alt="serf" className="imgAcc" />
+            <img src={serf} alt="serf" className="imgAcc" /> <br />
+            <br />У нашому магазині надано виключно оригінальний товар, який
+            легко можна перевірити за QR-кодом на офіційному сайті{' '}
+            <a href="https://www.elfbar.com/verify.html">elfbar.com</a>
             <br />
-            У нашому магазині надано виключно оригінальний товар, який легко
-            можна перевірити за QR-кодом на офіційному сайті elfbar.com
             <br />
-            <br />
-            На відео показано, як відрізнити оригінал від підробки
+            <a href="https://www.youtube.com/watch?v=qsHw_lzxJBg&ab_channel=NovaSens-%D0%92%D0%B5%D0%B9%D0%BF%D1%88%D0%BE%D0%BF%D0%B2%D0%9C%D0%B8%D0%BD%D1%81%D0%BA%D0%B5">
+              На відео
+            </a>{' '}
+            показано, як відрізнити оригінал від підробки
           </Card.Body>
         </Accordion.Collapse>
       </Accordion>

@@ -2,6 +2,7 @@
   width: 100%;
   max-width: 600px; /* Задайте ширину, яка вам підходить */
   margin: 0 auto;
+  padding: 8px 15px;
 }
 .card {
   width: 100%;
@@ -71,4 +72,13 @@
   
   .accordion-button::after {
     display: none;
+  }
+  .ourMan{
+    font-weight: 900;
+    text-decoration: underline;
+    color: #ff5100;
+    cursor: pointer;
+  }
+  .card-body{
+    padding: 8px;
   }

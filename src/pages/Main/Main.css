@@ -9,3 +9,7 @@
       color: orange !important; 
     }
   }
+  .nav-tabs{
+    display: flex;
+    justify-content: center;
+  }
