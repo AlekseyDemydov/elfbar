@@ -120,14 +120,16 @@
 }
 .btnCreate {
   position: absolute;
+  top: 20vh;
   color: #ffffff;
   background-color: #00ff15;
   font-weight: 600;
   text-transform: uppercase;
   height: 45px;
-  font-size: 14px;
-  padding-left: 30px;
-  padding-right: 30px;
+  font-size: 20px;
+  
   border: none;
+  padding: 7px 30px;
   text-decoration: none;
+  right: 70vw;
 }

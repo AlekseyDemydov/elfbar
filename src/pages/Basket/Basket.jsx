@@ -164,9 +164,14 @@ const Basket = () => {
                   className={s.productImage}
                 />
                 <div className={s.productTitle}>
-                  <p className={s.productName}>{order.name}</p>
-                  <p className={s.flavor}>Смак: {order.flavor}</p>
-                </div>
+                    <p className={s.productName}>{order.name}</p>
+                    {order.color && (
+                      <p className={s.color}>Колір: {order.color}</p>
+                    )}
+                    {order.flavor && (
+                      <p className={s.flavor}>Смак: {order.flavor}</p>
+                    )}
+                  </div>
               </div>
 
               <div className={s.quantBtn}>

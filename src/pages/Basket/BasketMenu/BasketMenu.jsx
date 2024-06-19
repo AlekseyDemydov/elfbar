@@ -94,7 +94,12 @@ function BasketMenu({ orders, onUpdateOrder }) {
                   />
                   <div className={s.productTitle}>
                     <p className={s.productName}>{order.name}</p>
-                    <p className={s.flavor}>Смак: {order.flavor}</p>
+                    {order.color && (
+                      <p className={s.color}>Колір: {order.color}</p>
+                    )}
+                    {order.flavor && (
+                      <p className={s.flavor}>Смак: {order.flavor}</p>
+                    )}
                   </div>
                 </div>
 
@@ -107,9 +112,8 @@ function BasketMenu({ orders, onUpdateOrder }) {
                       disabled={order.count <= 1}
                       className={`${s.btnminus} ${s.btnControl}`}
                     >
-                      {/* <Minus/> */}
-                      -
-                      </button>
+                      {/* <Minus/> */}-
+                    </button>
                     <span>{order.count}</span>
                     <button
                       onClick={() =>
@@ -117,9 +121,8 @@ function BasketMenu({ orders, onUpdateOrder }) {
                       }
                       className={`${s.btnplus} ${s.btnControl}`}
                     >
-                      {/* <Plus/> */}
-                      +
-                      </button>
+                      {/* <Plus/> */}+
+                    </button>
                   </div>
                   <p className={s.totalPrice}> {order.price} грн</p>
                 </div>
@@ -127,8 +130,7 @@ function BasketMenu({ orders, onUpdateOrder }) {
                   onClick={() => handleDelete(index)}
                   className={s.btnDel}
                 >
-                  {/* <Del /> */}
-                  x
+                  {/* <Del /> */}x
                 </button>
                 {/* <Button
                   onClick={() => handleDelete(index)}

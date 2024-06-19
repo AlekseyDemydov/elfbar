@@ -19,6 +19,7 @@ const AddProduct = () => {
       
     },
     flavor:"",
+    color:"",
     price: 0,
     imageUrl: "",
   });
@@ -45,6 +46,7 @@ const AddProduct = () => {
               resistance: data.description.resistance || "",
             },
             flavor: data.flavor.join('\n') || "",
+            color: data.color.join('\n') || "",
             price: data.price || 0,
             imageUrl: data.imageUrl || "",
           });
@@ -94,7 +96,8 @@ const AddProduct = () => {
 
     const productDataToSubmit = {
       ...productData,
-      flavor: productData.flavor.split('\n'), // Перетворити смак на масив рядків
+      flavor: productData.flavor.split('\n'),
+      color: productData.color.split('\n'), // Перетворити смак на масив рядків
     };
 
     try {
@@ -160,6 +163,11 @@ const AddProduct = () => {
         </label>
         <br />
         <label>
+          Колір: ❌  ✅
+          <textarea name="color" value={productData.color} onChange={handleChange} placeholder="Всі кольори треба вводити через Enter"/>
+        </label>
+        <br />
+        <label>
           Ціна:
           <input type="number" name="price" value={productData.price} onChange={handleChange} />
         </label>
@@ -183,7 +191,6 @@ const AddProduct = () => {
           <img
             crossOrigin="anonymous"
             src={`${config.baseURL}${productData.imageUrl}`}
-            // src={`${process.env.REACT_APP_API_URL}${productData.imageUrl}`}
             alt="Uploaded"
             className={styles.uploadedImage}
           />

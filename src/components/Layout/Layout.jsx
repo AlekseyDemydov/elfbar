@@ -20,6 +20,7 @@ export const Layout = () => {
         <Header />
         <div className={s.body}>
         <Outlet />
+        
           <button onClick={handleBuyClick} className={s.btnBasket}>
             <div className={s.iconWrapper}>
               <BasketLogo className={`${s.icon} ${showAdditionalButtons ? s.hidden : ''}`} />

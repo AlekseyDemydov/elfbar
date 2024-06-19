@@ -19,7 +19,7 @@ const Main = () => {
   const userEmail = localStorage.getItem('adminEmail') || '';
   const handleDelete = productId => {
     axios
-    // .delete(`${process.env.REACT_APP_API_URL}/products/${productId}`)
+      // .delete(`${process.env.REACT_APP_API_URL}/products/${productId}`)
       .delete(`${config.baseURL}/products/${productId}`)
       .then(response => {
         // console.log(response.data);
@@ -38,7 +38,7 @@ const Main = () => {
 
   useEffect(() => {
     axios
-    // .get(`${process.env.REACT_APP_API_URL}/products`)
+      // .get(`${process.env.REACT_APP_API_URL}/products`)
       .get(`${config.baseURL}/products`)
       .then(response => {
         let sortedProducts = response.data;
@@ -66,7 +66,6 @@ const Main = () => {
 
   useEffect(() => {
     axios
-    // .get(`${process.env.REACT_APP_API_URL}/products`)
       .get(`${config.baseURL}/products`)
       .then(response => {
         let sortedProducts = response.data;
@@ -78,6 +77,9 @@ const Main = () => {
         ];
 
         uniqueQuantity = uniqueQuantity.filter(quantity => quantity !== '');
+
+        // Sorting quantities in ascending order
+        uniqueQuantity.sort((a, b) => a - b);
 
         setQuantity(uniqueQuantity);
 
@@ -103,11 +105,11 @@ const Main = () => {
 
   return (
     <>
-     {userEmail === 'ivan@gmail.com' && (
-            <NavLink to="/elfbar/products/add" className={s.btnCreate}>
-              Створити
-            </NavLink>
-          )}
+      {userEmail === 'ivan@gmail.com' && (
+        <NavLink to="/elfbar/products/add" className={s.btnCreate}>
+          Створити
+        </NavLink>
+      )}
       <img src={banner} alt="banner" className={s.banner} />
 
       <div className={s.sortContainer}>
@@ -154,7 +156,6 @@ const Main = () => {
         <div className={s.listBox}>
           <List products={products} handleDelete={handleDelete} />
         </div>
-        
       </div>
     </>
   );

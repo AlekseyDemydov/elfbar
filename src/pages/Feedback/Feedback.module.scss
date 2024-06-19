@@ -1,0 +1,58 @@
+/* Feedback.module.scss */
+
+.feedbackContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .formContainer {
+    margin-bottom: 20px;
+  }
+  
+  .fileInput {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .submitButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .feedbackList {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .feedbackItem {
+    position: relative;
+    margin: 10px;
+    text-align: center;
+  }
+  
+  .image {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .deleteButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  

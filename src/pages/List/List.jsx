@@ -15,6 +15,9 @@ const List = ({ products, handleDelete }) => {
   // Стан для зберігання обраного смаку для кожного продукту
   const [selectedFlavors, setSelectedFlavors] = useState({});
 
+  // Стан для зберігання обраного кольору для кожного продукту
+  const [selectedColors, setSelectedColors] = useState({});
+
   useEffect(() => {
     const storedOrders = JSON.parse(localStorage.getItem('orders')) || [];
     setOrders(storedOrders);
@@ -36,9 +39,18 @@ const List = ({ products, handleDelete }) => {
     }));
   };
 
+  // Обробник подій для збереження обраного кольору продукту
+  const handleColorChange = (productId, color) => {
+    setSelectedColors(prevSelectedColors => ({
+      ...prevSelectedColors,
+      [productId]: color,
+    }));
+  };
+
   // Обробник події для додавання продукту в кошик
   const handleBuy = productId => {
     const selectedFlavor = selectedFlavors[productId];
+    const selectedColor = selectedColors[productId];
     const count = productCounts[productId] || 1;
     const product = products.find(prod => prod._id === productId);
 
@@ -56,9 +68,21 @@ const List = ({ products, handleDelete }) => {
       return;
     }
 
+    if (
+      product.color.length > 0 &&
+      !selectedColor &&
+      product.color[0].trim() !== ''
+    ) {
+      alert('Оберіть колір для продукту');
+      return;
+    }
+
     const existingOrders = [...orders];
     const existingOrderIndex = existingOrders.findIndex(
-      order => order.name === product.name && order.flavor === selectedFlavor
+      order =>
+        order.name === product.name &&
+        order.flavor === selectedFlavor &&
+        order.color === selectedColor
     );
 
     if (existingOrderIndex > -1) {
@@ -68,9 +92,10 @@ const List = ({ products, handleDelete }) => {
         id: product._id,
         name: product.name,
         flavor: selectedFlavor,
+        color: selectedColor,
         count: count,
         price: product.price,
-        imageUrl: product.imageUrl, // Додайте зображення продукту до об'єкту замовлення
+        imageUrl: product.imageUrl,
       };
       existingOrders.push(order);
     }
@@ -90,6 +115,7 @@ const List = ({ products, handleDelete }) => {
       <ul className={styles.list}>
         {products.map(product => {
           const selectedFlavor = selectedFlavors[product._id] || '';
+          const selectedColor = selectedColors[product._id] || '';
           const count = productCounts[product._id] || 1;
 
           return (
@@ -101,7 +127,6 @@ const List = ({ products, handleDelete }) => {
                 <div className={styles.imgBox}>
                   <img
                     crossOrigin="anonymous"
-                    // src={`${process.env.REACT_APP_API_URL}${product.imageUrl}`}
                     src={`${config.baseURL}${product.imageUrl}`}
                     alt={product.name}
                     className={styles.image}
@@ -148,27 +173,56 @@ const List = ({ products, handleDelete }) => {
 
               <div className={styles.btnDown}>
                 <div className={styles.selectBox}>
-                  {product.flavor.filter(flavor => flavor.trim() !== '').length >
-                  0 && (
-                  <select
-                    value={selectedFlavor}
-                    onChange={e =>
-                      handleFlavorChange(product._id, e.target.value)
-                    }
-                  >
-                    <option value="">Оберіть смак</option>
-                    {product.flavor.map(
-                      (flavor, index) =>
-                        flavor.trim() !== '' && (
-                          <option key={index} value={flavor}>
-                            {flavor}
-                          </option>
-                        )
-                    )}
-                  </select>
-                )}
+                  {product.flavor.filter(flavor => flavor.trim() !== '')
+                    .length > 0 && (
+                    <select
+                      value={selectedFlavor}
+                      onChange={e =>
+                        handleFlavorChange(product._id, e.target.value)
+                      }
+                    >
+                      <option value="">Оберіть смак</option>
+                      {product.flavor.map(
+                        (flavor, index) =>
+                          flavor.trim() !== '' && (
+                            <option
+                              key={index}
+                              value={flavor}
+                              disabled={flavor.startsWith('❌')}
+                            >
+                              {flavor}
+                            </option>
+                          )
+                      )}
+                    </select>
+                  )}
                 </div>
-                
+                <div className={styles.selectBox}>
+                  {product.color.filter(color => color.trim() !== '').length >
+                    0 && (
+                    <select
+                      value={selectedColor}
+                      onChange={e =>
+                        handleColorChange(product._id, e.target.value)
+                      }
+                    >
+                      <option value="">Оберіть колір</option>
+                      {product.color.map(
+                        (color, index) =>
+                          color.trim() !== '' && (
+                            <option
+                              key={index}
+                              value={color}
+                              disabled={color.startsWith('❌')}
+                            >
+                              {color}
+                            </option>
+                          )
+                      )}
+                    </select>
+                  )}
+                </div>
+
                 <div className={styles.btnBuyCount}>
                   <div className={styles.boxCount}>
                     <button
