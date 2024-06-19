@@ -3,9 +3,9 @@ import axios from 'axios';
 import Notiflix from 'notiflix';
 // import { Button } from 'react-bootstrap';
 import config from 'config';
-import { ReactComponent as Del } from './BasketMenu/img/del.svg';
-import { ReactComponent as Plus } from './BasketMenu/img/plus.svg';
-import { ReactComponent as Minus } from './BasketMenu/img/minus.svg';
+// import { ReactComponent as Del } from './BasketMenu/img/del.svg';
+// import { ReactComponent as Plus } from './BasketMenu/img/plus.svg';
+// import { ReactComponent as Minus } from './BasketMenu/img/minus.svg';
 import s from './Basket.module.scss';
 
 import CityInput from './NP/NovaPoshta';
@@ -176,21 +176,24 @@ const Basket = () => {
                     disabled={order.count <= 1}
                     className={`${s.btnminus} ${s.btnControl}`}
                   >
-                    <Minus />
+                    {/* <Minus /> */}
+                    -
                   </button>
                   <span>{order.count}</span>
                   <button
                     onClick={() => handleQuantityChange(index, order.count + 1)}
                     className={`${s.btnplus} ${s.btnControl}`}
                   >
-                    <Plus />
+                    {/* <Plus /> */}
+                    +
                   </button>
                 </div>
                 <p className={s.totalPrice}> {order.price} грн</p>
               </div>
 
               <button onClick={() => handleDelete(index)} className={s.btnDel}>
-                <Del />
+                {/* <Del /> */}
+                x
               </button>
               {/* <Button
                 onClick={() => handleDelete(index)}

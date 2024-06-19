@@ -6,9 +6,9 @@ import { ReactComponent as BasketLogo } from '../img/basket.svg';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import config from 'config';
-import { ReactComponent as Del } from './img/del.svg';
-import { ReactComponent as Plus } from './img/plus.svg';
-import { ReactComponent as Minus } from './img/minus.svg';
+// import { ReactComponent as Del } from './img/del.svg';
+// import { ReactComponent as Plus } from './img/plus.svg';
+// import { ReactComponent as Minus } from './img/minus.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function BasketMenu({ orders, onUpdateOrder }) {
@@ -106,14 +106,20 @@ function BasketMenu({ orders, onUpdateOrder }) {
                       }
                       disabled={order.count <= 1}
                       className={`${s.btnminus} ${s.btnControl}`}
-                    ><Minus/></button>
+                    >
+                      {/* <Minus/> */}
+                      -
+                      </button>
                     <span>{order.count}</span>
                     <button
                       onClick={() =>
                         handleQuantityChange(index, order.count + 1)
                       }
                       className={`${s.btnplus} ${s.btnControl}`}
-                    ><Plus/></button>
+                    >
+                      {/* <Plus/> */}
+                      +
+                      </button>
                   </div>
                   <p className={s.totalPrice}> {order.price} грн</p>
                 </div>
@@ -121,7 +127,8 @@ function BasketMenu({ orders, onUpdateOrder }) {
                   onClick={() => handleDelete(index)}
                   className={s.btnDel}
                 >
-                  <Del />
+                  {/* <Del /> */}
+                  x
                 </button>
                 {/* <Button
                   onClick={() => handleDelete(index)}
