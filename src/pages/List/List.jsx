@@ -172,7 +172,7 @@ const List = ({ products, handleDelete }) => {
               <div className={styles.price}>{product.price} грн</div>
 
               <div className={styles.btnDown}>
-                <div className={styles.selectBox}>
+                {/* <div className={styles.selectBox}> */}
                   {product.flavor.filter(flavor => flavor.trim() !== '')
                     .length > 0 && (
                     <select
@@ -196,8 +196,8 @@ const List = ({ products, handleDelete }) => {
                       )}
                     </select>
                   )}
-                </div>
-                <div className={styles.selectBox}>
+                {/* </div> */}
+                {/* <div className={styles.selectBox}> */}
                   {product.color.filter(color => color.trim() !== '').length >
                     0 && (
                     <select
@@ -221,7 +221,7 @@ const List = ({ products, handleDelete }) => {
                       )}
                     </select>
                   )}
-                </div>
+                {/* </div> */}
 
                 <div className={styles.btnBuyCount}>
                   <div className={styles.boxCount}>

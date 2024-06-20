@@ -74,6 +74,7 @@ const Main = () => {
           ...new Set(
             sortedProducts.map(product => product.description.quantity)
           ),
+          
         ];
 
         uniqueQuantity = uniqueQuantity.filter(quantity => quantity !== '');
@@ -86,9 +87,9 @@ const Main = () => {
         if (sortByQuantity) {
           sortedProducts = sortedProducts.filter(
             product => product.description.quantity === sortByQuantity
+            
           );
         }
-
         setProducts(sortedProducts);
       })
       .catch(error => {
