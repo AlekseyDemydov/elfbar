@@ -4,6 +4,7 @@ import { Layout } from './Layout/Layout';
 import  Main  from 'pages/Main/Main';
 import AddProduct from 'pages/AddProduct/AddProduct';
 import ProductDetail from 'pages/ProductDetail/ProductDetail';
+// import EditProduct from 'pages/EditProduct/EditProduct'; // Імпортуємо компонент EditProduct
 import AdminLogin from 'pages/AdminLogin/AdminLogin';
 import Basket from 'pages/Basket/Basket';
 import { Contacts } from 'pages/Contacts/Contacts';
@@ -13,7 +14,7 @@ import Question from 'pages/Question/Question';
 export const App = () => {
   return (
     <CartProvider>
-      <Routes basename="/elfbar">
+      <Routes>
         <Route path="/elfbar" element={<Layout />}>
           <Route index element={<Main />} />
           <Route path="feedback" element={<Feedback />} />
