@@ -2,7 +2,6 @@
   "name": "elfbar",
   "version": "0.1.0",
   "private": true,
-  "homepage": "elfbar-one.vercel.app",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
     "@testing-library/jest-dom": "^5.16.3",
