@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/elfbar-one.vercel.app/static/css/main.b4c433e8.css",
-    "main.js": "/elfbar-one.vercel.app/static/js/main.623d36bd.js",
-    "static/media/banner.jpg": "/elfbar-one.vercel.app/static/media/banner.97d9f61f195591db1033.jpg",
-    "static/media/logoblack.png": "/elfbar-one.vercel.app/static/media/logoblack.9ee5f9871ffa49ac6907.png",
-    "static/media/serf.png": "/elfbar-one.vercel.app/static/media/serf.1b9153c7160829e213a5.png",
-    "static/media/logowhite.png": "/elfbar-one.vercel.app/static/media/logowhite.fc6482c0cbf0b3e1f81f.png",
-    "static/media/tgblack.png": "/elfbar-one.vercel.app/static/media/tgblack.886ca92817d6f6b3c420.png",
-    "static/media/tgwhite.png": "/elfbar-one.vercel.app/static/media/tgwhite.d730acc81c69c56500a8.png",
-    "static/media/basket.svg": "/elfbar-one.vercel.app/static/media/basket.3ae6de090fe0a687be8778069cf180a7.svg",
-    "static/media/viber.svg": "/elfbar-one.vercel.app/static/media/viber.d4843a39540a27992d465ad216be735b.svg",
-    "index.html": "/elfbar-one.vercel.app/index.html",
-    "static/media/chat.svg": "/elfbar-one.vercel.app/static/media/chat.f759080d3e91adb5fe02ab08d9de22da.svg",
-    "static/media/close.svg": "/elfbar-one.vercel.app/static/media/close.9a5f2b271f45b90cd31c2ca5e9e8e789.svg",
-    "static/media/telegram.svg": "/elfbar-one.vercel.app/static/media/telegram.8967c23e7fb7c18990d690e5761758d6.svg",
-    "main.b4c433e8.css.map": "/elfbar-one.vercel.app/static/css/main.b4c433e8.css.map",
-    "main.623d36bd.js.map": "/elfbar-one.vercel.app/static/js/main.623d36bd.js.map"
+    "main.css": "/static/css/main.b4c433e8.css",
+    "main.js": "/static/js/main.44aa7455.js",
+    "static/media/banner.jpg": "/static/media/banner.97d9f61f195591db1033.jpg",
+    "static/media/logoblack.png": "/static/media/logoblack.9ee5f9871ffa49ac6907.png",
+    "static/media/serf.png": "/static/media/serf.1b9153c7160829e213a5.png",
+    "static/media/logowhite.png": "/static/media/logowhite.fc6482c0cbf0b3e1f81f.png",
+    "static/media/tgblack.png": "/static/media/tgblack.886ca92817d6f6b3c420.png",
+    "static/media/tgwhite.png": "/static/media/tgwhite.d730acc81c69c56500a8.png",
+    "static/media/basket.svg": "/static/media/basket.3ae6de090fe0a687be8778069cf180a7.svg",
+    "static/media/viber.svg": "/static/media/viber.d4843a39540a27992d465ad216be735b.svg",
+    "index.html": "/index.html",
+    "static/media/chat.svg": "/static/media/chat.f759080d3e91adb5fe02ab08d9de22da.svg",
+    "static/media/close.svg": "/static/media/close.9a5f2b271f45b90cd31c2ca5e9e8e789.svg",
+    "static/media/telegram.svg": "/static/media/telegram.8967c23e7fb7c18990d690e5761758d6.svg",
+    "main.b4c433e8.css.map": "/static/css/main.b4c433e8.css.map",
+    "main.44aa7455.js.map": "/static/js/main.44aa7455.js.map"
   },
   "entrypoints": [
     "static/css/main.b4c433e8.css",
-    "static/js/main.623d36bd.js"
+    "static/js/main.44aa7455.js"
   ]
 }
