@@ -1,16 +1,17 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "package.json",
-        "use": "@vercel/static-build",
-        "config": {
-          "distDir": "build"
-        }
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
       }
-    ],
-    "env": {
-      "NODE_VERSION": "14.x"
-    },
-    "buildCommand": "npm install && npm run build"
-  }
+    }
+  ],
+  "env": {
+    "NODE_VERSION": "14.x"
+  },
+  "buildCommand": "npm install && npm run build",
+  "cache": false
+}
