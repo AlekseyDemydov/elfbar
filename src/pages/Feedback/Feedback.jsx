@@ -107,7 +107,7 @@ export const Feedback = () => {
                 className={styles.deleteButton}
                 onClick={() => handleDelete(feedback._id)}
               >
-                Видалити зображення
+                Видалити зображення3
               </button>
             )}
           </div>
