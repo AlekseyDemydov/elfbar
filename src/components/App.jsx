@@ -8,8 +8,8 @@ import ProductDetail from 'pages/ProductDetail/ProductDetail';
 import AdminLogin from 'pages/AdminLogin/AdminLogin';
 import Basket from 'pages/Basket/Basket';
 import { Contacts } from 'pages/Contacts/Contacts';
-import { Feedback } from 'pages/Feedback/Feedback';
 import Question from 'pages/Question/Question';
+import Feedback from 'pages/Feedback/Feedback';
 
 export const App = () => {
   return (

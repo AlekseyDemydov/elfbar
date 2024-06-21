@@ -58,6 +58,10 @@
   // top: 0;
   // left: 0;
   width: 15%;
+  @media screen and (min-width: 1015px) { 
+    .quantitySelect{
+      display: none;
+    }}
 
   @media screen and (max-width: 1015px) { 
     .check{
@@ -72,7 +76,11 @@
     }
   }
 }
-
+.quantitySelect{
+  margin: 0 auto;
+  display: flex;
+  width: 400px;
+}
 .listBox{
   width: 85%;
 }

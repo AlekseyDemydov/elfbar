@@ -69,13 +69,15 @@
 }
 
 .image {
-  width: 100%;
+  width: 50%;
   height: auto;
   border-radius: 10px;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
+.inpImgUrl{
+  display: none;
+}
 .image:hover {
   transform: scale(1.05);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
@@ -84,7 +86,7 @@
 .deleteButton {
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 300px;
   padding: 5px 10px;
   background-color: #ff4c4c;
   color: white;
