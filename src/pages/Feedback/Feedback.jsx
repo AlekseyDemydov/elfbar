@@ -3,16 +3,20 @@ import axios from '../../axios';
 import config from '../../config';
 import { useForm } from 'react-hook-form';
 import Slider from 'react-slick';
-import Modal from 'react-modal'; // імпорт компоненту модального вікна
+import Modal from 'react-modal';
+import Notiflix from 'notiflix';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import styles from './Feedback.module.scss';
 
+// Встановіть елемент додатку для react-modal
+Modal.setAppElement('#root');
+
 export const Feedback = () => {
   const { register, handleSubmit, reset } = useForm();
   const [feedbacks, setFeedbacks] = useState([]);
-  const [modalIsOpen, setModalIsOpen] = useState(false); // стан для відкриття/закриття модального вікна
-  const [selectedImage, setSelectedImage] = useState(''); // для зберігання URL обраного зображення
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState('');
   const userEmail = localStorage.getItem('adminEmail') || '';
 
   useEffect(() => {
@@ -49,11 +53,11 @@ export const Feedback = () => {
         imageUrl,
       });
 
-      console.log('Відгук успішно створено:', feedbackResponse.data);
+      Notiflix.Notify.success('Відгук успішно створено:');
       setFeedbacks(prevFeedbacks => [...prevFeedbacks, feedbackResponse.data]);
       reset();
     } catch (error) {
-      console.error('Помилка при створенні відгуку:', error);
+      Notiflix.Notify.failure('Помилка при створенні відгуку', error);
     }
   };
 
@@ -83,7 +87,7 @@ export const Feedback = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 4,
     slidesToScroll: 1,
     responsive: [
       {
@@ -109,7 +113,10 @@ export const Feedback = () => {
     <div className={styles.feedbackContainer}>
       {userEmail === 'ivan@gmail.com' && (
         <form className={styles.formContainer} onSubmit={handleSubmit(onSubmit)}>
-          <input className={styles.fileInput} type="file" {...register('image')} />
+          <label className={styles.customFileUpload}>
+            <input className={styles.fileInput} type="file" {...register('image')} />
+            Оберіть файл
+          </label>
           <button className={styles.submitButton} type="submit">
             Завантажити зображення
           </button>
@@ -136,18 +143,20 @@ export const Feedback = () => {
           </div>
         ))}
       </Slider>
-      {/* Модальне вікно */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Зображення"
         className={styles.modal}
-        overlayClassName={styles.overlay}
+        overlayClassName={`${styles.overlay} ${modalIsOpen ? styles.open : ''}`}
+        closeTimeoutMS={500}
       >
         <button className={styles.closeButton} onClick={closeModal}>
           &times;
         </button>
-        <img crossOrigin="anonymous" src={selectedImage} alt="Modal" className={styles.modalImage} />
+        {selectedImage && (
+          <img crossOrigin="anonymous" src={selectedImage} alt="Modal" className={styles.modalImage} />
+        )}
       </Modal>
     </div>
   );
