@@ -144,7 +144,7 @@ const Main = () => {
           Всі
         </label>
         {quantitys.map((quantity) => (
-          <label key={quantity}>
+          <label key={quantity}  className={s.check}>
             <input
               type="checkbox"
               value={quantity}
