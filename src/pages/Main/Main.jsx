@@ -131,29 +131,43 @@ const Main = () => {
       </div>
 
       <div className={s.listContainer}>
-        <div className={s.sortQuantity}>
-          <h3>Кількість тяг:</h3>
-          <label>
+      <div className={s.sortQuantity}>
+      <h3>Кількість тяг:</h3>
+      <div className={s.checkboxGroup}>
+        <label className={s.check}>
+          <input
+            type="checkbox"
+            value=""
+            checked={sortByQuantity === ''}
+            onChange={handleSortByQuantityChange}
+          />
+          Всі
+        </label>
+        {quantitys.map((quantity) => (
+          <label key={quantity}>
             <input
               type="checkbox"
-              value=""
-              checked={sortByQuantity === ''}
+              value={quantity}
+              checked={sortByQuantity === quantity}
               onChange={handleSortByQuantityChange}
             />
-            Всі
+            {quantity}
           </label>
-          {quantitys.map(quantity => (
-            <label key={quantity}>
-              <input
-                type="checkbox"
-                value={quantity}
-                checked={sortByQuantity === quantity}
-                onChange={handleSortByQuantityChange}
-              />
-              {quantity}
-            </label>
-          ))}
-        </div>
+        ))}
+      </div>
+      <select
+        className={s.quantitySelect}
+        value={sortByQuantity}
+        onChange={handleSortByQuantityChange}
+      >
+        <option value="">Всі</option>
+        {quantitys.map((quantity) => (
+          <option key={quantity} value={quantity}>
+            {quantity}
+          </option>
+        ))}
+      </select>
+    </div>
         <div className={s.listBox}>
           <List products={products} handleDelete={handleDelete} />
         </div>
