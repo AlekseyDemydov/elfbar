@@ -42,7 +42,7 @@ function ContextAwareToggle({ children, eventKey }) {
 
 function Question() {
   const handleClick = () => {
-    window.open('https://t.me/your_manager_username', '_blank');
+    window.open('https://t.me/anatolyi_st', '_blank');
   };
 
   return (

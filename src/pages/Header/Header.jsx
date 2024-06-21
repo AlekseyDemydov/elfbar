@@ -35,8 +35,12 @@ export const Header = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  const handleClick = () => {
-    window.open('https://t.me/your_manager_username', '_blank');
+  const handleClickAdmin = () => {
+    window.open('https://t.me/anatolyi_st', '_blank');
+  };
+
+  const handleClickGrupp = () => {
+    window.open('https://t.me/soaring78', '_blank');
   };
   return (
     <Navbar
@@ -100,7 +104,7 @@ export const Header = () => {
             </Nav.Link>
           </Nav>
           <div className={s.tgBox}>
-            <div onClick={handleClick}>
+            <div onClick={handleClickAdmin}>
               <img
                 src={scrolling ? tgblack : tgwhite}
                 alt="tg"
@@ -108,7 +112,7 @@ export const Header = () => {
               />
             </div>
 
-            <button
+            <button onClick={handleClickGrupp}
               className={`${s.btnSignTG} ${scrolling ? s.scrolledBtn : ''}`}
             >
               Підписатися на Telegram
