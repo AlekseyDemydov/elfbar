@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, NavLink } from 'react-router-dom';
 import s from './ProductDetail.module.scss';
+import { useOutletContext } from 'react-router';
 import config from 'config';
 
 const ProductDetail = () => {
@@ -13,7 +14,7 @@ const ProductDetail = () => {
   const [selectedColors, setSelectedColors] = useState({});
 
   const userEmail = localStorage.getItem('adminEmail') || '';
-
+  const {  handleBuy } = useOutletContext();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -47,7 +48,7 @@ const ProductDetail = () => {
     setQuantity(quantity);
   };
 
-  const handleBuy = () => {
+  const handleBuyProduct = () => {
     const count = quantity;
     const selectedFlavorValue = selectedFlavors[product._id];
     const selectedColorValue = selectedColors[product._id];
@@ -110,6 +111,8 @@ const ProductDetail = () => {
 
     // Зберігання замовлень у локальному сховищі
     localStorage.setItem('orders', JSON.stringify(existingOrders));
+    handleBuy(existingOrders);
+
   };
 
   if (isLoading) {
@@ -233,7 +236,7 @@ const ProductDetail = () => {
               +
             </button>
           </div>
-          <button onClick={handleBuy} className={s.btnBuy}>
+          <button onClick={handleBuyProduct} className={s.btnBuy}>
             Купити
           </button>
         </div>

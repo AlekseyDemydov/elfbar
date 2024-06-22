@@ -1,10 +1,10 @@
+import React from 'react';
 import { CartProvider } from 'react-use-cart';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Layout } from './Layout/Layout';
-import  Main  from 'pages/Main/Main';
+import Main from 'pages/Main/Main';
 import AddProduct from 'pages/AddProduct/AddProduct';
 import ProductDetail from 'pages/ProductDetail/ProductDetail';
-// import EditProduct from 'pages/EditProduct/EditProduct'; // Імпортуємо компонент EditProduct
 import AdminLogin from 'pages/AdminLogin/AdminLogin';
 import Basket from 'pages/Basket/Basket';
 import { Contacts } from 'pages/Contacts/Contacts';
@@ -24,7 +24,7 @@ export const App = () => {
           <Route path="basket" element={<Basket />} />
           <Route path="products/add" element={<AddProduct />} />
           <Route path="products/:id" element={<ProductDetail />} />
-          <Route path="products/:id/edit" element={<AddProduct />} /> {/* Додаємо маршрут для EditProduct */}
+          <Route path="products/:id/edit" element={<AddProduct />} /> 
         </Route>
         <Route path="*" element={<Navigate to="/elfbar" replace />} />
       </Routes>

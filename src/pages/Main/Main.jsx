@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useOutletContext } from 'react-router';
 import axios from '../../axios';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
@@ -17,12 +18,13 @@ const Main = () => {
   const [sortByType, setSortByType] = useState('');
   const [error, setError] = useState(null);
   const userEmail = localStorage.getItem('adminEmail') || '';
+
+  const {  handleBuy } = useOutletContext();
+
   const handleDelete = productId => {
     axios
-      // .delete(`${process.env.REACT_APP_API_URL}/products/${productId}`)
       .delete(`${config.baseURL}/products/${productId}`)
       .then(response => {
-        // console.log(response.data);
         setProducts(prevProducts =>
           prevProducts.filter(product => product._id !== productId)
         );
@@ -38,7 +40,6 @@ const Main = () => {
 
   useEffect(() => {
     axios
-      // .get(`${process.env.REACT_APP_API_URL}/products`)
       .get(`${config.baseURL}/products`)
       .then(response => {
         let sortedProducts = response.data;
@@ -79,7 +80,6 @@ const Main = () => {
 
         uniqueQuantity = uniqueQuantity.filter(quantity => quantity !== '');
 
-        // Sorting quantities in ascending order
         uniqueQuantity.sort((a, b) => a - b);
 
         setQuantity(uniqueQuantity);
@@ -131,45 +131,45 @@ const Main = () => {
       </div>
 
       <div className={s.listContainer}>
-      <div className={s.sortQuantity}>
-      <h3>Кількість тяг:</h3>
-      <div className={s.checkboxGroup}>
-        <label className={s.check}>
-          <input
-            type="checkbox"
-            value=""
-            checked={sortByQuantity === ''}
+        <div className={s.sortQuantity}>
+          <h3>Кількість тяг:</h3>
+          <div className={s.checkboxGroup}>
+            <label className={s.check}>
+              <input
+                type="checkbox"
+                value=""
+                checked={sortByQuantity === ''}
+                onChange={handleSortByQuantityChange}
+              />
+              Всі
+            </label>
+            {quantitys.map((quantity) => (
+              <label key={quantity} className={s.check}>
+                <input
+                  type="checkbox"
+                  value={quantity}
+                  checked={sortByQuantity === quantity}
+                  onChange={handleSortByQuantityChange}
+                />
+                {quantity}
+              </label>
+            ))}
+          </div>
+          <select
+            className={s.quantitySelect}
+            value={sortByQuantity}
             onChange={handleSortByQuantityChange}
-          />
-          Всі
-        </label>
-        {quantitys.map((quantity) => (
-          <label key={quantity}  className={s.check}>
-            <input
-              type="checkbox"
-              value={quantity}
-              checked={sortByQuantity === quantity}
-              onChange={handleSortByQuantityChange}
-            />
-            {quantity}
-          </label>
-        ))}
-      </div>
-      <select
-        className={s.quantitySelect}
-        value={sortByQuantity}
-        onChange={handleSortByQuantityChange}
-      >
-        <option value="">Всі</option>
-        {quantitys.map((quantity) => (
-          <option key={quantity} value={quantity}>
-            {quantity}
-          </option>
-        ))}
-      </select>
-    </div>
+          >
+            <option value="">Всі</option>
+            {quantitys.map((quantity) => (
+              <option key={quantity} value={quantity}>
+                {quantity}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className={s.listBox}>
-          <List products={products} handleDelete={handleDelete} />
+          <List products={products} handleDelete={handleDelete} handleBuy={handleBuy} />
         </div>
       </div>
     </>

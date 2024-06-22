@@ -139,14 +139,19 @@ select{
   cursor: pointer;
   padding: 2px 30px 2px 10px;
   border-radius: 5px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+ 
   appearance: none;
+  @media screen and (max-width: 480px) {
+    width: 230px;
+   }
 }
 .btnBuyCount{
   margin-top: 8px;
   display: flex;
   justify-content: space-between;
+  @media screen and (max-width: 480px) {
+    width: 230px;
+   }
 }
 .btnCor{
   color: #ffffff;
@@ -158,6 +163,9 @@ select{
     padding-left: 30px;
     padding-right: 30px;
     border: none;
+    @media screen and (max-width: 480px) {
+      width: 200px;
+     }
 }
 .prodInfo{
   margin-left: 20px;

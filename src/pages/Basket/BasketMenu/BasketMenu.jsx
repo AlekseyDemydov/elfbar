@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import s from './BasketMenu.module.scss';
 import { ReactComponent as BasketLogo } from '../img/basket.svg';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom'; // Додав useLocation з react-router-dom
 import axios from 'axios';
 import config from 'config';
 // import { ReactComponent as Del } from './img/del.svg';
@@ -15,16 +15,15 @@ function BasketMenu({ orders, onUpdateOrder }) {
   const [show, setShow] = useState(false);
   const [basketOrders, setBasketOrders] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [productsDetails, setProductsDetails] = useState([]); // Поправив тут назву стейту
+  const [productsDetails, setProductsDetails] = useState([]);
+  const location = useLocation(); // Отримання поточного маршруту
   console.log(productsDetails);
-
   useEffect(() => {
     const fetchProductsDetails = async () => {
       try {
-        // const response = await axios.get(`${process.env.REACT_APP_API_URL}/products`);
         const response = await axios.get(`${config.baseURL}/products`);
         const productsDetails = response.data;
-        setProductsDetails(productsDetails); // Поправив тут також
+        setProductsDetails(productsDetails);
       } catch (error) {
         console.error('Помилка при отриманні деталей продуктів:', error);
       }
@@ -48,7 +47,7 @@ function BasketMenu({ orders, onUpdateOrder }) {
     setShow(true);
   };
 
-  const handleDelete = index => {
+  const handleDelete = (index) => {
     const updatedOrders = [...basketOrders];
     updatedOrders.splice(index, 1);
     setBasketOrders(updatedOrders);
@@ -64,19 +63,17 @@ function BasketMenu({ orders, onUpdateOrder }) {
     localStorage.setItem('orders', JSON.stringify(updatedOrders));
   };
 
+  const isBasketRoute = location.pathname === '/elfbar/basket';
+
   return (
     <>
-      <button onClick={handleBuyClick} className={s.btnBasket}>
-        <BasketLogo className={s.imgBasket} />
-        <span className={s.btnLenght}>{basketOrders.length}</span>
-      </button>
-
-      <Offcanvas
-        show={show}
-        onHide={handleClose}
-        style={{ width: '600px' }}
-        placement="end"
-      >
+      {!isBasketRoute && (
+        <button onClick={handleBuyClick} className={s.btnBasket}>
+          <BasketLogo className={s.imgBasket} />
+          <span className={s.btnLenght}>{basketOrders.length}</span>
+        </button>
+      )}
+      <Offcanvas show={show} onHide={handleClose} style={{ width: '600px' }} placement="end">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Кошик</Offcanvas.Title>
         </Offcanvas.Header>
@@ -87,56 +84,32 @@ function BasketMenu({ orders, onUpdateOrder }) {
                 <div className={s.contr}>
                   <img
                     crossOrigin="anonymous"
-                    // src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`}
                     src={`${config.baseURL}${order.imageUrl}`}
                     alt={order.name}
                     className={s.productImage}
                   />
                   <div className={s.productTitle}>
                     <p className={s.productName}>{order.name}</p>
-                    {order.color && (
-                      <p className={s.color}>Колір: {order.color}</p>
-                    )}
-                    {order.flavor && (
-                      <p className={s.flavor}>Смак: {order.flavor}</p>
-                    )}
+                    {order.color && <p className={s.color}>Колір: {order.color}</p>}
+                    {order.flavor && <p className={s.flavor}>Смак: {order.flavor}</p>}
                   </div>
                 </div>
 
                 <div className={s.contro}>
                   <div className={s.quantityControl}>
-                    <button
-                      onClick={() =>
-                        handleQuantityChange(index, order.count - 1)
-                      }
-                      disabled={order.count <= 1}
-                      className={`${s.btnminus} ${s.btnControl}`}
-                    >
-                      {/* <Minus/> */}-
+                    <button onClick={() => handleQuantityChange(index, order.count - 1)} disabled={order.count <= 1} className={`${s.btnminus} ${s.btnControl}`}>
+                      -
                     </button>
                     <span>{order.count}</span>
-                    <button
-                      onClick={() =>
-                        handleQuantityChange(index, order.count + 1)
-                      }
-                      className={`${s.btnplus} ${s.btnControl}`}
-                    >
-                      {/* <Plus/> */}+
+                    <button onClick={() => handleQuantityChange(index, order.count + 1)} className={`${s.btnplus} ${s.btnControl}`}>
+                      +
                     </button>
                   </div>
                   <p className={s.totalPrice}> {order.price} грн</p>
                 </div>
-                <button
-                  onClick={() => handleDelete(index)}
-                  className={s.btnDel}
-                >
-                  {/* <Del /> */}x
+                <button onClick={() => handleDelete(index)} className={s.btnDel}>
+                  x
                 </button>
-                {/* <Button
-                  onClick={() => handleDelete(index)}
-                  variant="danger"
-                  className={s.btnDel}
-                ></Button> */}
               </div>
             ))
           ) : (

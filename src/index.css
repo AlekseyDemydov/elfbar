@@ -9,6 +9,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: rgb(235, 232, 232);
   font-family: "Jura", sans-serif;
+  background-color: white;
 }
 
 code {

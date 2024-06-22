@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './List.module.scss';
-import BasketMenu from 'pages/Basket/BasketMenu/BasketMenu';
 import config from 'config';
 
-const List = ({ products, handleDelete }) => {
+const List = ({ products, handleDelete, handleBuy }) => {
   const [error, setError] = useState(null);
-  const [orders, setOrders] = useState([]);
   const userEmail = localStorage.getItem('adminEmail') || '';
 
   // Стан для зберігання кількості кожного продукту
@@ -17,11 +15,6 @@ const List = ({ products, handleDelete }) => {
 
   // Стан для зберігання обраного кольору для кожного продукту
   const [selectedColors, setSelectedColors] = useState({});
-
-  useEffect(() => {
-    const storedOrders = JSON.parse(localStorage.getItem('orders')) || [];
-    setOrders(storedOrders);
-  }, []);
 
   // Обробник подій для збереження кількості продукту
   const handleQuantityChange = (productId, quantity) => {
@@ -48,7 +41,7 @@ const List = ({ products, handleDelete }) => {
   };
 
   // Обробник події для додавання продукту в кошик
-  const handleBuy = productId => {
+  const handleBuyProduct = productId => {
     const selectedFlavor = selectedFlavors[productId];
     const selectedColor = selectedColors[productId];
     const count = productCounts[productId] || 1;
@@ -77,7 +70,7 @@ const List = ({ products, handleDelete }) => {
       return;
     }
 
-    const existingOrders = [...orders];
+    const existingOrders = JSON.parse(localStorage.getItem('orders')) || [];
     const existingOrderIndex = existingOrders.findIndex(
       order =>
         order.name === product.name &&
@@ -100,8 +93,7 @@ const List = ({ products, handleDelete }) => {
       existingOrders.push(order);
     }
 
-    localStorage.setItem('orders', JSON.stringify(existingOrders));
-    setOrders(existingOrders);
+    handleBuy(existingOrders);
   };
 
   // Перевірка наявності помилки
@@ -135,7 +127,7 @@ const List = ({ products, handleDelete }) => {
 
                 <div className={styles.description}>
                   <div className={styles.title}>{product.name}</div>
-                  <ul>
+                  <ul className={styles.listDescr}>
                     {product.description.quantity && (
                       <li className={styles.listDesc}>
                         ✔Кількість тяг: {product.description.quantity}
@@ -196,8 +188,7 @@ const List = ({ products, handleDelete }) => {
                       )}
                     </select>
                   )}
-                {/* </div> */}
-                {/* <div className={styles.selectBox}> */}
+               
                   {product.color.filter(color => color.trim() !== '').length >
                     0 && (
                     <select
@@ -221,7 +212,7 @@ const List = ({ products, handleDelete }) => {
                       )}
                     </select>
                   )}
-                {/* </div> */}
+                
 
                 <div className={styles.btnBuyCount}>
                   <div className={styles.boxCount}>
@@ -256,7 +247,7 @@ const List = ({ products, handleDelete }) => {
                     </button>
                   </div>
                   <button
-                    onClick={() => handleBuy(product._id)}
+                    onClick={() => handleBuyProduct(product._id)}
                     className={styles.btnBuy}
                   >
                     купити
@@ -275,9 +266,6 @@ const List = ({ products, handleDelete }) => {
           );
         })}
       </ul>
-      {orders.length > 0 && (
-        <BasketMenu orders={orders} onUpdateOrder={setOrders} />
-      )}
     </div>
   );
 };
