@@ -102,6 +102,7 @@
     justify-content: center;
 
     .btnControl {
+      padding: 7px;
       background-color: transparent;
       border: 1px solid #454546;
       color: #454546;
@@ -209,11 +210,11 @@
 }
 
 .btnDel {
-  content: 'x';
   background-color: transparent;
   border: 1px solid #dc3545;
   color: #dc3545;
   cursor: pointer;
+  padding: 7px;
   border-radius: 50%;
   width: 25px;
   height: 25px;
