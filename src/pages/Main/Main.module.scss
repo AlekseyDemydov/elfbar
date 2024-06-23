@@ -2,13 +2,22 @@
 
 
 
-
 .banner {
-  width: 100%;
+  width: 100%; /* Змінено з 100vw на 100% для повної ширини екрана */
   height: auto;
+  position: relative;
+  left: 0;
+}
+
+@media screen and (max-width: 480px) {
+  .banner {
+    /* Ліве зміщення відсутнє на малих екранах */
+    left: 0;
+  }
 }
 
 .sortContainer {
+ 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -33,12 +42,13 @@
   margin-top: 20px;
   position: relative;
   display: flex;
+  padding: 0px 45px 0 45px;
   @media screen and (max-width: 1015px) { 
     display: flex;
     align-items: center;
     flex-direction: column;
     margin: 0 auto;
-    
+    padding: 0px 5px 0 5px;
   }
 }
 .sortType {
@@ -138,7 +148,7 @@
   text-transform: uppercase;
   height: 45px;
   font-size: 20px;
-  
+  z-index: 10;
   border: none;
   padding: 7px 30px;
   text-decoration: none;
