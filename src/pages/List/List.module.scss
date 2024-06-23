@@ -21,7 +21,7 @@
       grid-template-columns: repeat(2, 1fr);
     }
     @media screen and (max-width: 480px) {
-      grid-template-columns: repeat(1, 1fr);
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
@@ -70,13 +70,26 @@
 .title {
   font-weight: 700;
   font-size: 18px;
+  @media screen and (max-width: 480px) {
+    font-size: 12px;
+   
+    }
 }
 .image {
-  width: 100%;
+  width: 345px;
+  @media screen and (max-width: 480px) {
+    width: 100%;
+   
+    }
 }
 .description {
   padding: 0 30px;
   height: 180px;
+  @media screen and (max-width: 480px) {
+  height: 150px;
+  padding: 0;
+ 
+  }
 }
 .listDesc {
   list-style: none;
@@ -85,6 +98,10 @@
   font-size: 14px;
   line-height: 1.55;
   word-break: break-word;
+  @media screen and (max-width: 480px) {
+    font-size: 11px;
+   
+    }
 }
 .btnBuy {
   color: #ffffff;
@@ -160,7 +177,7 @@ select {
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
- 
+  align-items: center;
 }
 .btnDelete {
   position: absolute;
@@ -181,6 +198,9 @@ select {
 }
 .imgBox{
   height: 355px;
+  @media screen and (max-width: 480px) {
+    height: 160px;
+  }
 }
 .selectBox{
   height: 40px;
@@ -191,10 +211,11 @@ select {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  width: 100%;
   @media screen and (max-width: 480px) {
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    
   }
 }
 .listDescr{

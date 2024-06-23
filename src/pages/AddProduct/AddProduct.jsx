@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from "../../axios";
 import { useNavigate } from "react-router-dom";
 import styles from "./AddProduct.module.scss"; // Шлях до файлу стилів
-import config from '../../config'
+import config from '../../config';
 
 const AddProduct = () => {
   const { id } = useParams();
@@ -14,14 +14,13 @@ const AddProduct = () => {
       strength: "",
       type: "",
       charging: "",
-      volume:"",
-      resistance:""
-      
+      volume: "",
+      resistance: ""
     },
-    flavor:"",
-    color:"",
+    flavor: "",
+    color: "",
     price: 0,
-    imageUrl: "",
+    imageUrl: ""
   });
 
   const [isLoading, setLoading] = useState(false);
@@ -32,7 +31,6 @@ const AddProduct = () => {
     if (id) {
       const fetchData = async () => {
         try {
-          // const response = await axios.get(`${process.env.REACT_APP_API_URL}/products/${id}`);
           const response = await axios.get(`${config.baseURL}/products/${id}`);
           const { data } = response;
           setProductData({
@@ -43,12 +41,12 @@ const AddProduct = () => {
               type: data.description.type || "",
               charging: data.description.charging || "",
               volume: data.description.volume || "",
-              resistance: data.description.resistance || "",
+              resistance: data.description.resistance.join('\n') || ""
             },
             flavor: data.flavor.join('\n') || "",
             color: data.color.join('\n') || "",
             price: data.price || 0,
-            imageUrl: data.imageUrl || "",
+            imageUrl: data.imageUrl || ""
           });
         } catch (error) {
           console.error("Error fetching default product data:", error);
@@ -88,25 +86,21 @@ const AddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Перевірка, чи є значення в полі "Тип" (type)
-    // if (!productData.type || !productData.type.trim()) {
-    //   alert("Будь ласка, введіть тип продукту");
-    //   return;
-    // }
-
     const productDataToSubmit = {
       ...productData,
       flavor: productData.flavor.split('\n'),
-      color: productData.color.split('\n'), // Перетворити смак на масив рядків
+      color: productData.color.split('\n'),
+      description: {
+        ...productData.description,
+        resistance: productData.description.resistance.split('\n')
+      }
     };
 
     try {
       setLoading(true);
       if (id) {
-        // await axios.put(`${process.env.REACT_APP_API_URL}/products/${id}`, productDataToSubmit);
         await axios.put(`${config.baseURL}/products/${id}`, productDataToSubmit);
       } else {
-        // await axios.post(`${process.env.REACT_APP_API_URL}/products`, productDataToSubmit);
         await axios.post(`${config.baseURL}/products`, productDataToSubmit);
       }
       navigate("/elfbar");
@@ -129,7 +123,7 @@ const AddProduct = () => {
         <br />
         <label>
           Кількість тяг:
-          <input type="text" name="description.quantity" value={productData.description.quantity} onChange={handleChange} placeholder="тільки число"/>
+          <input type="text" name="description.quantity" value={productData.description.quantity} onChange={handleChange} placeholder="тільки число" />
         </label>
         <br />
         <label>
@@ -139,7 +133,7 @@ const AddProduct = () => {
         <br />
         <label>
           Тип:
-          <input type="text" name="description.type" value={productData.description.type} onChange={handleChange} placeholder="тип писати обов'яково перша літера велика"/>
+          <input type="text" name="description.type" value={productData.description.type} onChange={handleChange} placeholder="тип писати обов'язково перша літера велика" />
         </label>
         <br />
         <label>
@@ -149,7 +143,7 @@ const AddProduct = () => {
         <br />
         <label>
           Опір:
-          <input type="text" name="description.resistance" value={productData.description.resistance} onChange={handleChange} />
+          <textarea name="description.resistance" value={productData.description.resistance} onChange={handleChange} placeholder="Всі опори треба вводити через Enter" />
         </label>
         <br />
         <label>
@@ -159,12 +153,12 @@ const AddProduct = () => {
         <br />
         <label>
           Смак: ❌  ✅
-          <textarea name="flavor" value={productData.flavor} onChange={handleChange} placeholder="Всі смаки треба вводити через Enter"/>
+          <textarea name="flavor" value={productData.flavor} onChange={handleChange} placeholder="Всі смаки треба вводити через Enter" />
         </label>
         <br />
         <label>
           Колір: ❌  ✅
-          <textarea name="color" value={productData.color} onChange={handleChange} placeholder="Всі кольори треба вводити через Enter"/>
+          <textarea name="color" value={productData.color} onChange={handleChange} placeholder="Всі кольори треба вводити через Enter" />
         </label>
         <br />
         <label>

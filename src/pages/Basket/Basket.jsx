@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Notiflix from 'notiflix';
-// import { Button } from 'react-bootstrap';
 import config from 'config';
-// import { ReactComponent as Del } from './BasketMenu/img/del.svg';
-// import { ReactComponent as Plus } from './BasketMenu/img/plus.svg';
-// import { ReactComponent as Minus } from './BasketMenu/img/minus.svg';
 import s from './Basket.module.scss';
 
 import CityInput from './NP/NovaPoshta';
@@ -15,12 +11,11 @@ const Basket = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [message, setMessage] = useState('');
   const [phone, setPhone] = useState('+380');
-  const [selectedCity, setSelectedCity] = useState(null); // Додали стани для зберігання вибраних значень
+  const [selectedCity, setSelectedCity] = useState(null);
   const [selectedStreet, setSelectedStreet] = useState(null);
   const [selectedHouseNumber, setSelectedHouseNumber] = useState(null);
   const [selectedWarehouse, setSelectedWarehouse] = useState(null);
   const [receiverName, setReceiverName] = useState('');
-  // console.log(selectedWarehouse.Description);
 
   useEffect(() => {
     const ordersFromStorage = localStorage.getItem('orders');
@@ -77,6 +72,12 @@ const Basket = () => {
         if (order.flavor) {
           orderMessage += `\n<b>Смак: ${order.flavor}</b>`;
         }
+        if (order.color) {
+          orderMessage += `\n<b>Колір: ${order.color}</b>`;
+        }
+        if (order.resistance) {
+          orderMessage += `\n<b>Опір: ${order.resistance}</b>`;
+        }
         orderMessage += ` - ${order.count} шт., ${order.price} грн\n`;
       });
 
@@ -119,23 +120,19 @@ const Basket = () => {
         });
     }
   };
+
   const handlePhoneChange = event => {
     let inputPhone = event.target.value.trim();
-
-    // Вилучення всіх нецифрових символів з введеного номеру
     let formattedPhone = inputPhone.replace(/\D/g, '');
 
-    // Перевірка і додавання префіксу "+380", якщо його немає
     if (!formattedPhone.startsWith('+380')) {
-      formattedPhone = '+380' + formattedPhone.substring(3); // Відкидаємо перші 3 символи
+      formattedPhone = '+380' + formattedPhone.substring(3);
     }
 
-    // Обмеження довжини номера телефону до 13 символів
     if (formattedPhone.length > 13) {
       formattedPhone = formattedPhone.slice(0, 13);
     }
 
-    // Форматування телефону у вигляді "(99) 999-99-99"
     if (formattedPhone.length > 3) {
       formattedPhone = formattedPhone.replace(
         /^380(\d{2})(\d{3})(\d{2})(\d{2})$/,
@@ -143,7 +140,6 @@ const Basket = () => {
       );
     }
 
-    // Встановлення форматованого номера телефону у стан компоненту
     setPhone(formattedPhone);
   };
 
@@ -158,20 +154,16 @@ const Basket = () => {
               <div className={s.infoTitle}>
                 <img
                   crossOrigin="anonymous"
-                  // src={`${process.env.REACT_APP_API_URL}${order.imageUrl}`}
                   src={`${config.baseURL}${order.imageUrl}`}
                   alt={order.name}
                   className={s.productImage}
                 />
                 <div className={s.productTitle}>
-                    <p className={s.productName}>{order.name}</p>
-                    {order.color && (
-                      <p className={s.color}>Колір: {order.color}</p>
-                    )}
-                    {order.flavor && (
-                      <p className={s.flavor}>Смак: {order.flavor}</p>
-                    )}
-                  </div>
+                  <p className={s.productName}>{order.name}</p>
+                  {order.color && <p className={s.color}>Колір: {order.color}</p>}
+                  {order.flavor && <p className={s.flavor}>Смак: {order.flavor}</p>}
+                  {order.resistance && <p className={s.resistance}>Опір: {order.resistance}</p>}
+                </div>
               </div>
 
               <div className={s.quantBtn}>
@@ -181,7 +173,6 @@ const Basket = () => {
                     disabled={order.count <= 1}
                     className={`${s.btnminus} ${s.btnControl}`}
                   >
-                    {/* <Minus /> */}
                     -
                   </button>
                   <span>{order.count}</span>
@@ -189,7 +180,6 @@ const Basket = () => {
                     onClick={() => handleQuantityChange(index, order.count + 1)}
                     className={`${s.btnplus} ${s.btnControl}`}
                   >
-                    {/* <Plus /> */}
                     +
                   </button>
                 </div>
@@ -197,14 +187,8 @@ const Basket = () => {
               </div>
 
               <button onClick={() => handleDelete(index)} className={s.btnDel}>
-                {/* <Del /> */}
                 x
               </button>
-              {/* <Button
-                onClick={() => handleDelete(index)}
-                variant="danger"
-                className={s.btnDel}
-              ></Button> */}
             </div>
           ))}
           {orders.length > 0 && (

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import styles from './List.module.scss';
 import config from 'config';
 
@@ -10,11 +11,10 @@ const List = ({ products, handleDelete, handleBuy }) => {
   // Стан для зберігання кількості кожного продукту
   const [productCounts, setProductCounts] = useState({});
 
-  // Стан для зберігання обраного смаку для кожного продукту
+  // Стан для зберігання обраного смаку, кольору та опору для кожного продукту
   const [selectedFlavors, setSelectedFlavors] = useState({});
-
-  // Стан для зберігання обраного кольору для кожного продукту
   const [selectedColors, setSelectedColors] = useState({});
+  const [selectedResistances, setSelectedResistances] = useState({});
 
   // Обробник подій для збереження кількості продукту
   const handleQuantityChange = (productId, quantity) => {
@@ -40,10 +40,19 @@ const List = ({ products, handleDelete, handleBuy }) => {
     }));
   };
 
+  // Обробник подій для збереження обраного опору продукту
+  const handleResistanceChange = (productId, resistance) => {
+    setSelectedResistances(prevSelectedResistances => ({
+      ...prevSelectedResistances,
+      [productId]: resistance,
+    }));
+  };
+
   // Обробник події для додавання продукту в кошик
   const handleBuyProduct = productId => {
     const selectedFlavor = selectedFlavors[productId];
     const selectedColor = selectedColors[productId];
+    const selectedResistance = selectedResistances[productId];
     const count = productCounts[productId] || 1;
     const product = products.find(prod => prod._id === productId);
 
@@ -70,12 +79,23 @@ const List = ({ products, handleDelete, handleBuy }) => {
       return;
     }
 
+    if (
+      product.description.resistance &&
+      product.description.resistance.length > 0 &&
+      !selectedResistance &&
+      product.description.resistance[0].trim() !== ''
+    ) {
+      alert('Оберіть опір для продукту');
+      return;
+    }
+
     const existingOrders = JSON.parse(localStorage.getItem('orders')) || [];
     const existingOrderIndex = existingOrders.findIndex(
       order =>
         order.name === product.name &&
         order.flavor === selectedFlavor &&
-        order.color === selectedColor
+        order.color === selectedColor &&
+        order.resistance === selectedResistance
     );
 
     if (existingOrderIndex > -1) {
@@ -86,6 +106,7 @@ const List = ({ products, handleDelete, handleBuy }) => {
         name: product.name,
         flavor: selectedFlavor,
         color: selectedColor,
+        resistance: selectedResistance,
         count: count,
         price: product.price,
         imageUrl: product.imageUrl,
@@ -108,6 +129,7 @@ const List = ({ products, handleDelete, handleBuy }) => {
         {products.map(product => {
           const selectedFlavor = selectedFlavors[product._id] || '';
           const selectedColor = selectedColors[product._id] || '';
+          const selectedResistance = selectedResistances[product._id] || '';
           const count = productCounts[product._id] || 1;
 
           return (
@@ -155,7 +177,7 @@ const List = ({ products, handleDelete, handleBuy }) => {
                     )}
                     {product.description.resistance && (
                       <li className={styles.listDesc}>
-                        ✔Опір: {product.description.resistance}
+                        ✔Опір: {product.description.resistance.join(', ')}
                       </li>
                     )}
                   </ul>
@@ -164,55 +186,77 @@ const List = ({ products, handleDelete, handleBuy }) => {
               <div className={styles.price}>{product.price} грн</div>
 
               <div className={styles.btnDown}>
-                {/* <div className={styles.selectBox}> */}
-                  {product.flavor.filter(flavor => flavor.trim() !== '')
+                {product.flavor.filter(flavor => flavor.trim() !== '')
+                  .length > 0 && (
+                  <select
+                    value={selectedFlavor}
+                    onChange={e =>
+                      handleFlavorChange(product._id, e.target.value)
+                    }
+                  >
+                    <option value="">Оберіть смак</option>
+                    {product.flavor.map(
+                      (flavor, index) =>
+                        flavor.trim() !== '' && (
+                          <option
+                            key={index}
+                            value={flavor}
+                            disabled={flavor.startsWith('❌')}
+                          >
+                            {flavor}
+                          </option>
+                        )
+                    )}
+                  </select>
+                )}
+
+                {product.color.filter(color => color.trim() !== '').length > 0 && (
+                  <select
+                    value={selectedColor}
+                    onChange={e =>
+                      handleColorChange(product._id, e.target.value)
+                    }
+                  >
+                    <option value="">Оберіть колір</option>
+                    {product.color.map(
+                      (color, index) =>
+                        color.trim() !== '' && (
+                          <option
+                            key={index}
+                            value={color}
+                            disabled={color.startsWith('❌')}
+                          >
+                            {color}
+                          </option>
+                        )
+                    )}
+                  </select>
+                )}
+
+                {product.description.resistance &&
+                  product.description.resistance.filter(resistance => resistance.trim() !== '')
                     .length > 0 && (
-                    <select
-                      value={selectedFlavor}
-                      onChange={e =>
-                        handleFlavorChange(product._id, e.target.value)
-                      }
-                    >
-                      <option value="">Оберіть смак</option>
-                      {product.flavor.map(
-                        (flavor, index) =>
-                          flavor.trim() !== '' && (
-                            <option
-                              key={index}
-                              value={flavor}
-                              disabled={flavor.startsWith('❌')}
-                            >
-                              {flavor}
-                            </option>
-                          )
-                      )}
-                    </select>
-                  )}
-               
-                  {product.color.filter(color => color.trim() !== '').length >
-                    0 && (
-                    <select
-                      value={selectedColor}
-                      onChange={e =>
-                        handleColorChange(product._id, e.target.value)
-                      }
-                    >
-                      <option value="">Оберіть колір</option>
-                      {product.color.map(
-                        (color, index) =>
-                          color.trim() !== '' && (
-                            <option
-                              key={index}
-                              value={color}
-                              disabled={color.startsWith('❌')}
-                            >
-                              {color}
-                            </option>
-                          )
-                      )}
-                    </select>
-                  )}
-                
+                  <select
+                    value={selectedResistance}
+                    onChange={e =>
+                      handleResistanceChange(product._id, e.target.value)
+                    }
+                  >
+                    <option value="">Оберіть опір</option>
+                    {product.description.resistance.map(
+                      (resistance, index) =>
+                        resistance.trim() !== '' && (
+                          <option
+                            key={index}
+                            value={resistance}
+                            disabled={resistance.startsWith('❌')}
+                          >
+                            {resistance}
+                          </option>
+                        )
+                    )}
+                  </select>
+                )}
 
                 <div className={styles.btnBuyCount}>
                   <div className={styles.boxCount}>
@@ -268,6 +312,29 @@ const List = ({ products, handleDelete, handleBuy }) => {
       </ul>
     </div>
   );
+};
+
+List.propTypes = {
+  products: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+      imageUrl: PropTypes.string.isRequired,
+      description: PropTypes.shape({
+        quantity: PropTypes.string,
+        strength: PropTypes.string,
+        type: PropTypes.string,
+        charging: PropTypes.string,
+        volume: PropTypes.string,
+        resistance: PropTypes.arrayOf(PropTypes.string),
+      }).isRequired,
+      flavor: PropTypes.arrayOf(PropTypes.string),
+      color: PropTypes.arrayOf(PropTypes.string),
+    })
+  ).isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  handleBuy: PropTypes.func.isRequired,
 };
 
 export default List;

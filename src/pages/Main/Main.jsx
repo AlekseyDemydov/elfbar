@@ -19,7 +19,7 @@ const Main = () => {
   const [error, setError] = useState(null);
   const userEmail = localStorage.getItem('adminEmail') || '';
 
-  const {  handleBuy } = useOutletContext();
+  const { handleBuy } = useOutletContext();
 
   const handleDelete = productId => {
     axios
@@ -75,7 +75,6 @@ const Main = () => {
           ...new Set(
             sortedProducts.map(product => product.description.quantity)
           ),
-          
         ];
 
         uniqueQuantity = uniqueQuantity.filter(quantity => quantity !== '');
@@ -87,7 +86,6 @@ const Main = () => {
         if (sortByQuantity) {
           sortedProducts = sortedProducts.filter(
             product => product.description.quantity === sortByQuantity
-            
           );
         }
         setProducts(sortedProducts);
@@ -114,6 +112,11 @@ const Main = () => {
       <img src={banner} alt="banner" className={s.banner} />
 
       <div className={s.sortContainer}>
+        <div className={s.titleBox}>
+          <h1 className={s.title}>Каталог</h1>
+          <span className={s.titleUnder}></span>
+        </div>
+
         <div className={s.sortType}>
           <Tabs
             activeKey={sortByType}
@@ -123,7 +126,10 @@ const Main = () => {
             variant="tabs"
           >
             <Tab eventKey="" title="Всі"></Tab>
-            {types.map(type => (
+            {[
+              'Одноразові',
+              ...types.filter(type => type !== 'Одноразові'), // Додаємо всі інші типи після "Одноразові"
+            ].map(type => (
               <Tab eventKey={type} title={type} key={type}></Tab>
             ))}
           </Tabs>
@@ -143,7 +149,7 @@ const Main = () => {
               />
               Всі
             </label>
-            {quantitys.map((quantity) => (
+            {quantitys.map(quantity => (
               <label key={quantity} className={s.check}>
                 <input
                   type="checkbox"
@@ -161,7 +167,7 @@ const Main = () => {
             onChange={handleSortByQuantityChange}
           >
             <option value="">Всі</option>
-            {quantitys.map((quantity) => (
+            {quantitys.map(quantity => (
               <option key={quantity} value={quantity}>
                 {quantity}
               </option>
@@ -169,7 +175,11 @@ const Main = () => {
           </select>
         </div>
         <div className={s.listBox}>
-          <List products={products} handleDelete={handleDelete} handleBuy={handleBuy} />
+          <List
+            products={products}
+            handleDelete={handleDelete}
+            handleBuy={handleBuy}
+          />
         </div>
       </div>
     </>

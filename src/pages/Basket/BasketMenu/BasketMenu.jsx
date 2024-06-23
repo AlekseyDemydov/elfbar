@@ -3,12 +3,9 @@ import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import s from './BasketMenu.module.scss';
 import { ReactComponent as BasketLogo } from '../img/basket.svg';
-import { NavLink, useLocation } from 'react-router-dom'; // Додав useLocation з react-router-dom
+import { NavLink, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import config from 'config';
-// import { ReactComponent as Del } from './img/del.svg';
-// import { ReactComponent as Plus } from './img/plus.svg';
-// import { ReactComponent as Minus } from './img/minus.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function BasketMenu({ orders, onUpdateOrder }) {
@@ -16,8 +13,14 @@ function BasketMenu({ orders, onUpdateOrder }) {
   const [basketOrders, setBasketOrders] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [productsDetails, setProductsDetails] = useState([]);
-  const location = useLocation(); // Отримання поточного маршруту
+  const location = useLocation();
   console.log(productsDetails);
+  useEffect(() => {
+    setBasketOrders(orders);
+    const total = orders.reduce((acc, order) => acc + order.price * order.count, 0);
+    setTotalPrice(total);
+  }, [orders]);
+
   useEffect(() => {
     const fetchProductsDetails = async () => {
       try {
@@ -32,20 +35,9 @@ function BasketMenu({ orders, onUpdateOrder }) {
     fetchProductsDetails();
   }, []);
 
-  useEffect(() => {
-    setBasketOrders(orders);
-    const total = orders.reduce(
-      (acc, order) => acc + order.price * order.count,
-      0
-    );
-    setTotalPrice(total);
-  }, [orders]);
-
   const handleClose = () => setShow(false);
 
-  const handleBuyClick = () => {
-    setShow(true);
-  };
+  const handleBuyClick = () => setShow(true);
 
   const handleDelete = (index) => {
     const updatedOrders = [...basketOrders];
@@ -92,12 +84,17 @@ function BasketMenu({ orders, onUpdateOrder }) {
                     <p className={s.productName}>{order.name}</p>
                     {order.color && <p className={s.color}>Колір: {order.color}</p>}
                     {order.flavor && <p className={s.flavor}>Смак: {order.flavor}</p>}
+                    {order.resistance && <p className={s.resistance}>Опір: {order.resistance}</p>}
                   </div>
                 </div>
 
                 <div className={s.contro}>
                   <div className={s.quantityControl}>
-                    <button onClick={() => handleQuantityChange(index, order.count - 1)} disabled={order.count <= 1} className={`${s.btnminus} ${s.btnControl}`}>
+                    <button
+                      onClick={() => handleQuantityChange(index, order.count - 1)}
+                      disabled={order.count <= 1}
+                      className={`${s.btnminus} ${s.btnControl}`}
+                    >
                       -
                     </button>
                     <span>{order.count}</span>
