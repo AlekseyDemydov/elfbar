@@ -22,6 +22,7 @@
     }
     @media screen and (max-width: 480px) {
       grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
     }
   }
 
@@ -197,9 +198,12 @@ select {
   height: 50px;
 }
 .imgBox{
+  display: flex;
+    justify-content: center;
   height: 355px;
   @media screen and (max-width: 480px) {
     height: 130px;
+    
   }
 }
 .selectBox{

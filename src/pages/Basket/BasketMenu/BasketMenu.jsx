@@ -95,17 +95,17 @@ function BasketMenu({ orders, onUpdateOrder }) {
                       disabled={order.count <= 1}
                       className={`${s.btnminus} ${s.btnControl}`}
                     >
-                      -
+                      
                     </button>
                     <span>{order.count}</span>
                     <button onClick={() => handleQuantityChange(index, order.count + 1)} className={`${s.btnplus} ${s.btnControl}`}>
-                      +
+                      
                     </button>
                   </div>
                   <p className={s.totalPrice}> {order.price} грн</p>
                 </div>
                 <button onClick={() => handleDelete(index)} className={s.btnDel}>
-                  x
+                  
                 </button>
               </div>
             ))

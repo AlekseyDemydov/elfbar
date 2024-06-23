@@ -99,6 +99,10 @@
         .productName {
           font-size: large;
           font-weight: 600;
+          @media screen and (max-width: 480px) {
+            width: 230px;
+            font-size: 15px;
+          }
         }
       }
 
@@ -164,7 +168,6 @@
           top: 10px;
           right: 10px;
         }
-        
       }
     }
   }
@@ -174,9 +177,9 @@
   font-weight: 600;
   color: #000;
 }
-.quantBtn{
+.quantBtn {
   display: flex;
 }
-.infoTitle{
+.infoTitle {
   display: flex;
 }
