@@ -127,13 +127,42 @@ const CityInput = ({
   const [showStreetSuggestions, setShowStreetSuggestions] = useState(false); // Для показу або приховання списку підказок вулиць
   const [showHouseNumberSuggestions, setShowHouseNumberSuggestions] =
     useState(false); // Для показу або приховання списку підказок номерів будинків
-  const [receiverName, setReceiverName] = useState('');
+  // const [receiverName, setReceiverName] = useState('');
   const [warehouseInputValue, setWarehouseInputValue] = useState('');
   const [warehouseSuggestions, setWarehouseSuggestions] = useState([]);
   const [selectedWarehouse, setSelectedWarehouse] = useState(null);
+const [showWarehouseSuggestions, setShowWarehouseSuggestions] = useState(false);
+console.log(showWarehouseSuggestions)
 
   console.log(selectedWarehouse);
+  const handleFocusCiti = () => {
+    const fetchCities = async () => {
+      try {
+        const data = await getNovaPoshtaCities(''); // Викликаємо функцію з порожнім значенням для отримання всіх міст
+        setSuggestions(data);
+      } catch (error) {
+        console.error('Помилка при отриманні списку міст від Нової Пошти:', error);
+      }
+    };
 
+    fetchCities();
+  };
+  const handleFocusWarehouse = async () => {
+    try {
+      let warehouseType = '';
+      if (deliveryMethod === 'department') {
+        warehouseType = 'Warehouse';
+      } else if (deliveryMethod === 'postomat') {
+        warehouseType = 'Postomat';
+      }
+  
+      const data = await getNovaPoshtaWarehouses(selectedCity.Ref, warehouseType);
+      setWarehouseSuggestions(data);
+      setShowWarehouseSuggestions(true); // Показуємо список підказок для відділень/поштоматів
+    } catch (error) {
+      console.error('Помилка при отриманні списку відділень/поштоматів Нової Пошти:', error);
+    }
+  };
   useEffect(() => {
     if (inputValue.trim() !== '') {
       const fetchCities = async () => {
@@ -285,13 +314,13 @@ const CityInput = ({
     onUpdateWarehouses(warehouse);
   };
 
-  const handleReceiverNameChange = event => {
-    setReceiverName(event.target.value);
-  };
+  // const handleReceiverNameChange = event => {
+  //   setReceiverName(event.target.value);
+  // };
 
-  useEffect(() => {
-    onUpdateReceiver(receiverName); // Передача ім'я отримувача назад у Basket
-  }, [receiverName, onUpdateReceiver]);
+  // useEffect(() => {
+  //   onUpdateReceiver(receiverName); // Передача ім'я отримувача назад у Basket
+  // }, [receiverName, onUpdateReceiver]);
 
   return (
     <div className={styles['city-input']}>
@@ -303,6 +332,7 @@ const CityInput = ({
         onChange={e => setInputValue(e.target.value)}
         placeholder="Введіть місто..."
         className={styles['input-field']}
+        onFocus={handleFocusCiti}
       />
       </label>
       
@@ -362,6 +392,7 @@ const CityInput = ({
             onChange={e => handleWarehouseSearch(e.target.value)}
             placeholder="Виберіть пункт отримання"
             className={styles['input-field']}
+            onFocus={handleFocusWarehouse}
           />
           </label>
           
@@ -378,7 +409,7 @@ const CityInput = ({
               ))}
             </ul>
           )}
-          <label >
+          {/* <label >
           Одержувач (ПІБ повністю)
           <input
             type="text"
@@ -387,7 +418,7 @@ const CityInput = ({
             placeholder="Іван Іванович Іваненко"
             className={styles['input-field']}
           />
-          </label>
+          </label> */}
           
         </div>
       )}
@@ -401,6 +432,8 @@ const CityInput = ({
             onChange={e => handleWarehouseSearch(e.target.value)}
             placeholder="Виберіть пункт отримання"
             className={styles['input-field']}
+            onFocus={handleFocusWarehouse}
+            
           />
           </label>
           {warehouseSuggestions.length > 0 && (
@@ -416,7 +449,7 @@ const CityInput = ({
               ))}
             </ul>
           )}
-          <label >
+          {/* <label >
           Одержувач (ПІБ повністю)
           <input
             type="text"
@@ -425,7 +458,7 @@ const CityInput = ({
             placeholder="Іван Іванович Іваненко"
             className={styles['input-field']}
           />
-          </label>
+          </label> */}
         </div>
       )}
       {deliveryMethod === 'courier' && (
@@ -482,7 +515,7 @@ const CityInput = ({
               </ul>
             )}
           </div>
-          <label >
+          {/* <label >
           Одержувач (ПІБ повністю)
           <input
             type="text"
@@ -491,7 +524,7 @@ const CityInput = ({
             placeholder="Іван Іванович Іваненко"
             className={styles['input-field']}
           />
-          </label>
+          </label> */}
         </div>
       )}
     </div>

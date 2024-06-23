@@ -23,7 +23,9 @@ const Basket = () => {
       setOrders(JSON.parse(ordersFromStorage));
     }
   }, []);
-
+  const handleReceiverNameChange = event => {
+    setReceiverName(event.target.value);
+  };
   const handleQuantityChange = (index, newQuantity) => {
     const updatedOrders = [...orders];
     updatedOrders[index].count = newQuantity;
@@ -160,9 +162,15 @@ const Basket = () => {
                 />
                 <div className={s.productTitle}>
                   <p className={s.productName}>{order.name}</p>
-                  {order.color && <p className={s.color}>Колір: {order.color}</p>}
-                  {order.flavor && <p className={s.flavor}>Смак: {order.flavor}</p>}
-                  {order.resistance && <p className={s.resistance}>Опір: {order.resistance}</p>}
+                  {order.color && (
+                    <p className={s.color}>Колір: {order.color}</p>
+                  )}
+                  {order.flavor && (
+                    <p className={s.flavor}>Смак: {order.flavor}</p>
+                  )}
+                  {order.resistance && (
+                    <p className={s.resistance}>Опір: {order.resistance}</p>
+                  )}
                 </div>
               </div>
 
@@ -208,7 +216,16 @@ const Basket = () => {
             pattern="[0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}"
             placeholder="(99) 999-99-99"
           />
-
+          <label >
+          Одержувач (ПІБ повністю)
+          <input
+            type="text"
+            value={receiverName}
+            onChange={handleReceiverNameChange}
+            placeholder="Іван Іванович Іваненко"
+            className={s.input}
+          />
+          </label>
           <input
             type="text"
             value={message}

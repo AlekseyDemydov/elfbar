@@ -110,6 +110,9 @@ const Main = () => {
         </NavLink>
       )}
       <img src={banner} alt="banner" className={s.banner} />
+      <div className={s.textContainer}>
+        <p className={s.runText}>Тут можна поставити текст</p>
+      </div>
 
       <div className={s.sortContainer}>
         <div className={s.titleBox}>
