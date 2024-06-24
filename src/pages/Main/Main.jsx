@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useOutletContext } from 'react-router';
 import axios from '../../axios';
 import Tab from 'react-bootstrap/Tab';
+import { useOutletContext } from 'react-router';
 import Tabs from 'react-bootstrap/Tabs';
 import banner from './img/banner.jpg';
 import s from './Main.module.scss';
@@ -14,51 +14,70 @@ import Marquee from 'react-fast-marquee';
 const Main = () => {
   const [products, setProducts] = useState([]);
   const [types, setTypes] = useState([]);
-  const [quantitys, setQuantity] = useState([]);
+  const [quantitys, setQuantitys] = useState([]);
   const [sortByQuantity, setSortByQuantity] = useState('');
   const [sortByType, setSortByType] = useState('');
   const [error, setError] = useState(null);
-  const userEmail = localStorage.getItem('adminEmail') || '';
+  const [userEmail, setUserEmail] = useState('');
+
+  useEffect(() => {
+    const userEmail = localStorage.getItem('adminEmail') || '';
+    setUserEmail(userEmail);
+  }, []);
 
   const { handleBuy } = useOutletContext();
 
-  const handleDelete = productId => {
+  const handleDelete = (productId) => {
     axios
       .delete(`${config.baseURL}/products/${productId}`)
-      .then(response => {
-        setProducts(prevProducts =>
-          prevProducts.filter(product => product._id !== productId)
+      .then((response) => {
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product._id !== productId)
         );
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Помилка при видаленні продукту:', error);
       });
   };
 
-  const handleSortByQuantityChange = event => {
-    setSortByQuantity(event.target.value);
+  const handleSortByQuantityChange = (event) => {
+    const selectedQuantity = event.target.value;
+    setSortByQuantity(selectedQuantity);
+
+    if (selectedQuantity !== '') {
+      setSortByType('Одноразові');
+    } else {
+      setSortByType('');
+    }
+  };
+
+  const handleSortByTypeChange = (selectedType) => {
+    if (selectedType !== 'Одноразові') {
+      setSortByQuantity('');
+    }
+    setSortByType(selectedType);
   };
 
   useEffect(() => {
     axios
       .get(`${config.baseURL}/products`)
-      .then(response => {
+      .then((response) => {
         let sortedProducts = response.data;
 
         const uniqueTypes = [
-          ...new Set(sortedProducts.map(product => product.description.type)),
+          ...new Set(sortedProducts.map((product) => product.description.type)),
         ];
         setTypes(uniqueTypes);
 
         if (sortByType) {
           sortedProducts = sortedProducts.filter(
-            product => product.description.type === sortByType
+            (product) => product.description.type === sortByType
           );
         }
 
         setProducts(sortedProducts);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Помилка при завантаженні продуктів:', error);
         setError(
           'Не вдалося завантажити список продуктів. Будь ласка, спробуйте пізніше.'
@@ -69,29 +88,29 @@ const Main = () => {
   useEffect(() => {
     axios
       .get(`${config.baseURL}/products`)
-      .then(response => {
+      .then((response) => {
         let sortedProducts = response.data;
 
-        let uniqueQuantity = [
+        let uniqueQuantitys = [
           ...new Set(
-            sortedProducts.map(product => product.description.quantity)
+            sortedProducts.map((product) => product.description.quantity)
           ),
         ];
 
-        uniqueQuantity = uniqueQuantity.filter(quantity => quantity !== '');
+        uniqueQuantitys = uniqueQuantitys.filter((quantity) => quantity !== '');
 
-        uniqueQuantity.sort((a, b) => a - b);
+        uniqueQuantitys.sort((a, b) => a - b);
 
-        setQuantity(uniqueQuantity);
+        setQuantitys(uniqueQuantitys);
 
         if (sortByQuantity) {
           sortedProducts = sortedProducts.filter(
-            product => product.description.quantity === sortByQuantity
+            (product) => product.description.quantity === sortByQuantity
           );
         }
         setProducts(sortedProducts);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Помилка при завантаженні продуктів:', error);
         setError(
           'Не вдалося завантажити список продуктів. Будь ласка, спробуйте пізніше.'
@@ -111,15 +130,15 @@ const Main = () => {
         </NavLink>
       )}
       <img src={banner} alt="banner" className={s.banner} />
-      
-       <Marquee
+
+      <Marquee
         style={{
-          backgroundColor: "#ff5100",
-          padding: "10px",
-          color: "#ffffff",
+          backgroundColor: '#ff5100',
+          padding: '10px',
+          color: '#ffffff',
           fontWeight: 700,
-          fontSize: "15px",
-          textTransform: "uppercase",
+          fontSize: '15px',
+          textTransform: 'uppercase',
         }}
         className="marquee-container"
         autoFill={true}
@@ -129,9 +148,10 @@ const Main = () => {
         direction="left"
         speed={80}
         delay={0}
-        loop={0}  
+        loop={0}
       >
-       <p className={s.textMarquee}>Відправка в день замовлення </p> <span className={s.dot}></span>
+        <p className={s.textMarquee}>Відправка в день замовлення </p>{' '}
+        <span className={s.dot}></span>
       </Marquee>
 
       <div className={s.sortContainer}>
@@ -143,16 +163,13 @@ const Main = () => {
         <div className={s.sortType}>
           <Tabs
             activeKey={sortByType}
-            onSelect={k => setSortByType(k)}
+            onSelect={handleSortByTypeChange}
             id="controlled-tab-example"
             className="mb-3"
             variant="tabs"
           >
             <Tab eventKey="" title="Всі"></Tab>
-            {[
-              'Одноразові',
-              ...types.filter(type => type !== 'Одноразові'), // Додаємо всі інші типи після "Одноразові"
-            ].map(type => (
+            {['Одноразові', ...types.filter((type) => type !== 'Одноразові')].map((type) => (
               <Tab eventKey={type} title={type} key={type}></Tab>
             ))}
           </Tabs>
@@ -161,7 +178,7 @@ const Main = () => {
 
       <div className={s.listContainer}>
         <div className={s.sortQuantity}>
-          <h3>Кількість тяг:</h3>
+          <h3 className={s.gradientText}>Оберіть кількість тяг:</h3>
           <div className={s.checkboxGroup}>
             <label className={s.check}>
               <input
@@ -172,7 +189,7 @@ const Main = () => {
               />
               Всі
             </label>
-            {quantitys.map(quantity => (
+            {quantitys.map((quantity) => (
               <label key={quantity} className={s.check}>
                 <input
                   type="checkbox"
@@ -190,7 +207,7 @@ const Main = () => {
             onChange={handleSortByQuantityChange}
           >
             <option value="">Всі</option>
-            {quantitys.map(quantity => (
+            {quantitys.map((quantity) => (
               <option key={quantity} value={quantity}>
                 {quantity}
               </option>
@@ -198,11 +215,7 @@ const Main = () => {
           </select>
         </div>
         <div className={s.listBox}>
-          <List
-            products={products}
-            handleDelete={handleDelete}
-            handleBuy={handleBuy}
-          />
+          <List products={products} handleDelete={handleDelete} handleBuy={handleBuy} />
         </div>
       </div>
     </>
