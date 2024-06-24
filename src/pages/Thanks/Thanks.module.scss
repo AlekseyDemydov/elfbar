@@ -1,0 +1,26 @@
+.thanks-container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .thanks-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ff5100; /* Оранжевий колір */
+    margin-bottom: 10px;
+  }
+  
+  .thanks-message {
+    font-size: 20px;
+    color: #000000; /* Чорний колір */
+    margin-top: 0;
+  }
+  
+  /* Додатковий стиль для контейнера, який може змінити фон */
+  .thanks-container {
+    background-color: #ffffff; /* Білий фон */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Тінь */
+  }

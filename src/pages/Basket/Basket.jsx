@@ -114,6 +114,10 @@ const Basket = () => {
           setSelectedHouseNumber(null);
           setSelectedWarehouse(null);
           localStorage.removeItem('orders');
+          setTimeout(() => {
+            window.location.href = '/elfbar/thanks'; // Змініть на потрібний URL
+          }, 3000); // 3000 мілісекунд = 3 секунди
+        
         })
         .catch(err => {
           Notiflix.Notify.failure(

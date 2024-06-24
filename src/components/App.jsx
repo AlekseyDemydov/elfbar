@@ -10,6 +10,8 @@ import Basket from 'pages/Basket/Basket';
 import { Contacts } from 'pages/Contacts/Contacts';
 import Question from 'pages/Question/Question';
 import Feedback from 'pages/Feedback/Feedback';
+import Thanks from 'pages/Thanks/Thanks';
+
 
 export const App = () => {
   return (
@@ -17,6 +19,7 @@ export const App = () => {
       <Routes>
         <Route path="/elfbar" element={<Layout />}>
           <Route index element={<Main />} />
+          <Route path="thanks" element={<Thanks />} />
           <Route path="feedback" element={<Feedback />} />
           <Route path="question" element={<Question />} />
           <Route path="contacts" element={<Contacts />} />

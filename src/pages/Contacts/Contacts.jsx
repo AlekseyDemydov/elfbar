@@ -2,7 +2,7 @@ import s from './Contacts.module.scss';
 
 export const Contacts = () => {
   const handleClick = () => {
-    window.open('https://t.me/your_manager_username', '_blank');
+    window.open('https://t.me/anatolyi_st', '_blank');
   };
 
   return (

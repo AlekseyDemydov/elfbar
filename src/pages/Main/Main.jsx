@@ -131,7 +131,7 @@ const Main = () => {
         delay={0}
         loop={0}  
       >
-       <p className={s.textMarquee}>Тут можна поставити текст </p> <span className={s.dot}></span>
+       <p className={s.textMarquee}>Відправка в день замовлення </p> <span className={s.dot}></span>
       </Marquee>
 
       <div className={s.sortContainer}>
