@@ -142,7 +142,7 @@ const ProductDetail = () => {
             )}
           </ul>
         </div>
-        <p>Ціна: {product.price} грн</p>
+        <p className={s.price}>Ціна: {product.price} грн</p>
         {product.flavor.filter(flavor => flavor.trim() !== '').length > 0 && (
           <select
             value={selectedFlavors[product._id] || ''}

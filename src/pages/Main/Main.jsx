@@ -9,6 +9,7 @@ import s from './Main.module.scss';
 import List from 'pages/List/List';
 import './Main.css';
 import config from 'config';
+import Marquee from 'react-fast-marquee';
 
 const Main = () => {
   const [products, setProducts] = useState([]);
@@ -110,9 +111,28 @@ const Main = () => {
         </NavLink>
       )}
       <img src={banner} alt="banner" className={s.banner} />
-      <div className={s.textContainer}>
-        <p className={s.runText}>Тут можна поставити текст</p>
-      </div>
+      
+       <Marquee
+        style={{
+          backgroundColor: "#ff5100",
+          padding: "10px",
+          color: "#ffffff",
+          fontWeight: 700,
+          fontSize: "15px",
+          textTransform: "uppercase",
+        }}
+        className="marquee-container"
+        autoFill={true}
+        play={true}
+        pauseOnHover={false}
+        pauseOnClick={false}
+        direction="left"
+        speed={80}
+        delay={0}
+        loop={0}  
+      >
+       <p className={s.textMarquee}>Тут можна поставити текст </p> <span className={s.dot}></span>
+      </Marquee>
 
       <div className={s.sortContainer}>
         <div className={s.titleBox}>

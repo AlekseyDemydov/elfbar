@@ -163,36 +163,24 @@
 }
 .title{
   font-weight: 700;
-  margin-bottom: 40px;
   font-size: 30px;
+  margin-bottom: 40px;
 }
 .titleUnder{
   width: 100px;
   height: 3px;
   background-color: #ff5100;
 }
-.textContainer {
-  position: relative;
-  background-color: #ff5100;
-  height: 30px;
-  width: 100%; /* Ширина контейнера */
-  overflow: hidden; 
-  color: white;
+
+.textMarquee{
+margin: 0 10px 0 10px;
 }
 
-.runText {
-  position: absolute;
-  margin: 0;
-  left: 50%; /* Початкова позиція за межами правого краю контейнера */
-  white-space: nowrap; /* Забезпечуємо те, щоб текст не переносився */
-  animation: moveRightToLeft 10s linear infinite; /* Налаштуйте тривалість анімації за потребою */
-}
-
-@keyframes moveRightToLeft {
-  0% {
-    left: 100%; /* Початкова позиція (за межами правого краю контейнера) */
-  }
-  100% {
-    left: -50%; /* Кінцева позиція (за межами лівого краю контейнера) */
-  }
+.dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background-color: #ffffff; /* Колір заповнення кола */
+  border-radius: 50%; /* Закругленість, щоб отримати коло */
+  display: flex;
 }

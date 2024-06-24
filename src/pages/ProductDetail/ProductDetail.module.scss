@@ -84,7 +84,8 @@
   @media screen and (max-width: 480px) {
     display: flex;
     flex-direction: column;
-    width: 100vw;
+    width: 100%;
+    align-items: center;
    }
 }
 .btnBuy{
@@ -165,11 +166,15 @@ select{
     padding-right: 30px;
     border: none;
     @media screen and (max-width: 480px) {
-      width: 200px;
+      width: 230px;
      }
 }
 .prodInfo{
   margin-left: 20px;
+  @media screen and (max-width: 480px) {
+    margin: 0;
+   
+   }
   h2 {
     
     @media screen and (max-width: 480px) {
@@ -178,4 +183,8 @@ select{
      
      }
   }
+}
+
+.price{
+  font-weight: 700;
 }
