@@ -115,9 +115,8 @@ const Basket = () => {
           setSelectedWarehouse(null);
           localStorage.removeItem('orders');
           setTimeout(() => {
-            window.location.href = '/elfbar/thanks'; // Змініть на потрібний URL
-          }, 3000); // 3000 мілісекунд = 3 секунди
-        
+            window.location.href = '/elfbar/thanks'; 
+          }, 1500); 
         })
         .catch(err => {
           Notiflix.Notify.failure(
@@ -148,6 +147,10 @@ const Basket = () => {
 
     setPhone(formattedPhone);
   };
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: 'add_shipping_info',
+  });
 
   return (
     <div className={s.Basket}>
@@ -220,15 +223,15 @@ const Basket = () => {
             pattern="[0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}"
             placeholder="(99) 999-99-99"
           />
-          <label >
-          Одержувач (ПІБ повністю)
-          <input
-            type="text"
-            value={receiverName}
-            onChange={handleReceiverNameChange}
-            placeholder="Іван Іванович Іваненко"
-            className={s.input}
-          />
+          <label>
+            Одержувач (ПІБ повністю)
+            <input
+              type="text"
+              value={receiverName}
+              onChange={handleReceiverNameChange}
+              placeholder="Іван Іванович Іваненко"
+              className={s.input}
+            />
           </label>
           <input
             type="text"

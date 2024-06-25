@@ -1,7 +1,11 @@
 import React from 'react';
-import styles from './Thanks.module.scss'; // Імпорт стилів
+import styles from './Thanks.module.scss'; 
 
 const Thanks = () => {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: 'purchase',
+  });
   return (
     <div className={styles['thanks-container']}>
       <h1 className={styles['thanks-title']}>Дякуємо за ваше замовлення!</h1>

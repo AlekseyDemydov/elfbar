@@ -17,7 +17,10 @@ function BasketMenu({ orders, onUpdateOrder }) {
   console.log(productsDetails);
   useEffect(() => {
     setBasketOrders(orders);
-    const total = orders.reduce((acc, order) => acc + order.price * order.count, 0);
+    const total = orders.reduce(
+      (acc, order) => acc + order.price * order.count,
+      0
+    );
     setTotalPrice(total);
   }, [orders]);
 
@@ -37,9 +40,15 @@ function BasketMenu({ orders, onUpdateOrder }) {
 
   const handleClose = () => setShow(false);
 
-  const handleBuyClick = () => setShow(true);
+  const handleBuyClick = () => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'view_cart',
+    });
+    setShow(true);
+  };
 
-  const handleDelete = (index) => {
+  const handleDelete = index => {
     const updatedOrders = [...basketOrders];
     updatedOrders.splice(index, 1);
     setBasketOrders(updatedOrders);
@@ -65,7 +74,12 @@ function BasketMenu({ orders, onUpdateOrder }) {
           <span className={s.btnLenght}>{basketOrders.length}</span>
         </button>
       )}
-      <Offcanvas show={show} onHide={handleClose} style={{ width: '600px' }} placement="end">
+      <Offcanvas
+        show={show}
+        onHide={handleClose}
+        style={{ width: '600px' }}
+        placement="end"
+      >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Кошик</Offcanvas.Title>
         </Offcanvas.Header>
@@ -82,31 +96,41 @@ function BasketMenu({ orders, onUpdateOrder }) {
                   />
                   <div className={s.productTitle}>
                     <p className={s.productName}>{order.name}</p>
-                    {order.color && <p className={s.color}>Колір: {order.color}</p>}
-                    {order.flavor && <p className={s.flavor}>Смак: {order.flavor}</p>}
-                    {order.resistance && <p className={s.resistance}>Опір: {order.resistance}</p>}
+                    {order.color && (
+                      <p className={s.color}>Колір: {order.color}</p>
+                    )}
+                    {order.flavor && (
+                      <p className={s.flavor}>Смак: {order.flavor}</p>
+                    )}
+                    {order.resistance && (
+                      <p className={s.resistance}>Опір: {order.resistance}</p>
+                    )}
                   </div>
                 </div>
 
                 <div className={s.contro}>
                   <div className={s.quantityControl}>
                     <button
-                      onClick={() => handleQuantityChange(index, order.count - 1)}
+                      onClick={() =>
+                        handleQuantityChange(index, order.count - 1)
+                      }
                       disabled={order.count <= 1}
                       className={`${s.btnminus} ${s.btnControl}`}
-                    >
-                      
-                    </button>
+                    ></button>
                     <span>{order.count}</span>
-                    <button onClick={() => handleQuantityChange(index, order.count + 1)} className={`${s.btnplus} ${s.btnControl}`}>
-                      
-                    </button>
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(index, order.count + 1)
+                      }
+                      className={`${s.btnplus} ${s.btnControl}`}
+                    ></button>
                   </div>
                   <p className={s.totalPrice}> {order.price} грн</p>
                 </div>
-                <button onClick={() => handleDelete(index)} className={s.btnDel}>
-                  
-                </button>
+                <button
+                  onClick={() => handleDelete(index)}
+                  className={s.btnDel}
+                ></button>
               </div>
             ))
           ) : (

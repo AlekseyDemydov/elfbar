@@ -27,20 +27,20 @@ const Main = () => {
 
   const { handleBuy } = useOutletContext();
 
-  const handleDelete = (productId) => {
+  const handleDelete = productId => {
     axios
       .delete(`${config.baseURL}/products/${productId}`)
-      .then((response) => {
-        setProducts((prevProducts) =>
-          prevProducts.filter((product) => product._id !== productId)
+      .then(response => {
+        setProducts(prevProducts =>
+          prevProducts.filter(product => product._id !== productId)
         );
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Помилка при видаленні продукту:', error);
       });
   };
 
-  const handleSortByQuantityChange = (event) => {
+  const handleSortByQuantityChange = event => {
     const selectedQuantity = event.target.value;
     setSortByQuantity(selectedQuantity);
 
@@ -51,7 +51,7 @@ const Main = () => {
     }
   };
 
-  const handleSortByTypeChange = (selectedType) => {
+  const handleSortByTypeChange = selectedType => {
     if (selectedType !== 'Одноразові') {
       setSortByQuantity('');
     }
@@ -61,23 +61,23 @@ const Main = () => {
   useEffect(() => {
     axios
       .get(`${config.baseURL}/products`)
-      .then((response) => {
+      .then(response => {
         let sortedProducts = response.data;
 
         const uniqueTypes = [
-          ...new Set(sortedProducts.map((product) => product.description.type)),
+          ...new Set(sortedProducts.map(product => product.description.type)),
         ];
         setTypes(uniqueTypes);
 
         if (sortByType) {
           sortedProducts = sortedProducts.filter(
-            (product) => product.description.type === sortByType
+            product => product.description.type === sortByType
           );
         }
 
         setProducts(sortedProducts);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Помилка при завантаженні продуктів:', error);
         setError(
           'Не вдалося завантажити список продуктів. Будь ласка, спробуйте пізніше.'
@@ -88,29 +88,34 @@ const Main = () => {
   useEffect(() => {
     axios
       .get(`${config.baseURL}/products`)
-      .then((response) => {
+      .then(response => {
         let sortedProducts = response.data;
 
         let uniqueQuantitys = [
           ...new Set(
-            sortedProducts.map((product) => product.description.quantity)
+            sortedProducts.map(product => product.description.quantity)
           ),
         ];
 
-        uniqueQuantitys = uniqueQuantitys.filter((quantity) => quantity !== '');
+        uniqueQuantitys = uniqueQuantitys.filter(quantity => quantity !== '');
 
         uniqueQuantitys.sort((a, b) => a - b);
+
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'puffs-selected',
+        });
 
         setQuantitys(uniqueQuantitys);
 
         if (sortByQuantity) {
           sortedProducts = sortedProducts.filter(
-            (product) => product.description.quantity === sortByQuantity
+            product => product.description.quantity === sortByQuantity
           );
         }
         setProducts(sortedProducts);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Помилка при завантаженні продуктів:', error);
         setError(
           'Не вдалося завантажити список продуктів. Будь ласка, спробуйте пізніше.'
@@ -169,9 +174,11 @@ const Main = () => {
             variant="tabs"
           >
             <Tab eventKey="" title="Всі"></Tab>
-            {['Одноразові', ...types.filter((type) => type !== 'Одноразові')].map((type) => (
-              <Tab eventKey={type} title={type} key={type}></Tab>
-            ))}
+            {['Одноразові', ...types.filter(type => type !== 'Одноразові')].map(
+              type => (
+                <Tab eventKey={type} title={type} key={type}></Tab>
+              )
+            )}
           </Tabs>
         </div>
       </div>
@@ -189,7 +196,7 @@ const Main = () => {
               />
               Всі
             </label>
-            {quantitys.map((quantity) => (
+            {quantitys.map(quantity => (
               <label key={quantity} className={s.check}>
                 <input
                   type="checkbox"
@@ -207,7 +214,7 @@ const Main = () => {
             onChange={handleSortByQuantityChange}
           >
             <option value="">Всі</option>
-            {quantitys.map((quantity) => (
+            {quantitys.map(quantity => (
               <option key={quantity} value={quantity}>
                 {quantity}
               </option>
@@ -215,7 +222,11 @@ const Main = () => {
           </select>
         </div>
         <div className={s.listBox}>
-          <List products={products} handleDelete={handleDelete} handleBuy={handleBuy} />
+          <List
+            products={products}
+            handleDelete={handleDelete}
+            handleBuy={handleBuy}
+          />
         </div>
       </div>
     </>

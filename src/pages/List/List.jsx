@@ -56,6 +56,11 @@ const List = ({ products, handleDelete, handleBuy }) => {
     const count = productCounts[productId] || 1;
     const product = products.find(prod => prod._id === productId);
 
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'add_to_cart',
+    });
+
     if (!product) {
       console.error('Продукт не знайдено');
       return;
@@ -186,8 +191,8 @@ const List = ({ products, handleDelete, handleBuy }) => {
               <div className={styles.price}>{product.price} грн</div>
 
               <div className={styles.btnDown}>
-                {product.flavor.filter(flavor => flavor.trim() !== '')
-                  .length > 0 && (
+                {product.flavor.filter(flavor => flavor.trim() !== '').length >
+                  0 && (
                   <select
                     value={selectedFlavor}
                     onChange={e =>
@@ -210,7 +215,8 @@ const List = ({ products, handleDelete, handleBuy }) => {
                   </select>
                 )}
 
-                {product.color.filter(color => color.trim() !== '').length > 0 && (
+                {product.color.filter(color => color.trim() !== '').length >
+                  0 && (
                   <select
                     value={selectedColor}
                     onChange={e =>
@@ -234,29 +240,30 @@ const List = ({ products, handleDelete, handleBuy }) => {
                 )}
 
                 {product.description.resistance &&
-                  product.description.resistance.filter(resistance => resistance.trim() !== '')
-                    .length > 0 && (
-                  <select
-                    value={selectedResistance}
-                    onChange={e =>
-                      handleResistanceChange(product._id, e.target.value)
-                    }
-                  >
-                    <option value="">Оберіть опір</option>
-                    {product.description.resistance.map(
-                      (resistance, index) =>
-                        resistance.trim() !== '' && (
-                          <option
-                            key={index}
-                            value={resistance}
-                            disabled={resistance.startsWith('❌')}
-                          >
-                            {resistance}
-                          </option>
-                        )
-                    )}
-                  </select>
-                )}
+                  product.description.resistance.filter(
+                    resistance => resistance.trim() !== ''
+                  ).length > 0 && (
+                    <select
+                      value={selectedResistance}
+                      onChange={e =>
+                        handleResistanceChange(product._id, e.target.value)
+                      }
+                    >
+                      <option value="">Оберіть опір</option>
+                      {product.description.resistance.map(
+                        (resistance, index) =>
+                          resistance.trim() !== '' && (
+                            <option
+                              key={index}
+                              value={resistance}
+                              disabled={resistance.startsWith('❌')}
+                            >
+                              {resistance}
+                            </option>
+                          )
+                      )}
+                    </select>
+                  )}
 
                 <div className={styles.btnBuyCount}>
                   <div className={styles.boxCount}>
