@@ -41,21 +41,22 @@ const Main = () => {
   };
 
   const handleSortByQuantityChange = event => {
-    const selectedQuantity = event.target.value;
-    setSortByQuantity(selectedQuantity);
-
-    if (selectedQuantity !== '') {
+    setSortByQuantity(event.target.value);
+    if (event.target.value !== '') {
       setSortByType('Одноразові');
-    } else {
-      setSortByType('');
+      
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'puffs-selected',
+      });
     }
   };
 
   const handleSortByTypeChange = selectedType => {
+    setSortByType(selectedType);
     if (selectedType !== 'Одноразові') {
       setSortByQuantity('');
     }
-    setSortByType(selectedType);
   };
 
   useEffect(() => {
@@ -69,50 +70,27 @@ const Main = () => {
         ];
         setTypes(uniqueTypes);
 
+        let uniqueQuantitys = [
+          ...new Set(
+            sortedProducts.map(product => product.description.quantity)
+          ),
+        ];
+        uniqueQuantitys = uniqueQuantitys.filter(quantity => quantity !== '');
+        uniqueQuantitys.sort((a, b) => a - b);
+        setQuantitys(uniqueQuantitys);
+
         if (sortByType) {
           sortedProducts = sortedProducts.filter(
             product => product.description.type === sortByType
           );
         }
 
-        setProducts(sortedProducts);
-      })
-      .catch(error => {
-        console.error('Помилка при завантаженні продуктів:', error);
-        setError(
-          'Не вдалося завантажити список продуктів. Будь ласка, спробуйте пізніше.'
-        );
-      });
-  }, [sortByType]);
-
-  useEffect(() => {
-    axios
-      .get(`${config.baseURL}/products`)
-      .then(response => {
-        let sortedProducts = response.data;
-
-        let uniqueQuantitys = [
-          ...new Set(
-            sortedProducts.map(product => product.description.quantity)
-          ),
-        ];
-
-        uniqueQuantitys = uniqueQuantitys.filter(quantity => quantity !== '');
-
-        uniqueQuantitys.sort((a, b) => a - b);
-
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-          event: 'puffs-selected',
-        });
-
-        setQuantitys(uniqueQuantitys);
-
         if (sortByQuantity) {
           sortedProducts = sortedProducts.filter(
             product => product.description.quantity === sortByQuantity
           );
         }
+
         setProducts(sortedProducts);
       })
       .catch(error => {
@@ -121,7 +99,7 @@ const Main = () => {
           'Не вдалося завантажити список продуктів. Будь ласка, спробуйте пізніше.'
         );
       });
-  }, [sortByQuantity]);
+  }, [sortByType, sortByQuantity]);
 
   if (error) {
     return <div>{error}</div>;

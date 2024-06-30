@@ -103,6 +103,11 @@ const Basket = () => {
               : ''),
         })
         .then(res => {
+          console.log('qwe');
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: 'add_shipping_info',
+          });
           Notiflix.Notify.success('Замовлення відправлено');
           setOrders([]);
           setTotalPrice(0);
@@ -115,8 +120,8 @@ const Basket = () => {
           setSelectedWarehouse(null);
           localStorage.removeItem('orders');
           setTimeout(() => {
-            window.location.href = '/elfbar/thanks'; 
-          }, 1500); 
+            window.location.href = '/elfbar/thanks';
+          }, 1500);
         })
         .catch(err => {
           Notiflix.Notify.failure(
@@ -147,10 +152,6 @@ const Basket = () => {
 
     setPhone(formattedPhone);
   };
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
-    event: 'add_shipping_info',
-  });
 
   return (
     <div className={s.Basket}>

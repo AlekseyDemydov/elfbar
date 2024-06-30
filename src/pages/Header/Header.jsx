@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { Container, Nav, Navbar } from 'react-bootstrap';
-import logoWhite from './img/logowhite.png';
-import logoBlack from './img/logoblack.png';
+import logoWhite from './img/logo.png';
+import logoBlack from './img/logo.png';
 import tgblack from './img/tgblack.png';
 import tgwhite from './img/tgwhite.png';
 import s from './Header.module.scss';
