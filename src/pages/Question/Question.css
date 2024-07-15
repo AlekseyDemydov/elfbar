@@ -1,0 +1,84 @@
+.accordion-wrapper {
+  width: 100%;
+  max-width: 600px; /* Задайте ширину, яка вам підходить */
+  margin: 0 auto;
+  padding: 8px 15px;
+}
+.card {
+  width: 100%;
+  height: 100%;
+}
+.card-header {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.accordion-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    cursor: pointer;
+    padding: 0;
+    position: relative;
+    width: 600px;
+    height: 80px;
+    @media screen and (max-width: 480px) {
+      width: 100%;
+    }
+  }
+  
+  .accordion-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .accordion-icon.rotate {
+    transform: translateY(-50%) rotate(45deg);
+  }
+  
+  .accordion-icon span.plus {
+    font-size: 45px;
+    color: #ff5100;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Відцентрувати текст */
+  }
+  
+  .accordion-button.active .accordion-icon {
+    background-color: #ff5100;
+  }
+  
+  .accordion-button.active .accordion-icon span.plus {
+    color: white;
+  }
+  
+  .imgAcc {
+    width: 100%;
+    max-width: 500px;
+    margin-top: 10px;
+  }
+  
+  .accordion-button::after {
+    display: none;
+  }
+  .ourMan{
+    font-weight: 900;
+    text-decoration: underline;
+    color: #ff5100;
+    cursor: pointer;
+  }
+  .card-body{
+    padding: 8px;
+  }

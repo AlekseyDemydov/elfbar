@@ -1,0 +1,120 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(0, 0, 0, 0.148);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.148);
+  padding: 10px 50px;
+
+  left: 0;
+  right: 0;
+  background-color: rgb(15, 1, 1);
+  top: 0px;
+  align-items: center;
+  z-index: 99;
+  height: 80px;
+
+  @media screen and (max-width: 401px) {
+    padding: 5px;
+    position: relative;
+  }
+}
+
+.logo {
+  width: 70px;
+  margin-right: 25px;
+
+  @media screen and (max-width: 401px) {
+    width: 60px;
+  }
+}
+
+.btnSignTG {
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  background-color: #000000;
+  font-weight: 600;
+  text-transform: uppercase;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  height: 45px;
+  font-size: 14px;
+  padding-left: 30px;
+  padding-right: 30px;
+
+  @media screen and (max-width: 401px) {
+    font-size: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.scrolled {
+  background-color: white !important;
+  transition: background-color 0.3s ease;
+}
+
+.scrolledBtn {
+  background-color: white !important;
+  color: black !important;
+  border: 2px solid #000000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: black;
+
+  &.active {
+    color: #ff5100;
+  }
+}
+.telegramLink {
+  width: 30px;
+  margin-right: 30px;
+  margin-left: 30px;
+}
+.tgBox {
+  display: flex;
+  align-items: center;
+  @media screen and (max-width: 991px) {
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+  }
+}
+.topFix {
+  display: none;
+  @media screen and (max-width: 480px) {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0px; /* Відповідно до висоти вашого хедера */
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    z-index: 1000; /* Щоб забезпечити, що він відображається над іншим вмістом */
+    background-color: #29a9ea;
+    transition: top 0.5s ease;
+    height: 53px;
+  }
+}
+.scrolledtopFix{
+  top: 80px;
+  background-color: #29a9ea;
+  color: #fff;
+  p{
+    width: 65%;
+    padding: 0 15px;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0;
+  }
+}
+.btnSignTGScroll{
+  color: #29a9ea;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 15px;
+  padding: 0 20px;
+  font-size: 15px;
+  font-weight: bolder;
+  height: 40px;
+}

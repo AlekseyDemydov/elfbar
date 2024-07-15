@@ -1,0 +1,17 @@
+.nav-tabs .nav-link {
+    color: black !important;
+  
+    &.active {
+      color: #00b31e !important; 
+    }
+  
+    &:hover {
+      color: orange !important; 
+    }
+  }
+  .nav-tabs{
+    display: flex;
+    justify-content: center;
+  }
+
+

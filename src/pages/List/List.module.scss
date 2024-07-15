@@ -1,0 +1,228 @@
+.product-list {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1.5rem;
+  }
+
+  .list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    list-style-type: none;
+    padding: 0;
+    justify-items: center;
+    width: 100%;
+    @media screen and (max-width: 991px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media screen and (max-width: 480px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+  }
+
+  .item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    transition: box-shadow 0.3s ease;
+    width: 100%;
+
+    &:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    
+
+    .link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      div {
+        margin-bottom: 0.5rem;
+
+      
+      }
+    }
+  }
+
+  .error {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+  }
+}
+.title {
+  font-weight: 700;
+  font-size: 18px;
+  @media screen and (max-width: 480px) {
+    font-size: 12px;
+   
+    }
+}
+.image {
+  width: 345px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+   
+    }
+}
+.description {
+  padding: 0 30px;
+  height: 180px;
+  @media screen and (max-width: 480px) {
+  height: 150px;
+  padding: 0;
+ 
+  }
+}
+.listDesc {
+  list-style: none;
+  font-weight: 300;
+  color: #000000;
+  font-size: 14px;
+  line-height: 1.55;
+  word-break: break-word;
+  @media screen and (max-width: 480px) {
+    font-size: 11px;
+   
+    }
+}
+.btnBuy {
+  color: #ffffff;
+  background-color: #ff5100;
+  font-weight: 600;
+  text-transform: uppercase;
+  height: 45px;
+  font-size: 14px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border: none;
+  @media screen and (max-width: 480px) {
+  
+    width: 100%;
+ 
+  }
+}
+.boxCount {
+  display: inline-flex;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  vertical-align: top;
+  border: 1px solid #777;
+  font-size: 14px;
+  height: 45px;
+  background-color: #fff;
+  box-sizing: border-box;
+  @media screen and (max-width: 480px) {
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 5px;
+  }
+}
+.btnInc {
+  min-width: 25px;
+  width: 25px;
+  height: 25px;
+  margin: 0 5px;
+  cursor: pointer;
+  font-size: 14px;
+  border: none;
+  background-color: rgba(0, 0, 128, 0);
+}
+.btnNumb {
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  vertical-align: top;
+  border: none;
+  background-color: transparent;
+  color: #000;
+}
+select {
+  height: 40px;
+  width: 100%;
+  border: 1px #ddd solid;
+  background: #f8f8f8;
+  color: #000;
+  box-sizing: border-box;
+  cursor: pointer;
+  padding: 2px 10px 2px 10px;
+  border-radius: 5px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin-bottom: 10px;
+  width: 100%;
+}
+.btnDown {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+.btnDelete {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #ffffff;
+  background-color: #ff0000;
+  font-weight: 600;
+  text-transform: uppercase;
+  height: 45px;
+  font-size: 14px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border: none;
+}
+.price{
+  height: 50px;
+  font-weight: 700;
+}
+.imgBox{
+  display: flex;
+    justify-content: center;
+  height: 355px;
+  @media screen and (max-width: 480px) {
+    height: 130px;
+    
+  }
+}
+.selectBox{
+  height: 40px;
+  width: 100%;
+}
+.btnBuyCount{
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  @media screen and (max-width: 480px) {
+    flex-direction: column;
+    align-items: center;
+    
+  }
+}
+.listDescr{
+  padding-left: 0;
+}
