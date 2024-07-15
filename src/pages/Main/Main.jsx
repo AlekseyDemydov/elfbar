@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import Tab from 'react-bootstrap/Tab';
 import { useOutletContext } from 'react-router';
 import Tabs from 'react-bootstrap/Tabs';
-// import banner from './img/banner.jpg';
 import s from './Main.module.scss';
 import List from 'pages/List/List';
 import './Main.css';
@@ -21,16 +20,16 @@ const Main = () => {
   const [userEmail, setUserEmail] = useState('');
 
   useEffect(() => {
-    const userEmail = localStorage.getItem('adminEmail') || '';
-    setUserEmail(userEmail);
+    const email = localStorage.getItem('adminEmail') || '';
+    setUserEmail(email);
   }, []);
 
   const { handleBuy } = useOutletContext();
 
-  const handleDelete = productId => {
+  const handleDelete = useCallback((productId) => {
     axios
       .delete(`${config.baseURL}/products/${productId}`)
-      .then(response => {
+      .then(() => {
         setProducts(prevProducts =>
           prevProducts.filter(product => product._id !== productId)
         );
@@ -38,21 +37,19 @@ const Main = () => {
       .catch(error => {
         console.error('Помилка при видаленні продукту:', error);
       });
-  };
+  }, []);
 
-  const handleSortByQuantityChange = event => {
-    setSortByQuantity(event.target.value);
-    if (event.target.value !== '') {
+  const handleSortByQuantityChange = (event) => {
+    const value = event.target.value;
+    setSortByQuantity(value);
+    if (value !== '') {
       setSortByType('Одноразові');
-      
       window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: 'puffs-selected',
-      });
+      window.dataLayer.push({ event: 'puffs-selected' });
     }
   };
 
-  const handleSortByTypeChange = selectedType => {
+  const handleSortByTypeChange = (selectedType) => {
     setSortByType(selectedType);
     if (selectedType !== 'Одноразові') {
       setSortByQuantity('');
@@ -60,9 +57,9 @@ const Main = () => {
   };
 
   useEffect(() => {
-    axios
-      .get(`${config.baseURL}/products`)
-      .then(response => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`${config.baseURL}/products`);
         let sortedProducts = response.data;
 
         const uniqueTypes = [
@@ -71,9 +68,7 @@ const Main = () => {
         setTypes(uniqueTypes);
 
         let uniqueQuantitys = [
-          ...new Set(
-            sortedProducts.map(product => product.description.quantity)
-          ),
+          ...new Set(sortedProducts.map(product => product.description.quantity)),
         ];
         uniqueQuantitys = uniqueQuantitys.filter(quantity => quantity !== '');
         uniqueQuantitys.sort((a, b) => a - b);
@@ -92,13 +87,15 @@ const Main = () => {
         }
 
         setProducts(sortedProducts);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('Помилка при завантаженні продуктів:', error);
         setError(
           'Не вдалося завантажити список продуктів. Будь ласка, спробуйте пізніше.'
         );
-      });
+      }
+    };
+
+    fetchProducts();
   }, [sortByType, sortByQuantity]);
 
   if (error) {
@@ -112,7 +109,6 @@ const Main = () => {
           Створити
         </NavLink>
       )}
-      {/* <img src={banner} alt="banner" className={s.banner} /> */}
 
       <Marquee
         style={{
