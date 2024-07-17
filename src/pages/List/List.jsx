@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import styles from './List.module.scss';
 import config from 'config';
 import './List.css'
@@ -133,6 +132,7 @@ const List = ({ products, handleDelete, handleBuy }) => {
                     src={`${config.baseURL}${product.imageUrl}`}
                     alt={product.name}
                     className={styles.image}
+                    loading="lazy"
                   />
                 </div>
 
@@ -291,27 +291,6 @@ const List = ({ products, handleDelete, handleBuy }) => {
   );
 };
 
-List.propTypes = {
-  products: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
-      imageUrl: PropTypes.string.isRequired,
-      description: PropTypes.shape({
-        quantity: PropTypes.string,
-        strength: PropTypes.string,
-        type: PropTypes.string,
-        charging: PropTypes.string,
-        volume: PropTypes.string,
-        resistance: PropTypes.arrayOf(PropTypes.string),
-      }).isRequired,
-      flavor: PropTypes.arrayOf(PropTypes.string),
-      color: PropTypes.arrayOf(PropTypes.string),
-    })
-  ).isRequired,
-  handleDelete: PropTypes.func.isRequired,
-  handleBuy: PropTypes.func.isRequired,
-};
+
 
 export default List;

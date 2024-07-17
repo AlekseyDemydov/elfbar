@@ -75,8 +75,13 @@ const AddProduct = () => {
       const formData = new FormData();
       const file = event.target.files[0];
       formData.append("image", file);
-      const { data } = await axios.post(`${config.baseURL}/upload`, formData);
+      const { data } = await axios.post(`${config.baseURL}/upload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       setProductData((prevData) => ({ ...prevData, imageUrl: data.url }));
+      console.log(data.url)
     } catch (err) {
       console.warn(err);
       alert("Помилка при завантаженні файлу");
@@ -185,7 +190,7 @@ const AddProduct = () => {
           <img
             crossOrigin="anonymous"
             src={`${config.baseURL}${productData.imageUrl}`}
-            alt="Uploaded"
+            alt={`${productData.imageUrl}`}
             className={styles.uploadedImage}
           />
         )}
