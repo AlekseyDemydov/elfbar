@@ -14,7 +14,7 @@ const List = ({ products, handleDelete, handleBuy }) => {
     selectedResistances: {},
   });
   
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const initialState = products.reduce((acc, product) => {
@@ -26,18 +26,18 @@ const List = ({ products, handleDelete, handleBuy }) => {
     }, { productCounts: {}, selectedFlavors: {}, selectedColors: {}, selectedResistances: {} });
     setState(initialState);
 
-    const imagePromises = products.map(product => {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.src = `${config.baseURL}${product.imageUrl}`;
-        img.onload = resolve;
-        img.onerror = reject;
-      });
-    });
+    // const imagePromises = products.map(product => {
+    //   return new Promise((resolve, reject) => {
+    //     const img = new Image();
+    //     img.src = `${config.baseURL}${product.imageUrl}`;
+    //     img.onload = resolve;
+    //     img.onerror = reject;
+    //   });
+    // });
 
-    Promise.all(imagePromises)
-      .then(() => setIsLoading(false))
-      .catch(error => console.error('Error loading images:', error));
+    // Promise.all(imagePromises)
+    //   .then(() => setIsLoading(false))
+    //   .catch(error => console.error('Error loading images:', error));
   }, [products]);
 
   const handleStateChange = (key, productId, value) => {
@@ -109,9 +109,9 @@ const List = ({ products, handleDelete, handleBuy }) => {
     handleBuy(existingOrders);
   };
 
-  if (isLoading) {
-    return <div className="loader">Loading...</div>;
-  }
+  // if (isLoading) {
+  //   return <div className="loader">Loading...</div>;
+  // }
 
   return (
     <div className={styles['product-list']}>
