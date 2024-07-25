@@ -4,17 +4,17 @@ import Notiflix from 'notiflix';
 import config from 'config';
 import s from './Basket.module.scss';
 
-import CityInput from './NP/NovaPoshta';
+// import CityInput from './NP/NovaPoshta';
 
 const Basket = () => {
   const [orders, setOrders] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [message, setMessage] = useState('');
   const [phone, setPhone] = useState('+380');
-  const [selectedCity, setSelectedCity] = useState(null);
-  const [selectedStreet, setSelectedStreet] = useState(null);
-  const [selectedHouseNumber, setSelectedHouseNumber] = useState(null);
-  const [selectedWarehouse, setSelectedWarehouse] = useState(null);
+  const [selectedCity, setSelectedCity] = useState("");
+  // const [selectedStreet, setSelectedStreet] = useState(null);
+  // const [selectedHouseNumber, setSelectedHouseNumber] = useState(null);
+  const [selectedWarehouse, setSelectedWarehouse] = useState("");
   const [receiverName, setReceiverName] = useState('');
 
   useEffect(() => {
@@ -25,6 +25,12 @@ const Basket = () => {
   }, []);
   const handleReceiverNameChange = event => {
     setReceiverName(event.target.value);
+  };
+  const handleWarehouseChange = event => {
+    setSelectedWarehouse(event.target.value);
+  };
+  const handleCityChange = event => {
+    setSelectedCity(event.target.value);
   };
   const handleQuantityChange = (index, newQuantity) => {
     const updatedOrders = [...orders];
@@ -97,18 +103,19 @@ const Basket = () => {
           parse_mode: 'html',
           text:
             `<b>Новий заказ</b>\n<b>Ім'я: </b>${receiverName}\n<b>номер: </b>${phone}\n<b>Повідомлення: </b>${message}\n<b>Замовлення:\n</b>${orderMessage}\n<b>Загальна сума: </b>${totalPrice} грн \n\n <b>Доставка :</b>\n` +
-            (selectedWarehouse && selectedWarehouse.Description
-              ? `<b>Відділення нової пошти :</b> ${selectedWarehouse.Description}\n`
+            (selectedWarehouse 
+              ? `<b>Відділення нової пошти :</b> ${selectedWarehouse}\n`
               : '') +
-            (selectedCity && selectedCity.Description
-              ? `<b>Місто :</b> ${selectedCity.Description}\n`
-              : '') +
-            (selectedStreet && selectedStreet.Description
-              ? `<b>Вулиця :</b> ${selectedStreet.Description}\n`
-              : '') +
-            (selectedHouseNumber && selectedHouseNumber.Description
-              ? `<b>Будинок :</b> ${selectedHouseNumber.Description}\n`
-              : ''),
+            (selectedCity 
+              ? `<b>Місто :</b> ${selectedCity}\n`
+              : '') 
+            //   +
+            // (selectedStreet && selectedStreet.Description
+            //   ? `<b>Вулиця :</b> ${selectedStreet.Description}\n`
+            //   : '') +
+            // (selectedHouseNumber && selectedHouseNumber.Description
+            //   ? `<b>Будинок :</b> ${selectedHouseNumber.Description}\n`
+            //   : ''),
         })
         .then(res => {
           
@@ -118,10 +125,10 @@ const Basket = () => {
           setPhone('+380');
           setReceiverName('');
           setMessage('');
-          setSelectedCity(null);
-          setSelectedStreet(null);
-          setSelectedHouseNumber(null);
-          setSelectedWarehouse(null);
+          setSelectedCity("");
+          // setSelectedStreet(null);
+          // setSelectedHouseNumber(null);
+          setSelectedWarehouse("");
           localStorage.removeItem('orders');
           setTimeout(() => {
             window.location.href = '/thanks';
@@ -238,6 +245,26 @@ const Basket = () => {
               className={s.input}
             />
           </label>
+          <label>
+            Місто
+            <input
+              type="text"
+              value={selectedCity}
+              onChange={handleCityChange}
+              placeholder="введіть назву міста"
+              className={s.input}
+            />
+          </label>
+          <label>
+          Номер відділення
+            <input
+              type="text"
+              value={selectedWarehouse}
+              onChange={handleWarehouseChange}
+              placeholder="Нова пошта або Укрпошта"
+              className={s.input}
+            />
+          </label>
           <input
             type="text"
             value={message}
@@ -245,13 +272,13 @@ const Basket = () => {
             className={s.input}
             placeholder="Коментарій (необов'язково)"
           />
-          <CityInput
+          {/* <CityInput
             onUpdateReceiver={setReceiverName}
             onUpdateCity={setSelectedCity}
             onUpdateStreet={setSelectedStreet}
             onUpdateHouseNumber={setSelectedHouseNumber}
             onUpdateWarehouses={setSelectedWarehouse}
-          />
+          /> */}
 
           <button type="submit" onClick={Send} className={s.btmForm}>
             Відправити замовлення
