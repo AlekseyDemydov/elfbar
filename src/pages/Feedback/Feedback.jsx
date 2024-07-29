@@ -13,11 +13,15 @@ const Feedback = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [productData, setProductData] = useState({ imageUrl: '' });
   const inputFileRef = useRef(null);
+  const [userEmail, setUserEmail] = useState('');
 
   useEffect(() => {
     fetchFeedbacks();
   }, []);
-
+  useEffect(() => {
+    const email = localStorage.getItem('adminEmail') || '';
+    setUserEmail(email);
+  }, []);
   const fetchFeedbacks = async () => {
     try {
       const response = await axios.get(`${config.baseURL}/feedback`);
@@ -82,7 +86,8 @@ const Feedback = () => {
 
   return (
     <div className={styles.feedbackContainer}>
-      <form
+    
+    { userEmail === 'ivan@gmail.com' &&  (<form
         className={styles.formContainer}
         onSubmit={handleSubmit(handleSubmitFeedback)}
       >
@@ -129,7 +134,7 @@ const Feedback = () => {
           Додати відгук
         </button>
       </form>
-
+)}
       <Carousel className={styles.feedbackList}>
         {feedbacks.map(feedback => (
           <Carousel.Item key={feedback._id} className={styles.feedbackItem}>
