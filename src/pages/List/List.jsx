@@ -181,6 +181,7 @@ const List = ({ products, handleDelete, handleBuy }) => {
                 {product.flavor.filter(flavor => flavor.trim() !== '').length > 0 && (
                   <select
                     value={selectedFlavor}
+                    className={`${styles.quantitySelect}`}
                     onChange={e => handleStateChange('selectedFlavors', product._id, e.target.value)}
                   >
                     <option value="">Оберіть смак</option>

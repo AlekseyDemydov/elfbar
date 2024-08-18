@@ -226,3 +226,26 @@ select {
 .listDescr{
   padding-left: 0;
 }
+
+.quantitySelect {
+  background-image: linear-gradient(270deg, #ff5100, #ff51001f);
+  background-size: 400% 400%;
+
+  border: none; /* Опціонально: прибрати рамку */
+  padding: 8px; /* Опціонально: внутрішній відступ */
+  border-radius: 4px; /* Опціонально: заокруглені краї */
+  font-size: 16px; /* Розмір тексту */
+  animation: animateBackground 8s ease infinite;
+}
+
+@keyframes animateBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

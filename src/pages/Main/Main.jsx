@@ -42,18 +42,11 @@ const Main = () => {
   const handleSortByQuantityChange = (event) => {
     const value = event.target.value;
     setSortByQuantity(value);
-    if (value !== '') {
-      setSortByType('Одноразові');
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ event: 'puffs-selected' });
-    }
   };
 
   const handleSortByTypeChange = (selectedType) => {
     setSortByType(selectedType);
-    if (selectedType !== 'Одноразові') {
-      setSortByQuantity('');
-    }
+    setSortByQuantity(''); // Скидання вибору кількості при зміні типу
   };
 
   useEffect(() => {
@@ -148,18 +141,16 @@ const Main = () => {
             variant="tabs"
           >
             <Tab eventKey="" title="Всі"></Tab>
-            {['Одноразові', ...types.filter(type => type !== 'Одноразові')].map(
-              type => (
-                <Tab eventKey={type} title={type} key={type}></Tab>
-              )
-            )}
+            {types.map(type => (
+              <Tab eventKey={type} title={type} key={type}></Tab>
+            ))}
           </Tabs>
         </div>
       </div>
 
       <div className={s.listContainer}>
         <div className={s.sortQuantity}>
-          <h3 className={s.gradientText}>Оберіть розмір:</h3>
+          <h3 >Оберіть розмір:</h3>
           <div className={s.checkboxGroup}>
             <label className={s.check}>
               <input
@@ -167,6 +158,7 @@ const Main = () => {
                 value=""
                 checked={sortByQuantity === ''}
                 onChange={handleSortByQuantityChange}
+                
               />
               Всі
             </label>
@@ -183,7 +175,7 @@ const Main = () => {
             ))}
           </div>
           <select
-            className={s.quantitySelect}
+            className={`${s.quantitySelect} ${s.gradientText}`}
             value={sortByQuantity}
             onChange={handleSortByQuantityChange}
           >

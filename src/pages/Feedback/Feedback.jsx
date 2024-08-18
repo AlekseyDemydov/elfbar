@@ -142,12 +142,13 @@ const Feedback = () => {
               imageUrl={`${config.baseURL}${feedback.imageUrl}`}
               altText="Feedback"
             />
-            <button
+            { userEmail === 'ivan@gmail.com' &&  (<button
               className={styles.deleteButton}
               onClick={() => handleDelete(feedback._id)}
             >
               Видалити відгук
-            </button>
+            </button>)}
+            
           </Carousel.Item>
         ))}
       </Carousel>
