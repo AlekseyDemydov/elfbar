@@ -185,14 +185,14 @@ margin: 0 10px 0 10px;
   display: flex;
 }
 .quantitySelect {
-  background-image: linear-gradient(270deg, #ff5100, #ff51001f);
+  background-image: linear-gradient(270deg, #f8f8f8, #ff51002e);
   background-size: 400% 400%;
-  color: white; /* Колір тексту всередині селекту */
-  border: none; /* Опціонально: прибрати рамку */
+  color: black; /* Колір тексту всередині селекту */
+  border: solid 1px black; 
   padding: 8px; /* Опціонально: внутрішній відступ */
   border-radius: 4px; /* Опціонально: заокруглені краї */
   font-size: 16px; /* Розмір тексту */
-  animation: animateBackground 8s ease infinite;
+  animation: animateBackground 2s ease infinite;
 }
 
 @keyframes animateBackground {
