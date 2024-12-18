@@ -10,7 +10,7 @@ const Basket = () => {
   const [orders, setOrders] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [message, setMessage] = useState('');
-  const [phone, setPhone] = useState('+380');
+  const [phone, setPhone] = useState('');
   const [selectedCity, setSelectedCity] = useState("");
   // const [selectedStreet, setSelectedStreet] = useState(null);
   // const [selectedHouseNumber, setSelectedHouseNumber] = useState(null);
@@ -75,11 +75,9 @@ const Basket = () => {
     e.preventDefault();
     if (receiverName === '') {
       Notiflix.Notify.failure('введіть ім`я');
-    } else if (phone === '+380') {
+    } else if (phone === '') {
       Notiflix.Notify.failure('введіть номер');
-    } else if (phone.length !== 13) {
-      Notiflix.Notify.failure('номер має містити 13 символів');
-    } else if (orders.length === 0) {
+    }  else if (orders.length === 0) {
       Notiflix.Notify.failure('Ваш кошик порожній');
     } else {
       let orderMessage = '';
@@ -122,7 +120,7 @@ const Basket = () => {
           Notiflix.Notify.success('Замовлення відправлено');
           setOrders([]);
           setTotalPrice(0);
-          setPhone('+380');
+          setPhone('');
           setReceiverName('');
           setMessage('');
           setSelectedCity("");
@@ -142,27 +140,23 @@ const Basket = () => {
     }
   };
 
-  const handlePhoneChange = event => {
+  const handlePhoneChange = (event) => {
     let inputPhone = event.target.value.trim();
-    let formattedPhone = inputPhone.replace(/\D/g, '');
-
-    if (!formattedPhone.startsWith('+380')) {
-      formattedPhone = '+380' + formattedPhone.substring(3);
-    }
-
-    if (formattedPhone.length > 13) {
-      formattedPhone = formattedPhone.slice(0, 13);
-    }
-
-    if (formattedPhone.length > 3) {
+    
+    // Залишаємо лише цифри та символ "+" на початку
+    let formattedPhone = inputPhone.replace(/(?!^\+)\D/g, '');
+  
+    // Форматуємо номер, якщо довжина достатня
+    if (formattedPhone.startsWith('+') && formattedPhone.length >= 7) {
       formattedPhone = formattedPhone.replace(
-        /^380(\d{2})(\d{3})(\d{2})(\d{2})$/,
-        '($1) $2-$3-$4'
+        /^\+(\d{3})(\d{3})(\d{2})(\d{2})$/,
+        '+$1 ($2) $3-$4'
       );
     }
-
+  
     setPhone(formattedPhone);
   };
+  
 
   return (
     <div className={s.Basket}>
@@ -232,8 +226,8 @@ const Basket = () => {
             value={phone}
             onChange={handlePhoneChange}
             className={s.input}
-            pattern="[0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}"
-            placeholder="(99) 999-99-99"
+            // pattern="[0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}"
+            placeholder="(+380) 999-999-999"
           />
           <label>
             Одержувач (ПІБ повністю)
