@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Notiflix from 'notiflix';
 import config from 'config';
+import emailjs from 'emailjs-com';
 import s from './Basket.module.scss';
 
 // import CityInput from './NP/NovaPoshta';
@@ -71,53 +72,55 @@ const Basket = () => {
   const CHAT = '-1002208287237';
   const URI_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
 
-  const Send = e => {
+  const sendEmail = () => {
+    const emailData = {
+      service_id: "service_zkjtl6e",  // ID твого сервісу в EmailJS
+      template_id: "template_51geeis", // ID твого шаблону
+      user_id: "E-iWgWIJx90uGQ3PV", // Твій User ID в EmailJS
+      template_params: {
+        to_email: "your_email@gmail.com", // Твоя пошта
+        receiverName: receiverName,
+        phone: phone,
+        selectedCity: selectedCity,
+        selectedWarehouse: selectedWarehouse,
+        totalPrice: totalPrice,
+        orderMessage: orders.map(order => 
+          `➤ ${order.name} - ${order.count} шт., ${order.price} грн\n`
+        ).join('')
+      }
+    };
+  
+    emailjs.send(emailData.service_id, emailData.template_id, emailData.template_params, emailData.user_id)
+      .then(() => Notiflix.Notify.success("Замовлення відправлено на email"))
+      .catch(() => Notiflix.Notify.failure("Помилка при відправці email"));
+  };
+  
+  // Викликаємо email-надсилання у функції відправки замовлення
+  const Send = (e) => {
     e.preventDefault();
+    
     if (receiverName === '') {
-      Notiflix.Notify.failure('введіть ім`я');
-    } else if (phone === '') {
-      Notiflix.Notify.failure('введіть номер');
-    }  else if (orders.length === 0) {
+      Notiflix.Notify.failure('Введіть ім`я');
+      return;
+    } 
+    if (phone === '') {
+      Notiflix.Notify.failure('Введіть номер');
+      return;
+    }  
+    if (orders.length === 0) {
       Notiflix.Notify.failure('Ваш кошик порожній');
-    } else {
-      let orderMessage = '';
-      orders.forEach(order => {
-        orderMessage += `➤<b>${order.name}</b>`;
-        if (order.flavor) {
-          orderMessage += `\n<b>Смак: ${order.flavor}</b>`;
-        }
-        if (order.color) {
-          orderMessage += `\n<b>Колір: ${order.color}</b>`;
-        }
-        if (order.resistance) {
-          orderMessage += `\n<b>Опір: ${order.resistance}</b>`;
-        }
-        orderMessage += ` - ${order.count} шт., ${order.price} грн\n`;
-      });
-
-      axios
-        .post(URI_API, {
-          chat_id: CHAT,
-          parse_mode: 'html',
-          text:
-            `<b>Новий заказ</b>\n<b>Ім'я: </b>${receiverName}\n<b>номер: </b>${phone}\n<b>Повідомлення: </b>${message}\n<b>Замовлення:\n</b>${orderMessage}\n<b>Загальна сума: </b>${totalPrice} грн \n\n <b>Доставка :</b>\n` +
-            (selectedWarehouse 
-              ? `<b>Відділення нової пошти :</b> ${selectedWarehouse}\n`
-              : '') +
-            (selectedCity 
-              ? `<b>Місто :</b> ${selectedCity}\n`
-              : '') 
-            //   +
-            // (selectedStreet && selectedStreet.Description
-            //   ? `<b>Вулиця :</b> ${selectedStreet.Description}\n`
-            //   : '') +
-            // (selectedHouseNumber && selectedHouseNumber.Description
-            //   ? `<b>Будинок :</b> ${selectedHouseNumber.Description}\n`
-            //   : ''),
-        })
-        .then(res => {
-          
-          Notiflix.Notify.success('Замовлення відправлено');
+      return;
+    }
+  
+    // Відправка в Телеграм
+    axios.post(URI_API, {
+      chat_id: CHAT,
+      parse_mode: 'html',
+      text: `<b>Новий заказ</b>\n<b>Ім'я: </b>${receiverName}\n<b>номер: </b>${phone}\n<b>місто: </b>${selectedCity}\n<b>Відділення: </b>${selectedWarehouse}\n<b>Повідомлення: </b>${message}\n<b>Замовлення:\n</b>${orders.map(order => `➤<b>${order.name}</b> - ${order.count} шт., ${order.price} грн\n`).join('')}\n<b>Загальна сума: </b>${totalPrice} грн`
+    })
+    .then(() => {
+      sendEmail(); // Викликаємо email-надсилання
+      Notiflix.Notify.success('Замовлення відправлено');
           setOrders([]);
           setTotalPrice(0);
           setPhone('');
@@ -131,13 +134,9 @@ const Basket = () => {
           setTimeout(() => {
             window.location.href = '/thanks';
           }, 1500);
-        })
-        .catch(err => {
-          Notiflix.Notify.failure(
-            'Виникла помилка під час відправки замовлення'
-          );
-        });
-    }
+
+    })
+    .catch(() => Notiflix.Notify.failure('Виникла помилка під час відправки замовлення'));
   };
 
   const handlePhoneChange = (event) => {
