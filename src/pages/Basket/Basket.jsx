@@ -85,7 +85,7 @@ const Basket = () => {
         selectedWarehouse: selectedWarehouse,
         totalPrice: totalPrice,
         orderMessage: orders.map(order => 
-          `➤ ${order.name} - ${order.count} шт., ${order.price} грн\n`
+          `➤<${order.name}\n <b>Смак: </b>${order.flavor}  - ${order.count} шт., ${order.price} грн\n`
         ).join('')
       }
     };
@@ -116,7 +116,7 @@ const Basket = () => {
     axios.post(URI_API, {
       chat_id: CHAT,
       parse_mode: 'html',
-      text: `<b>Новий заказ</b>\n<b>Ім'я: </b>${receiverName}\n<b>номер: </b>${phone}\n<b>місто: </b>${selectedCity}\n<b>Відділення: </b>${selectedWarehouse}\n<b>Повідомлення: </b>${message}\n<b>Замовлення:\n</b>${orders.map(order => `➤<b>${order.name}</b> - ${order.count} шт., ${order.price} грн\n`).join('')}\n<b>Загальна сума: </b>${totalPrice} грн`
+      text: `<b>Новий заказ</b>\n<b>Ім'я: </b>${receiverName}\n<b>номер: </b>${phone}\n<b>Повідомлення: </b>${message}\n<b>Замовлення:\n</b>${orders.map(order => `➤<b>${order.name}</b>\n <b>Смак: </b>${order.flavor}  - ${order.count} шт., ${order.price} грн\n`).join('')}\n<b>Загальна сума: </b>${totalPrice} грн\n\n <b>Доставка: </b>\n <b>Відділення нової пошти: ${selectedWarehouse}</b>\n <b>Місто:  ${selectedCity}</b>`
     })
     .then(() => {
       sendEmail(); // Викликаємо email-надсилання
