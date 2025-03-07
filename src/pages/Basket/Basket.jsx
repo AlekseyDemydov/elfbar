@@ -78,14 +78,14 @@ const Basket = () => {
       template_id: "template_51geeis", // ID твого шаблону
       user_id: "E-iWgWIJx90uGQ3PV", // Твій User ID в EmailJS
       template_params: {
-        to_email: "your_email@gmail.com", // Твоя пошта
+        to_email: "unnior2007@gmail.com", // Твоя пошта
         receiverName: receiverName,
         phone: phone,
         selectedCity: selectedCity,
         selectedWarehouse: selectedWarehouse,
         totalPrice: totalPrice,
         orderMessage: orders.map(order => 
-          `➤<${order.name}\n <b>Смак: </b>${order.flavor}  - ${order.count} шт., ${order.price} грн\n`
+          `➤<${order.name}\n Смак: ${order.flavor}  - ${order.count} шт., ${order.price} грн\n`
         ).join('')
       }
     };
