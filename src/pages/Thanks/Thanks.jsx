@@ -7,7 +7,7 @@ const Thanks = () => {
     event: 'purchase',
   });
   const handleClickGrupp = () => {
-    window.open('https://t.me/soaring78', '_blank');
+    window.open('https://t.me/+O4zrgmh52CYyYzhi', '_blank');
   };
   return (
     <div className={styles['thanks-container']}>

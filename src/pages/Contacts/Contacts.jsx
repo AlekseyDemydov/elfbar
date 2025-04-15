@@ -5,7 +5,7 @@ export const Contacts = () => {
     window.open('https://t.me/anatolyi_st', '_blank');
   };
   const handleClickGrupp = () => {
-    window.open('https://t.me/soaring78', '_blank');
+    window.open('https://t.me/+O4zrgmh52CYyYzhi', '_blank');
   };
   const handleClickVBAdmin = () => {
     window.open('viber://add?number=380994363382', '_blank');
