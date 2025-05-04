@@ -188,3 +188,15 @@ select{
 .price{
   font-weight: 700;
 }
+.centralList{
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px 75px;
+    @media screen and (max-width: 480px) {
+      padding: 10px 35px;
+     }
+}
+.disText{
+  padding-top: 25px;
+}

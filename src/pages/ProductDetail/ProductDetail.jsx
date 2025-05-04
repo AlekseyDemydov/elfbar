@@ -131,6 +131,8 @@ const ProductDetail = () => {
   }
 
   return (
+    <>
+    <div className={s.centralList}>
     <div className={s.detBox}>
       {product.imageUrl && (
         <img
@@ -263,6 +265,7 @@ const ProductDetail = () => {
           </button>
         </div>
       </div>
+
       {userEmail && userEmail === 'ivan@gmail.com' && (
         <NavLink
           to={`/products/${id}/edit`}
@@ -276,7 +279,15 @@ const ProductDetail = () => {
           Редагувати
         </NavLink>
       )}
+           
     </div>
+    <div
+    className={s.disText}
+    dangerouslySetInnerHTML={{ __html: product.disText }}
+  />
+    </div>
+    
+  </>
   );
 };
 
