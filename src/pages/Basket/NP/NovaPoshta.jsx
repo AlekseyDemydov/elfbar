@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styles from './CityInput.module.css'; // імпортуємо стилі
+import styles from './CityInput.module.scss'; // імпортуємо стилі
 
 const API_KEY = '4c4cc38e7a31bd899f3eb60c965650ca';
 
@@ -110,7 +110,6 @@ const CityInput = ({
   onUpdateCity,
   onUpdateStreet,
   onUpdateHouseNumber,
-  onUpdateReceiver,
   onUpdateWarehouses,
 }) => {
   const [inputValue, setInputValue] = useState('');
@@ -125,23 +124,26 @@ const CityInput = ({
   const [houseNumberInputValue, setHouseNumberInputValue] = useState(''); // Додаємо стан для введення номера будинку
   const [showSuggestions, setShowSuggestions] = useState(true); // Для показу або приховання списку підказок
   const [showStreetSuggestions, setShowStreetSuggestions] = useState(false); // Для показу або приховання списку підказок вулиць
-  const [showHouseNumberSuggestions, setShowHouseNumberSuggestions] =
-    useState(false); // Для показу або приховання списку підказок номерів будинків
-  // const [receiverName, setReceiverName] = useState('');
+  const [showHouseNumberSuggestions, setShowHouseNumberSuggestions] = useState(false); // Для показу або приховання списку підказок номерів будинків
+
   const [warehouseInputValue, setWarehouseInputValue] = useState('');
   const [warehouseSuggestions, setWarehouseSuggestions] = useState([]);
   const [selectedWarehouse, setSelectedWarehouse] = useState(null);
-const [showWarehouseSuggestions, setShowWarehouseSuggestions] = useState(false);
-console.log(showWarehouseSuggestions)
+  const [showWarehouseSuggestions, setShowWarehouseSuggestions] = useState(false);
 
-  console.log(selectedWarehouse);
+  console.log(selectedWarehouse)
+  console.log(showWarehouseSuggestions)
+ 
   const handleFocusCiti = () => {
     const fetchCities = async () => {
       try {
         const data = await getNovaPoshtaCities(''); // Викликаємо функцію з порожнім значенням для отримання всіх міст
         setSuggestions(data);
       } catch (error) {
-        console.error('Помилка при отриманні списку міст від Нової Пошти:', error);
+        console.error(
+          'Помилка при отриманні списку міст від Нової Пошти:',
+          error
+        );
       }
     };
 
@@ -155,12 +157,18 @@ console.log(showWarehouseSuggestions)
       } else if (deliveryMethod === 'postomat') {
         warehouseType = 'Postomat';
       }
-  
-      const data = await getNovaPoshtaWarehouses(selectedCity.Ref, warehouseType);
+
+      const data = await getNovaPoshtaWarehouses(
+        selectedCity.Ref,
+        warehouseType
+      );
       setWarehouseSuggestions(data);
       setShowWarehouseSuggestions(true); // Показуємо список підказок для відділень/поштоматів
     } catch (error) {
-      console.error('Помилка при отриманні списку відділень/поштоматів Нової Пошти:', error);
+      console.error(
+        'Помилка при отриманні списку відділень/поштоматів Нової Пошти:',
+        error
+      );
     }
   };
   useEffect(() => {
@@ -314,28 +322,21 @@ console.log(showWarehouseSuggestions)
     onUpdateWarehouses(warehouse);
   };
 
-  // const handleReceiverNameChange = event => {
-  //   setReceiverName(event.target.value);
-  // };
-
-  // useEffect(() => {
-  //   onUpdateReceiver(receiverName); // Передача ім'я отримувача назад у Basket
-  // }, [receiverName, onUpdateReceiver]);
 
   return (
     <div className={styles['city-input']}>
       <label>
-      Місто
+        Місто
         <input
-        type="text"
-        value={inputValue}
-        onChange={e => setInputValue(e.target.value)}
-        placeholder="Введіть місто..."
-        className={styles['input-field']}
-        onFocus={handleFocusCiti}
-      />
+          type="text"
+          value={inputValue}
+          onChange={e => setInputValue(e.target.value)}
+          placeholder="Введіть місто..."
+          className={styles['input-field']}
+          onFocus={handleFocusCiti}
+        />
       </label>
-      
+
       {showSuggestions && suggestions.length > 0 && (
         <ul className={styles['suggestions-list']}>
           {suggestions.map(city => (
@@ -385,17 +386,17 @@ console.log(showWarehouseSuggestions)
       {deliveryMethod === 'department' && warehouses.length > 0 && (
         <div className={styles['inputs-container']}>
           <label>
-          Пункт отримання
-          <input
-            type="text"
-            value={warehouseInputValue}
-            onChange={e => handleWarehouseSearch(e.target.value)}
-            placeholder="Виберіть пункт отримання"
-            className={styles['input-field']}
-            onFocus={handleFocusWarehouse}
-          />
+            Пункт отримання
+            <input
+              type="text"
+              value={warehouseInputValue}
+              onChange={e => handleWarehouseSearch(e.target.value)}
+              placeholder="Виберіть пункт отримання"
+              className={styles['input-field']}
+              onFocus={handleFocusWarehouse}
+            />
           </label>
-          
+
           {warehouseSuggestions.length > 0 && (
             <ul className={styles['suggestions-list']}>
               {warehouseSuggestions.map(warehouse => (
@@ -409,32 +410,21 @@ console.log(showWarehouseSuggestions)
               ))}
             </ul>
           )}
-          {/* <label >
-          Одержувач (ПІБ повністю)
-          <input
-            type="text"
-            value={receiverName}
-            onChange={handleReceiverNameChange}
-            placeholder="Іван Іванович Іваненко"
-            className={styles['input-field']}
-          />
-          </label> */}
           
         </div>
       )}
       {deliveryMethod === 'postomat' && warehouses.length > 0 && (
         <div className={styles['inputs-container']}>
           <label>
-          Пункт отримання
-          <input
-            type="text"
-            value={warehouseInputValue}
-            onChange={e => handleWarehouseSearch(e.target.value)}
-            placeholder="Виберіть пункт отримання"
-            className={styles['input-field']}
-            onFocus={handleFocusWarehouse}
-            
-          />
+            Пункт отримання
+            <input
+              type="text"
+              value={warehouseInputValue}
+              onChange={e => handleWarehouseSearch(e.target.value)}
+              placeholder="Виберіть пункт отримання"
+              className={styles['input-field']}
+              onFocus={handleFocusWarehouse}
+            />
           </label>
           {warehouseSuggestions.length > 0 && (
             <ul className={styles['suggestions-list']}>
@@ -449,16 +439,7 @@ console.log(showWarehouseSuggestions)
               ))}
             </ul>
           )}
-          {/* <label >
-          Одержувач (ПІБ повністю)
-          <input
-            type="text"
-            value={receiverName}
-            onChange={handleReceiverNameChange}
-            placeholder="Іван Іванович Іваненко"
-            className={styles['input-field']}
-          />
-          </label> */}
+          
         </div>
       )}
       {deliveryMethod === 'courier' && (
@@ -466,15 +447,15 @@ console.log(showWarehouseSuggestions)
           <div className={styles['street-input']}>
             <label>
               Вулиця
-            <input
-              type="text"
-              value={streetInputValue}
-              onChange={e => handleStreetSearch(e.target.value)}
-              placeholder="Введіть вулицю..."
-              className={styles['input-field']}
-            />
+              <input
+                type="text"
+                value={streetInputValue}
+                onChange={e => handleStreetSearch(e.target.value)}
+                placeholder="Введіть вулицю..."
+                className={styles['input-field']}
+              />
             </label>
-            
+
             {showStreetSuggestions && streets.length > 0 && (
               <ul className={styles['suggestions-list']}>
                 {streets.map(street => (
@@ -493,14 +474,14 @@ console.log(showWarehouseSuggestions)
             <label>
               Будинок
               <input
-              type="text"
-              value={houseNumberInputValue}
-              onChange={e => handleHouseNumberSearch(e.target.value)}
-              placeholder="Введіть номер будинку..."
-              className={styles['input-field']}
-            />
+                type="text"
+                value={houseNumberInputValue}
+                onChange={e => handleHouseNumberSearch(e.target.value)}
+                placeholder="Введіть номер будинку..."
+                className={styles['input-field']}
+              />
             </label>
-            
+
             {showHouseNumberSuggestions && houseNumbers.length > 0 && (
               <ul className={styles['suggestions-list']}>
                 {houseNumbers.map(houseNumber => (
@@ -515,16 +496,7 @@ console.log(showWarehouseSuggestions)
               </ul>
             )}
           </div>
-          {/* <label >
-          Одержувач (ПІБ повністю)
-          <input
-            type="text"
-            value={receiverName}
-            onChange={handleReceiverNameChange}
-            placeholder="Іван Іванович Іваненко"
-            className={styles['input-field']}
-          />
-          </label> */}
+         
         </div>
       )}
     </div>
