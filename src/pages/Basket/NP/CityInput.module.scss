@@ -1,11 +1,13 @@
 .city-input {
     position: relative;
-    width: 300px;
+    // width: 300px;
     margin: 20px auto;
+    display: flex;
+    flex-direction: column;
   }
   
   .input-field {
-    width: 300px;
+    width: 100%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;

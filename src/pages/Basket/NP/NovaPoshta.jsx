@@ -111,6 +111,7 @@ const CityInput = ({
   onUpdateStreet,
   onUpdateHouseNumber,
   onUpdateWarehouses,
+  onApartmentChange,
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedCity, setSelectedCity] = useState(null);
@@ -124,16 +125,19 @@ const CityInput = ({
   const [houseNumberInputValue, setHouseNumberInputValue] = useState(''); // Додаємо стан для введення номера будинку
   const [showSuggestions, setShowSuggestions] = useState(true); // Для показу або приховання списку підказок
   const [showStreetSuggestions, setShowStreetSuggestions] = useState(false); // Для показу або приховання списку підказок вулиць
-  const [showHouseNumberSuggestions, setShowHouseNumberSuggestions] = useState(false); // Для показу або приховання списку підказок номерів будинків
-
+  const [showHouseNumberSuggestions, setShowHouseNumberSuggestions] =
+    useState(false); // Для показу або приховання списку підказок номерів будинків
+  const [apartmentNumberInputValue, setApartmentNumberInputValue] =
+    useState('');
   const [warehouseInputValue, setWarehouseInputValue] = useState('');
   const [warehouseSuggestions, setWarehouseSuggestions] = useState([]);
   const [selectedWarehouse, setSelectedWarehouse] = useState(null);
-  const [showWarehouseSuggestions, setShowWarehouseSuggestions] = useState(false);
+  const [showWarehouseSuggestions, setShowWarehouseSuggestions] =
+    useState(false);
 
-  console.log(selectedWarehouse)
-  console.log(showWarehouseSuggestions)
- 
+  console.log(selectedWarehouse);
+  console.log(showWarehouseSuggestions);
+
   const handleFocusCiti = () => {
     const fetchCities = async () => {
       try {
@@ -148,6 +152,12 @@ const CityInput = ({
     };
 
     fetchCities();
+  };
+    const handleApartmentChange = (value) => {
+    setApartmentNumberInputValue(value);
+    if (onApartmentChange) {
+      onApartmentChange(value); // 🔼 Передаємо вгору
+    }
   };
   const handleFocusWarehouse = async () => {
     try {
@@ -322,20 +332,17 @@ const CityInput = ({
     onUpdateWarehouses(warehouse);
   };
 
-
   return (
     <div className={styles['city-input']}>
-      <label>
-        Місто
-        <input
-          type="text"
-          value={inputValue}
-          onChange={e => setInputValue(e.target.value)}
-          placeholder="Введіть місто..."
-          className={styles['input-field']}
-          onFocus={handleFocusCiti}
-        />
-      </label>
+      <p>Місто</p>
+      <input
+        type="text"
+        value={inputValue}
+        onChange={e => setInputValue(e.target.value)}
+        placeholder="Введіть місто..."
+        className={styles['input-field']}
+        onFocus={handleFocusCiti}
+      />
 
       {showSuggestions && suggestions.length > 0 && (
         <ul className={styles['suggestions-list']}>
@@ -385,18 +392,15 @@ const CityInput = ({
       {/* Інпути залежно від обраного методу доставки */}
       {deliveryMethod === 'department' && warehouses.length > 0 && (
         <div className={styles['inputs-container']}>
-          <label>
-            Пункт отримання
-            <input
-              type="text"
-              value={warehouseInputValue}
-              onChange={e => handleWarehouseSearch(e.target.value)}
-              placeholder="Виберіть пункт отримання"
-              className={styles['input-field']}
-              onFocus={handleFocusWarehouse}
-            />
-          </label>
-
+          Пункт отримання
+          <input
+            type="text"
+            value={warehouseInputValue}
+            onChange={e => handleWarehouseSearch(e.target.value)}
+            placeholder="Виберіть пункт отримання"
+            className={styles['input-field']}
+            onFocus={handleFocusWarehouse}
+          />
           {warehouseSuggestions.length > 0 && (
             <ul className={styles['suggestions-list']}>
               {warehouseSuggestions.map(warehouse => (
@@ -410,22 +414,19 @@ const CityInput = ({
               ))}
             </ul>
           )}
-          
         </div>
       )}
       {deliveryMethod === 'postomat' && warehouses.length > 0 && (
         <div className={styles['inputs-container']}>
-          <label>
-            Пункт отримання
-            <input
-              type="text"
-              value={warehouseInputValue}
-              onChange={e => handleWarehouseSearch(e.target.value)}
-              placeholder="Виберіть пункт отримання"
-              className={styles['input-field']}
-              onFocus={handleFocusWarehouse}
-            />
-          </label>
+          Пункт отримання
+          <input
+            type="text"
+            value={warehouseInputValue}
+            onChange={e => handleWarehouseSearch(e.target.value)}
+            placeholder="Виберіть пункт отримання"
+            className={styles['input-field']}
+            onFocus={handleFocusWarehouse}
+          />
           {warehouseSuggestions.length > 0 && (
             <ul className={styles['suggestions-list']}>
               {warehouseSuggestions.map(warehouse => (
@@ -439,23 +440,20 @@ const CityInput = ({
               ))}
             </ul>
           )}
-          
         </div>
       )}
       {deliveryMethod === 'courier' && (
         <div className={styles['inputs-container']}>
+          {/* Вулиця */}
           <div className={styles['street-input']}>
-            <label>
-              Вулиця
-              <input
-                type="text"
-                value={streetInputValue}
-                onChange={e => handleStreetSearch(e.target.value)}
-                placeholder="Введіть вулицю..."
-                className={styles['input-field']}
-              />
-            </label>
-
+            Вулиця
+            <input
+              type="text"
+              value={streetInputValue}
+              onChange={e => handleStreetSearch(e.target.value)}
+              placeholder="Введіть вулицю..."
+              className={styles['input-field']}
+            />
             {showStreetSuggestions && streets.length > 0 && (
               <ul className={styles['suggestions-list']}>
                 {streets.map(street => (
@@ -470,18 +468,17 @@ const CityInput = ({
               </ul>
             )}
           </div>
-          <div className={styles['house-number-input']}>
-            <label>
-              Будинок
-              <input
-                type="text"
-                value={houseNumberInputValue}
-                onChange={e => handleHouseNumberSearch(e.target.value)}
-                placeholder="Введіть номер будинку..."
-                className={styles['input-field']}
-              />
-            </label>
 
+          {/* Будинок */}
+          <div className={styles['house-number-input']}>
+            Будинок
+            <input
+              type="text"
+              value={houseNumberInputValue}
+              onChange={e => handleHouseNumberSearch(e.target.value)}
+              placeholder="Введіть номер будинку..."
+              className={styles['input-field']}
+            />
             {showHouseNumberSuggestions && houseNumbers.length > 0 && (
               <ul className={styles['suggestions-list']}>
                 {houseNumbers.map(houseNumber => (
@@ -496,7 +493,18 @@ const CityInput = ({
               </ul>
             )}
           </div>
-         
+
+          {/* Квартира */}
+          <div className={styles['apartment-number-input']}>
+            Квартира
+            <input
+              type="text"
+              value={apartmentNumberInputValue}
+              onChange={e => handleApartmentChange(e.target.value)}
+              placeholder="№ квартири..."
+              className={styles['input-field']}
+            />
+          </div>
         </div>
       )}
     </div>

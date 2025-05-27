@@ -17,6 +17,7 @@ const Basket = () => {
   const [selectedHouseNumber, setSelectedHouseNumber] = useState(null);
   const [selectedWarehouse, setSelectedWarehouse] = useState('');
   const [receiverName, setReceiverName] = useState('');
+  const [apartment, setApartment] = useState('');
 
   // const city = Array.isArray(selectedCity)
   //       ? selectedCity.map(e => e.Description)
@@ -71,11 +72,11 @@ const Basket = () => {
     console.log('done');
   }, []);
 
-  // const TOKEN = '5929832704:AAH-RXP0_n5acEoTgDqHJjUWgdvN7ORkM2U';
-  // const CHAT = '-1002285114176';
+  const TOKEN = '5929832704:AAH-RXP0_n5acEoTgDqHJjUWgdvN7ORkM2U';
+  const CHAT = '-1002285114176';
 
-  const TOKEN = '6860224388:AAH_jiGlu9A8kRh7aYaRDWqmLJbqttDKeTs';
-  const CHAT = '-1002208287237';
+  // const TOKEN = '6860224388:AAH_jiGlu9A8kRh7aYaRDWqmLJbqttDKeTs';
+  // const CHAT = '-1002208287237';
   const URI_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
 
   const sendEmail = (city, street, house, warehouse) => {
@@ -150,12 +151,26 @@ const Basket = () => {
           `➤<b>${order.name}</b>\n <b>Смак: </b>${order.flavor}  - ${order.count} шт., ${order.price} грн\n`
       )
       .join('');
+    let text = `<b>Новий заказ</b>\n`;
+
+    if (receiverName) text += `<b>Ім'я: </b>${receiverName}\n`;
+    if (phone) text += `<b>Номер: </b>${phone}\n`;
+    if (message) text += `<b>Повідомлення: </b>${message}\n`;
+    if (orderText) text += `<b>Замовлення:\n</b>${orderText}\n`;
+    if (totalPrice) text += `<b>Загальна сума: </b>${totalPrice} грн\n\n`;
+
+    text += `<b>Доставка:</b>\n`;
+    if (city) text += `<b>Місто: </b>${city}\n`;
+    if (street) text += `<b>Вулиця: </b>${street}\n`;
+    if (house) text += `<b>Будинок: </b>${house}\n`;
+    if (apartment) text += `<b>Квартира: </b>${apartment}\n`;
+    if (warehouse) text += `<b>Відділення Нової Пошти: </b>${warehouse}`;
 
     axios
       .post(URI_API, {
         chat_id: CHAT,
         parse_mode: 'html',
-        text: `<b>Новий заказ</b>\n<b>Ім'я: </b>${receiverName}\n<b>Номер: </b>${phone}\n<b>Повідомлення: </b>${message}\n<b>Замовлення:\n</b>${orderText}\n<b>Загальна сума: </b>${totalPrice} грн\n\n<b>Доставка:</b>\n <b>Місто: </b>${city}\n <b>Вулиця: </b>${street}\n <b>Будинок: </b>${house}\n <b>Відділення Нової Пошти: </b>${warehouse}`,
+        text: text,
       })
       .then(() => {
         sendEmail(city, street, house, warehouse); // Передаємо уже текстові значення
@@ -267,16 +282,16 @@ const Basket = () => {
             // pattern="[0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}"
             placeholder="(+380) 999-999-999"
           />
-          <label>
-            Одержувач (ПІБ повністю)
-            <input
-              type="text"
-              value={receiverName}
-              onChange={handleReceiverNameChange}
-              placeholder="Іван Іванович Іваненко"
-              className={s.input}
-            />
-          </label>
+
+          <p>Одержувач (ПІБ повністю)</p>
+          <input
+            type="text"
+            value={receiverName}
+            onChange={handleReceiverNameChange}
+            placeholder="Іван Іванович Іваненко"
+            className={s.input}
+          />
+
           {/* <label>
             Місто
             <input
@@ -309,6 +324,7 @@ const Basket = () => {
             onUpdateStreet={setSelectedStreet}
             onUpdateHouseNumber={setSelectedHouseNumber}
             onUpdateWarehouses={setSelectedWarehouse}
+            onApartmentChange={value => setApartment(value)}
           />
 
           <button type="submit" onClick={Send} className={s.btmForm}>
