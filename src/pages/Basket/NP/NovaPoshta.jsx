@@ -153,7 +153,7 @@ const CityInput = ({
 
     fetchCities();
   };
-    const handleApartmentChange = (value) => {
+  const handleApartmentChange = value => {
     setApartmentNumberInputValue(value);
     if (onApartmentChange) {
       onApartmentChange(value); // 🔼 Передаємо вгору
@@ -294,7 +294,13 @@ const CityInput = ({
     setShowHouseNumberSuggestions(false); // При виборі номера будинку приховуємо список підказок
     onUpdateHouseNumber(houseNumber);
   };
-
+  const handleBlurHouseNumber = () => {
+    // Якщо нічого не вибрано з підказок, але щось введено — передаємо як власний текст
+    if (!houseNumbers.find(h => h.Description === houseNumberInputValue)) {
+      onUpdateHouseNumber({ Description: houseNumberInputValue });
+    }
+    setShowHouseNumberSuggestions(false); // ховаємо підказки при втраті фокусу
+  };
   const handleWarehouseSearch = async searchString => {
     setWarehouseInputValue(searchString);
 
@@ -476,6 +482,12 @@ const CityInput = ({
               type="text"
               value={houseNumberInputValue}
               onChange={e => handleHouseNumberSearch(e.target.value)}
+              onFocus={() => {
+                if (houseNumberInputValue) {
+                  handleHouseNumberSearch(houseNumberInputValue);
+                }
+              }}
+              onBlur={handleBlurHouseNumber}
               placeholder="Введіть номер будинку..."
               className={styles['input-field']}
             />
