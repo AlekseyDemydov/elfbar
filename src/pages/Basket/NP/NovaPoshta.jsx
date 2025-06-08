@@ -138,21 +138,29 @@ const CityInput = ({
   console.log(selectedWarehouse);
   console.log(showWarehouseSuggestions);
 
-  const handleFocusCiti = () => {
-    const fetchCities = async () => {
-      try {
-        const data = await getNovaPoshtaCities(''); // Викликаємо функцію з порожнім значенням для отримання всіх міст
-        setSuggestions(data);
-      } catch (error) {
-        console.error(
-          'Помилка при отриманні списку міст від Нової Пошти:',
-          error
-        );
-      }
-    };
+const handleFocusCiti = () => {
+  setSelectedCity(null); // дозволяє переобрати місто
+  setStreets([]);
+  setSelectedStreet(null);
+  setStreetInputValue('');
+  setHouseNumbers([]);
+  setHouseNumberInputValue('');
+  setSelectedWarehouse(null);
+  setWarehouseInputValue('');
+  setSuggestions([]);
+  setShowSuggestions(true);
 
-    fetchCities();
+  const fetchCities = async () => {
+    try {
+      const data = await getNovaPoshtaCities('');
+      setSuggestions(data);
+    } catch (error) {
+      console.error('Помилка при отриманні списку міст від Нової Пошти:', error);
+    }
   };
+
+  fetchCities();
+};
   const handleApartmentChange = value => {
     setApartmentNumberInputValue(value);
     if (onApartmentChange) {
@@ -230,14 +238,24 @@ const CityInput = ({
   }, [selectedCity, deliveryMethod]);
 
   const handleSelectCity = city => {
-    setInputValue(city.Description);
-    setSelectedCity(city);
-    setSuggestions([]);
-    setWarehouseInputValue('');
-    setWarehouseSuggestions([]);
-    setShowSuggestions(false);
+  setInputValue(city.Description);
+  setSelectedCity(city);
+  setSuggestions([]);
+  setShowSuggestions(false);
+
+  // Очищаємо всі залежні поля
+  setStreetInputValue('');
+  setSelectedStreet(null);
+  setHouseNumberInputValue('');
+  setHouseNumbers([]);
+  setWarehouseInputValue('');
+  setSelectedWarehouse(null);
+  setWarehouseSuggestions([]);
+
+  if (onUpdateCity) {
     onUpdateCity(city);
-  };
+  }
+};
 
   const handleCheckboxChange = event => {
     const { name } = event.target;
