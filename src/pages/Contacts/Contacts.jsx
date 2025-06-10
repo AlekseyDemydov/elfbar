@@ -7,9 +7,9 @@ export const Contacts = () => {
   const handleClickGrupp = () => {
     window.open('https://t.me/+O4zrgmh52CYyYzhi', '_blank');
   };
-  const handleClickVBAdmin = () => {
-    window.open('viber://add?number=380994363382', '_blank');
-  };
+  // const handleClickVBAdmin = () => {
+  //   window.open('viber://add?number=380994363382', '_blank');
+  // };
   return (
     <>
       <div className={s.contactsBox}>
@@ -18,9 +18,9 @@ export const Contacts = () => {
           <span>Зв'язатися з менеджером в Telegram</span>
         </button>
         <br />
-        <button onClick={handleClickVBAdmin} className={s.btnContactsVb}>
+        {/* <button onClick={handleClickVBAdmin} className={s.btnContactsVb}>
         <span>Зв'язатися з менеджером в Viber</span>
-        </button>
+        </button> */}
         <br />
         <button className={s.btnContacts} onClick={handleClickGrupp}>
           <span>Підписатися на Telegram</span>
