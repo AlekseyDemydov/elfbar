@@ -2,25 +2,49 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './CityInput.module.scss'; // імпортуємо стилі
 
-const API_KEY = '4c4cc38e7a31bd899f3eb60c965650ca';
-
-const getNovaPoshtaCities = async searchString => {
+const API_KEY = '72fd5392a5b358042900eba2bde5a969';
+const getNovaPoshtaAreas = async () => {
   try {
     const response = await axios.post('https://api.novaposhta.ua/v2.0/json/', {
       apiKey: API_KEY,
       modelName: 'Address',
-      calledMethod: 'getCities',
-      methodProperties: {
-        FindByString: searchString, // Додаємо параметр для пошуку по назві міста
-      },
+      calledMethod: 'getAreas',
+      methodProperties: {},
     });
     if (response.data.success) {
-      return response.data.data; // Повертаємо дані з API Нової Пошти
+      return response.data.data;
     } else {
-      throw new Error('Не вдалося отримати список міст від Нової Пошти');
+      throw new Error('Не вдалося отримати список областей від Нової Пошти');
     }
   } catch (error) {
-    console.error('Помилка при отриманні списку міст від Нової Пошти:', error);
+    console.error('Помилка при отриманні областей:', error);
+    throw error;
+  }
+};
+const getNovaPoshtaCities = async (searchString, areaRef = null) => {
+  try {
+    const methodProperties = {
+      FindByString: searchString,
+    };
+
+    if (areaRef) {
+      methodProperties.AreaRef = areaRef;
+    }
+
+    const response = await axios.post('https://api.novaposhta.ua/v2.0/json/', {
+      apiKey: API_KEY,
+      modelName: 'Address',
+      calledMethod: 'getCities',
+      methodProperties,
+    });
+
+    if (response.data.success) {
+      return response.data.data;
+    } else {
+      throw new Error('Не вдалося отримати список міст');
+    }
+  } catch (error) {
+    console.error('Помилка при отриманні міст:', error);
     throw error;
   }
 };
@@ -134,33 +158,47 @@ const CityInput = ({
   const [selectedWarehouse, setSelectedWarehouse] = useState(null);
   const [showWarehouseSuggestions, setShowWarehouseSuggestions] =
     useState(false);
+  const [areas, setAreas] = useState([]);
+  const [selectedArea, setSelectedArea] = useState(null);
 
   console.log(selectedWarehouse);
   console.log(showWarehouseSuggestions);
 
-const handleFocusCiti = () => {
-  setSelectedCity(null); // дозволяє переобрати місто
-  setStreets([]);
-  setSelectedStreet(null);
-  setStreetInputValue('');
-  setHouseNumbers([]);
-  setHouseNumberInputValue('');
-  setSelectedWarehouse(null);
-  setWarehouseInputValue('');
-  setSuggestions([]);
-  setShowSuggestions(true);
+  const handleFocusCiti = () => {
+    setSelectedCity(null); // дозволяє переобрати місто
+    setStreets([]);
+    setSelectedStreet(null);
+    setStreetInputValue('');
+    setHouseNumbers([]);
+    setHouseNumberInputValue('');
+    setSelectedWarehouse(null);
+    setWarehouseInputValue('');
+    setSuggestions([]);
+    setShowSuggestions(true);
 
-  const fetchCities = async () => {
-    try {
-      const data = await getNovaPoshtaCities('');
-      setSuggestions(data);
-    } catch (error) {
-      console.error('Помилка при отриманні списку міст від Нової Пошти:', error);
-    }
-  };
-
-  fetchCities();
+    const fetchCities = async () => {
+  try {
+    const data = await getNovaPoshtaCities('', selectedArea?.Ref);
+    setSuggestions(data);
+  } catch (error) {
+    console.error('Помилка при отриманні списку міст:', error);
+  }
 };
+
+    fetchCities();
+  };
+  useEffect(() => {
+    const fetchAreas = async () => {
+      try {
+        const data = await getNovaPoshtaAreas();
+        setAreas(data);
+      } catch (error) {
+        console.error('Помилка при завантаженні областей:', error);
+      }
+    };
+
+    fetchAreas();
+  }, []);
   const handleApartmentChange = value => {
     setApartmentNumberInputValue(value);
     if (onApartmentChange) {
@@ -189,27 +227,26 @@ const handleFocusCiti = () => {
       );
     }
   };
-  useEffect(() => {
-    if (inputValue.trim() !== '') {
-      const fetchCities = async () => {
-        try {
-          const data = await getNovaPoshtaCities(inputValue); // Викликаємо функцію з новим значенням
-          setSuggestions(data);
-        } catch (error) {
-          console.error(
-            'Помилка при отриманні списку міст від Нової Пошти:',
-            error
-          );
-        }
-      };
+useEffect(() => {
+  
+  if (inputValue.trim() !== '' && selectedArea) {
+    const fetchCities = async () => {
+      try {
+        const data = await getNovaPoshtaCities(inputValue, selectedArea.Ref);
+        setSuggestions(data);
+      } catch (error) {
+        console.error('Помилка при отриманні міст:', error);
+      }
+    };
 
-      fetchCities();
-    } else {
-      setSuggestions([]); // Очищаємо список підказок, якщо поле вводу порожнє
-    }
-  }, [inputValue]);
+    fetchCities();
+  } else {
+    setSuggestions([]);
+  }
+}, [inputValue, selectedArea]);
 
   useEffect(() => {
+    
     if (selectedCity && deliveryMethod !== '') {
       const fetchWarehouses = async () => {
         try {
@@ -238,24 +275,24 @@ const handleFocusCiti = () => {
   }, [selectedCity, deliveryMethod]);
 
   const handleSelectCity = city => {
-  setInputValue(city.Description);
-  setSelectedCity(city);
-  setSuggestions([]);
-  setShowSuggestions(false);
+    setInputValue(city.Description);
+    setSelectedCity(city);
+    setSuggestions([]);
+    setShowSuggestions(false);
 
-  // Очищаємо всі залежні поля
-  setStreetInputValue('');
-  setSelectedStreet(null);
-  setHouseNumberInputValue('');
-  setHouseNumbers([]);
-  setWarehouseInputValue('');
-  setSelectedWarehouse(null);
-  setWarehouseSuggestions([]);
+    // Очищаємо всі залежні поля
+    setStreetInputValue('');
+    setSelectedStreet(null);
+    setHouseNumberInputValue('');
+    setHouseNumbers([]);
+    setWarehouseInputValue('');
+    setSelectedWarehouse(null);
+    setWarehouseSuggestions([]);
 
-  if (onUpdateCity) {
-    onUpdateCity(city);
-  }
-};
+    if (onUpdateCity) {
+      onUpdateCity(city);
+    }
+  };
 
   const handleCheckboxChange = event => {
     const { name } = event.target;
@@ -313,10 +350,12 @@ const handleFocusCiti = () => {
     onUpdateHouseNumber(houseNumber);
   };
   const handleBlurHouseNumber = () => {
+ 
     // Якщо нічого не вибрано з підказок, але щось введено — передаємо як власний текст
     if (!houseNumbers.find(h => h.Description === houseNumberInputValue)) {
       onUpdateHouseNumber({ Description: houseNumberInputValue });
     }
+
     setShowHouseNumberSuggestions(false); // ховаємо підказки при втраті фокусу
   };
   const handleWarehouseSearch = async searchString => {
@@ -358,6 +397,25 @@ const handleFocusCiti = () => {
 
   return (
     <div className={styles['city-input']}>
+      <p>Область</p>
+      <select
+        value={selectedArea?.Ref || ''}
+        onChange={e => {
+  const selected = areas.find(a => a.Ref === e.target.value) || null;
+  setSelectedArea(selected);
+  setSelectedCity(null);
+  setInputValue('');
+  setSuggestions([]);
+}}
+        className={styles['input-field']}
+      >
+        <option value="">Оберіть область</option>
+        {areas.map(area => (
+          <option key={area.Ref} value={area.Ref}>
+            {area.Description}
+          </option>
+        ))}
+      </select>
       <p>Місто</p>
       <input
         type="text"
@@ -426,7 +484,7 @@ const handleFocusCiti = () => {
             onFocus={handleFocusWarehouse}
           />
           {warehouseSuggestions.length > 0 && (
-            <ul className={styles['suggestions-list']}>
+            <ul className={styles['suggestions-list-warehouses']}>
               {warehouseSuggestions.map(warehouse => (
                 <li
                   key={warehouse.Description}
@@ -452,7 +510,7 @@ const handleFocusCiti = () => {
             onFocus={handleFocusWarehouse}
           />
           {warehouseSuggestions.length > 0 && (
-            <ul className={styles['suggestions-list']}>
+            <ul className={styles['suggestions-list-warehouses']}>
               {warehouseSuggestions.map(warehouse => (
                 <li
                   key={warehouse.Description}
@@ -479,7 +537,7 @@ const handleFocusCiti = () => {
               className={styles['input-field']}
             />
             {showStreetSuggestions && streets.length > 0 && (
-              <ul className={styles['suggestions-list']}>
+              <ul className={styles['suggestions-list-warehouses']}>
                 {streets.map(street => (
                   <li
                     key={street.Ref}
@@ -510,7 +568,7 @@ const handleFocusCiti = () => {
               className={styles['input-field']}
             />
             {showHouseNumberSuggestions && houseNumbers.length > 0 && (
-              <ul className={styles['suggestions-list']}>
+              <ul className={styles['suggestions-list-warehouses']}>
                 {houseNumbers.map(houseNumber => (
                   <li
                     key={houseNumber.Ref}

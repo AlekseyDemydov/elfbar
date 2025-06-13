@@ -18,7 +18,7 @@ const Basket = () => {
   const [selectedWarehouse, setSelectedWarehouse] = useState('');
   const [receiverName, setReceiverName] = useState('');
   const [apartment, setApartment] = useState('');
-
+  // console.log(selectedHouseNumber)
   // const city = Array.isArray(selectedCity)
   //       ? selectedCity.map(e => e.Description)
   //       : selectedCity?.Description || selectedCity
@@ -72,11 +72,11 @@ const Basket = () => {
     console.log('done');
   }, []);
 
-  const TOKEN = '5929832704:AAH-RXP0_n5acEoTgDqHJjUWgdvN7ORkM2U';
-  const CHAT = '-1002285114176';
+  // const TOKEN = '5929832704:AAH-RXP0_n5acEoTgDqHJjUWgdvN7ORkM2U';
+  // const CHAT = '-1002285114176';
 
-  // const TOKEN = '6860224388:AAH_jiGlu9A8kRh7aYaRDWqmLJbqttDKeTs';
-  // const CHAT = '-1002208287237';
+  const TOKEN = '6860224388:AAH_jiGlu9A8kRh7aYaRDWqmLJbqttDKeTs';
+  const CHAT = '-1002208287237';
   const URI_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
 
   const sendEmail = (city, street, house, warehouse) => {
@@ -186,7 +186,7 @@ const Basket = () => {
         setMessage('');
         setSelectedCity('');
         setSelectedStreet(null);
-        setSelectedHouseNumber(null);
+        setSelectedHouseNumber('');
         setSelectedWarehouse('');
         localStorage.removeItem('orders');
         setTimeout(() => {
@@ -327,6 +327,7 @@ const Basket = () => {
             onUpdateCity={setSelectedCity}
             onUpdateStreet={setSelectedStreet}
             onUpdateHouseNumber={setSelectedHouseNumber}
+            
             onUpdateWarehouses={setSelectedWarehouse}
             onApartmentChange={value => setApartment(value)}
           />
