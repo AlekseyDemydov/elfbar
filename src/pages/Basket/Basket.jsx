@@ -18,6 +18,8 @@ const Basket = () => {
   const [selectedWarehouse, setSelectedWarehouse] = useState('');
   const [receiverName, setReceiverName] = useState('');
   const [apartment, setApartment] = useState('');
+  const [selectedArea, setSelectedArea] = useState(null);
+
   // console.log(selectedHouseNumber)
   // const city = Array.isArray(selectedCity)
   //       ? selectedCity.map(e => e.Description)
@@ -132,7 +134,9 @@ const Basket = () => {
       Notiflix.Notify.failure('Виберіть місто');
       return;
     }
-
+const area = Array.isArray(selectedArea)
+  ? selectedArea.map(e => e.Description).join(', ').trim()
+  : (selectedArea?.Description || selectedArea || '').toString().trim();
     const city = Array.isArray(selectedCity)
       ? selectedCity.map(e => e.Description).join(', ')
       : selectedCity?.Description || selectedCity;
@@ -164,6 +168,9 @@ const Basket = () => {
     if (totalPrice) text += `<b>Загальна сума: </b>${totalPrice} грн\n\n`;
 
     text += `<b>Доставка:</b>\n`;
+    if (area) {
+      text += `<b>Область: </b>${area}\n`;
+    }
     if (city) text += `<b>Місто: </b>${city}\n`;
     if (street) text += `<b>Вулиця: </b>${street}\n`;
     if (house) text += `<b>Будинок: </b>${house}\n`;
@@ -327,7 +334,7 @@ const Basket = () => {
             onUpdateCity={setSelectedCity}
             onUpdateStreet={setSelectedStreet}
             onUpdateHouseNumber={setSelectedHouseNumber}
-            
+            onUpdateArea={setSelectedArea}
             onUpdateWarehouses={setSelectedWarehouse}
             onApartmentChange={value => setApartment(value)}
           />

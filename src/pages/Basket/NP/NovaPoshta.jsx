@@ -136,6 +136,7 @@ const CityInput = ({
   onUpdateHouseNumber,
   onUpdateWarehouses,
   onApartmentChange,
+  onUpdateArea,
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedCity, setSelectedCity] = useState(null);
@@ -177,16 +178,23 @@ const CityInput = ({
     setShowSuggestions(true);
 
     const fetchCities = async () => {
-  try {
-    const data = await getNovaPoshtaCities('', selectedArea?.Ref);
-    setSuggestions(data);
-  } catch (error) {
-    console.error('Помилка при отриманні списку міст:', error);
-  }
-};
+      try {
+        const data = await getNovaPoshtaCities('', selectedArea?.Ref);
+        setSuggestions(data);
+      } catch (error) {
+        console.error('Помилка при отриманні списку міст:', error);
+      }
+    };
 
     fetchCities();
   };
+  useEffect(() => {
+    getNovaPoshtaAreas()
+      .then(data => {
+        setAreas(data);
+      })
+      .catch(console.error);
+  }, []);
   useEffect(() => {
     const fetchAreas = async () => {
       try {
@@ -227,26 +235,24 @@ const CityInput = ({
       );
     }
   };
-useEffect(() => {
-  
-  if (inputValue.trim() !== '' && selectedArea) {
-    const fetchCities = async () => {
-      try {
-        const data = await getNovaPoshtaCities(inputValue, selectedArea.Ref);
-        setSuggestions(data);
-      } catch (error) {
-        console.error('Помилка при отриманні міст:', error);
-      }
-    };
+  useEffect(() => {
+    if (inputValue.trim() !== '' && selectedArea) {
+      const fetchCities = async () => {
+        try {
+          const data = await getNovaPoshtaCities(inputValue, selectedArea.Ref);
+          setSuggestions(data);
+        } catch (error) {
+          console.error('Помилка при отриманні міст:', error);
+        }
+      };
 
-    fetchCities();
-  } else {
-    setSuggestions([]);
-  }
-}, [inputValue, selectedArea]);
+      fetchCities();
+    } else {
+      setSuggestions([]);
+    }
+  }, [inputValue, selectedArea]);
 
   useEffect(() => {
-    
     if (selectedCity && deliveryMethod !== '') {
       const fetchWarehouses = async () => {
         try {
@@ -350,7 +356,6 @@ useEffect(() => {
     onUpdateHouseNumber(houseNumber);
   };
   const handleBlurHouseNumber = () => {
- 
     // Якщо нічого не вибрано з підказок, але щось введено — передаємо як власний текст
     if (!houseNumbers.find(h => h.Description === houseNumberInputValue)) {
       onUpdateHouseNumber({ Description: houseNumberInputValue });
@@ -401,12 +406,14 @@ useEffect(() => {
       <select
         value={selectedArea?.Ref || ''}
         onChange={e => {
-  const selected = areas.find(a => a.Ref === e.target.value) || null;
-  setSelectedArea(selected);
-  setSelectedCity(null);
-  setInputValue('');
-  setSuggestions([]);
-}}
+          const selected = areas.find(a => a.Ref === e.target.value) || null;
+          setSelectedArea(selected);
+          setSelectedCity(null);
+          setInputValue('');
+          setSuggestions([]);
+
+          if (onUpdateArea) onUpdateArea(selected); // ← Ось це додай
+        }}
         className={styles['input-field']}
       >
         <option value="">Оберіть область</option>
