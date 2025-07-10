@@ -80,7 +80,7 @@ const Basket = () => {
   // const TOKEN = '5929832704:AAH-RXP0_n5acEoTgDqHJjUWgdvN7ORkM2U';
   // const CHAT = '-1002285114176';
 
-  const TOKEN = '6860224388:AAH_jiGlu9A8kRh7aYaRDWqmLJbqttDKeTs';
+  const TOKEN = '8165772129:AAGGRjIJFih7HBlkPbZgyfzg3nhh-UN4Dz8';
   const CHAT = '-1002208287237';
   const URI_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
 
