@@ -4,6 +4,7 @@ import Notiflix from 'notiflix';
 import config from 'config';
 import emailjs from 'emailjs-com';
 import s from './Basket.module.scss';
+import InputMask from 'react-input-mask';
 
 import CityInput from './NP/NovaPoshta';
 
@@ -11,6 +12,7 @@ const Basket = () => {
   const [orders, setOrders] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [message, setMessage] = useState('');
+ 
   const [phone, setPhone] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedStreet, setSelectedStreet] = useState(null);
@@ -19,6 +21,7 @@ const Basket = () => {
   const [receiverName, setReceiverName] = useState('');
   const [apartment, setApartment] = useState('');
   const [selectedArea, setSelectedArea] = useState(null);
+  const [touched, setTouched] = useState(false);
 
   // console.log(selectedHouseNumber)
   // const city = Array.isArray(selectedCity)
@@ -126,6 +129,10 @@ const Basket = () => {
       Notiflix.Notify.failure('Введіть номер');
       return;
     }
+    if (phone.replace(/\D/g, '').length !== 12) {
+    Notiflix.Notify.failure('Введіть повний номер телефону');
+    return;
+  }
     if (orders.length === 0) {
       Notiflix.Notify.failure('Ваш кошик порожній');
       return;
@@ -205,22 +212,66 @@ const area = Array.isArray(selectedArea)
       );
   };
 
-  const handlePhoneChange = event => {
-    let inputPhone = event.target.value.trim();
+  // const handlePhoneChange = event => {
+  //   let inputPhone = event.target.value.trim();
 
-    // Залишаємо лише цифри та символ "+" на початку
-    let formattedPhone = inputPhone.replace(/(?!^\+)\D/g, '');
+  //   // Залишаємо лише цифри та символ "+" на початку
+  //   let formattedPhone = inputPhone.replace(/(?!^\+)\D/g, '');
 
-    // Форматуємо номер, якщо довжина достатня
-    if (formattedPhone.startsWith('+') && formattedPhone.length >= 7) {
-      formattedPhone = formattedPhone.replace(
-        /^\+(\d{3})(\d{3})(\d{2})(\d{2})$/,
-        '+$1 ($2) $3-$4'
-      );
-    }
+  //   // Форматуємо номер, якщо довжина достатня
+  //   if (formattedPhone.startsWith('+') && formattedPhone.length >= 7) {
+  //     formattedPhone = formattedPhone.replace(
+  //       /^\+(\d{3})(\d{3})(\d{2})(\d{2})$/,
+  //       '+$1 ($2) $3-$4'
+  //     );
+  //   }
 
-    setPhone(formattedPhone);
+  //   setPhone(formattedPhone);
+  // };
+  // const handleFocus = () => {
+  //   if (phone === '') {
+  //     setPhone('+380 ');
+  //   }
+  // };
+
+  // const handlePhoneChange = (event) => {
+  //   let input = event.target.value;
+
+  //   // Оставляем только цифры
+  //   let digits = input.replace(/\D/g, '');
+
+  //   // Удостоверимся, что начинается с 380
+  //   if (!digits.startsWith('380')) {
+  //     digits = '380' + digits;
+  //   }
+
+  //   // Ограничим до 12 цифр (380 + 9 цифр номера)
+  //   digits = digits.slice(0, 12);
+
+  //   // Форматируем номер
+  //   let formatted = '+380';
+  //   if (digits.length > 3) formatted += ' (' + digits.slice(3, 5);
+  //   if (digits.length >= 5) formatted += ') ';
+  //   if (digits.length >= 7) formatted += digits.slice(5, 7);
+  //   if (digits.length >= 9) formatted += '-' + digits.slice(7, 9);
+  //   if (digits.length >= 10) formatted += '-' + digits.slice(9, 12);
+
+  //   setPhone(formatted);
+  // };
+
+ const handleChange = (e) => {
+    setPhone(e.target.value);
   };
+   const handleBlur = () => {
+    setTouched(true);
+  };
+
+  const getDigitsCount = () => {
+    return phone.replace(/\D/g, '').length;
+  };
+
+  const isValid = getDigitsCount() === 12; // 3 (380) + 9 цифр номера
+
 
   return (
     <div className={s.Basket}>
@@ -285,14 +336,39 @@ const area = Array.isArray(selectedArea)
       {orders.length > 0 && (
         <form id="form" className={s.form}>
           <p>Ваш номер телефону</p>
-          <input
+          {/* <input
             type="tel"
             value={phone}
             onChange={handlePhoneChange}
             className={s.input}
             // pattern="[0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}"
             placeholder="(+380) 999-999-999"
+            onFocus={handleFocus}ы
+            maxLength={19}
+          /> */}
+           <InputMask
+        mask="+380 (99) 999-99-99"
+        value={phone}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        placeholder="(+380) 999-999-99"
+        maskChar=" "
+        className={s.input}
+      >
+        {(inputProps) => (
+          <input
+            type="tel"
+            {...inputProps}
+            style={{
+              borderColor: !isValid && touched ? 'red' : '#ccc',
+              borderWidth: '1px',
+              padding: '8px',
+              borderRadius: '4px',
+              width: '200px'
+            }}
           />
+        )}
+      </InputMask>
 
           <p>Одержувач (ПІБ повністю)</p>
           <input
