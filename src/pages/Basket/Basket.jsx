@@ -144,46 +144,49 @@ const Basket = () => {
 const area = Array.isArray(selectedArea)
   ? selectedArea.map(e => e.Description).join(', ').trim()
   : (selectedArea?.Description || selectedArea || '').toString().trim();
-    const city = Array.isArray(selectedCity)
-      ? selectedCity.map(e => e.Description).join(', ')
-      : selectedCity?.Description || selectedCity;
 
-    const street = Array.isArray(selectedStreet)
-      ? selectedStreet.map(e => e.Description).join(', ')
-      : selectedStreet?.Description || selectedStreet;
+const city = Array.isArray(selectedCity)
+  ? selectedCity.map(e => e.Description).join(', ')
+  : selectedCity?.Description || selectedCity;
 
-    const house = Array.isArray(selectedHouseNumber)
-      ? selectedHouseNumber.map(e => e.Description).join(', ')
-      : selectedHouseNumber?.Description || selectedHouseNumber;
+const street = Array.isArray(selectedStreet)
+  ? selectedStreet.map(e => e.Description).join(', ')
+  : selectedStreet?.Description || selectedStreet;
 
-    const warehouse = Array.isArray(selectedWarehouse)
-      ? selectedWarehouse.map(e => e.Description).join(', ')
-      : selectedWarehouse?.Description || selectedWarehouse;
+const house = Array.isArray(selectedHouseNumber)
+  ? selectedHouseNumber.map(e => e.Description).join(', ')
+  : selectedHouseNumber?.Description || selectedHouseNumber;
 
-    const orderText = orders
-      .map(
-        order =>
-          `➤<b>${order.name}</b>\n <b>Смак: </b>${order.flavor}  - ${order.count} шт., ${order.price} грн\n`
-      )
-      .join('');
-    let text = `<b>Новий заказ</b>\n`;
+const warehouse = Array.isArray(selectedWarehouse)
+  ? selectedWarehouse.map(e => e.Description).join(', ')
+  : selectedWarehouse?.Description || selectedWarehouse;
 
-    if (receiverName) text += `<b>Ім'я: </b>${receiverName}\n`;
-    if (phone) text += `<b>Номер: </b>${phone}\n`;
-    if (message) text += `<b>Повідомлення: </b>${message}\n`;
-    if (orderText) text += `<b>Замовлення:\n</b>${orderText}\n`;
-    if (totalPrice) text += `<b>Загальна сума: </b>${totalPrice} грн\n\n`;
+const orderText = orders
+  .map(
+    order =>
+      `➤<b>${order.name}</b>\n<b>Смак: </b>${order.flavor}\n<b>Опір: </b>${order.resistance}\n${order.count} шт., ${order.price} грн\n`
+  )
+  .join('');
 
-    text += `<b>Доставка:</b>\n`;
-    if (area) {
-      text += `<b>Область: </b>${area}\n`;
-    }
-    if (city) text += `<b>Місто: </b>${city}\n`;
-    if (street) text += `<b>Вулиця: </b>${street}\n`;
-    if (house) text += `<b>Будинок: </b>${house}\n`;
-    if (apartment) text += `<b>Квартира: </b>${apartment}\n`;
-    if (warehouse) text += `<b>Відділення Нової Пошти: </b>${warehouse}`;
+let text = `<b>Новий заказ</b>\n`;
 
+if (receiverName) text += `<b>Ім'я: </b>${receiverName}\n`;
+if (phone) text += `<b>Номер: </b>${phone}\n`;
+if (message) text += `<b>Повідомлення: </b>${message}\n`;
+if (orderText) text += `<b>Замовлення:\n</b>${orderText}\n`;
+if (totalPrice) text += `<b>Загальна сума: </b>${totalPrice} грн\n\n`;
+
+text += `<b>Доставка:</b>\n`;
+
+if (area) {
+  text += `<b>Область: </b>${area}\n`;
+}
+
+if (city) text += `<b>Місто: </b>${city}\n`;
+if (street) text += `<b>Вулиця: </b>${street}\n`;
+if (house) text += `<b>Будинок: </b>${house}\n`;
+if (apartment) text += `<b>Квартира: </b>${apartment}\n`;
+if (warehouse) text += `<b>Відділення Нової Пошти: </b>${warehouse}`;
     axios
       .post(URI_API, {
         chat_id: CHAT,
