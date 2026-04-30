@@ -118,102 +118,125 @@ const Basket = () => {
       .catch(() => Notiflix.Notify.failure('Помилка при відправці email'));
   };
 
-  const Send = e => {
-    e.preventDefault();
+const Send = e => {
+  e.preventDefault();
 
-    if (receiverName === '') {
-      Notiflix.Notify.failure('Введіть ім`я');
-      return;
-    }
-    if (phone === '') {
-      Notiflix.Notify.failure('Введіть номер');
-      return;
-    }
-    if (phone.replace(/\D/g, '').length !== 12) {
+  if (receiverName === '') {
+    Notiflix.Notify.failure('Введіть ім`я');
+    return;
+  }
+
+  if (phone === '') {
+    Notiflix.Notify.failure('Введіть номер');
+    return;
+  }
+
+  if (phone.replace(/\D/g, '').length !== 12) {
     Notiflix.Notify.failure('Введіть повний номер телефону');
     return;
   }
-    if (orders.length === 0) {
-      Notiflix.Notify.failure('Ваш кошик порожній');
-      return;
-    }
-    if (!selectedCity || selectedCity === '') {
-      Notiflix.Notify.failure('Виберіть місто');
-      return;
-    }
-const area = Array.isArray(selectedArea)
-  ? selectedArea.map(e => e.Description).join(', ').trim()
-  : (selectedArea?.Description || selectedArea || '').toString().trim();
 
-const city = Array.isArray(selectedCity)
-  ? selectedCity.map(e => e.Description).join(', ')
-  : selectedCity?.Description || selectedCity;
+  if (orders.length === 0) {
+    Notiflix.Notify.failure('Ваш кошик порожній');
+    return;
+  }
 
-const street = Array.isArray(selectedStreet)
-  ? selectedStreet.map(e => e.Description).join(', ')
-  : selectedStreet?.Description || selectedStreet;
+  if (!selectedCity || selectedCity === '') {
+    Notiflix.Notify.failure('Виберіть місто');
+    return;
+  }
 
-const house = Array.isArray(selectedHouseNumber)
-  ? selectedHouseNumber.map(e => e.Description).join(', ')
-  : selectedHouseNumber?.Description || selectedHouseNumber;
+  const area = Array.isArray(selectedArea)
+    ? selectedArea.map(e => e.Description).join(', ').trim()
+    : (selectedArea?.Description || selectedArea || '').toString().trim();
 
-const warehouse = Array.isArray(selectedWarehouse)
-  ? selectedWarehouse.map(e => e.Description).join(', ')
-  : selectedWarehouse?.Description || selectedWarehouse;
+  const city = Array.isArray(selectedCity)
+    ? selectedCity.map(e => e.Description).join(', ')
+    : selectedCity?.Description || selectedCity;
 
-const orderText = orders
-  .map(
-    order =>
-      `➤<b>${order.name}</b>\n<b>Смак: </b>${order.flavor}\n<b>Опір: </b>${order.resistance}\n${order.count} шт., ${order.price} грн\n`
-  )
-  .join('');
+  const street = Array.isArray(selectedStreet)
+    ? selectedStreet.map(e => e.Description).join(', ')
+    : selectedStreet?.Description || selectedStreet;
 
-let text = `<b>Новий заказ</b>\n`;
+  const house = Array.isArray(selectedHouseNumber)
+    ? selectedHouseNumber.map(e => e.Description).join(', ')
+    : selectedHouseNumber?.Description || selectedHouseNumber;
 
-if (receiverName) text += `<b>Ім'я: </b>${receiverName}\n`;
-if (phone) text += `<b>Номер: </b>${phone}\n`;
-if (message) text += `<b>Повідомлення: </b>${message}\n`;
-if (orderText) text += `<b>Замовлення:\n</b>${orderText}\n`;
-if (totalPrice) text += `<b>Загальна сума: </b>${totalPrice} грн\n\n`;
+  const warehouse = Array.isArray(selectedWarehouse)
+    ? selectedWarehouse.map(e => e.Description).join(', ')
+    : selectedWarehouse?.Description || selectedWarehouse;
 
-text += `<b>Доставка:</b>\n`;
+  const orderText = orders
+    .map(order => {
+      let orderInfo = `➤<b>${order.name}</b>\n`;
 
-if (area) {
-  text += `<b>Область: </b>${area}\n`;
-}
+      if (order.flavor !== undefined) {
+        orderInfo += `<b>Смак: </b>${order.flavor}\n`;
+      }
 
-if (city) text += `<b>Місто: </b>${city}\n`;
-if (street) text += `<b>Вулиця: </b>${street}\n`;
-if (house) text += `<b>Будинок: </b>${house}\n`;
-if (apartment) text += `<b>Квартира: </b>${apartment}\n`;
-if (warehouse) text += `<b>Відділення Нової Пошти: </b>${warehouse}`;
-    axios
-      .post(URI_API, {
-        chat_id: CHAT,
-        parse_mode: 'html',
-        text: text,
-      })
-      .then(() => {
-        sendEmail(city, street, house, warehouse); // Передаємо уже текстові значення
-        Notiflix.Notify.success('Замовлення відправлено');
-        setOrders([]);
-        setTotalPrice(0);
-        setPhone('');
-        setReceiverName('');
-        setMessage('');
-        setSelectedCity('');
-        setSelectedStreet(null);
-        setSelectedHouseNumber('');
-        setSelectedWarehouse('');
-        localStorage.removeItem('orders');
-        setTimeout(() => {
-          window.location.href = '/thanks';
-        }, 1500);
-      })
-      .catch(() =>
-        Notiflix.Notify.failure('Виникла помилка під час відправки замовлення')
-      );
-  };
+      if (order.resistance !== undefined) {
+        orderInfo += `<b>Опір: </b>${order.resistance}\n`;
+      }
+
+      orderInfo += `${order.count} шт., ${order.price} грн\n`;
+
+      return orderInfo;
+    })
+    .join('');
+
+  let text = `<b>Новий заказ</b>\n`;
+
+  if (receiverName) text += `<b>Ім'я: </b>${receiverName}\n`;
+  if (phone) text += `<b>Номер: </b>${phone}\n`;
+  if (message) text += `<b>Повідомлення: </b>${message}\n`;
+  if (orderText) text += `<b>Замовлення:\n</b>${orderText}\n`;
+  if (totalPrice) text += `<b>Загальна сума: </b>${totalPrice} грн\n\n`;
+
+  text += `<b>Доставка:</b>\n`;
+
+  if (area) {
+    text += `<b>Область: </b>${area}\n`;
+  }
+
+  if (city) text += `<b>Місто: </b>${city}\n`;
+  if (street) text += `<b>Вулиця: </b>${street}\n`;
+  if (house) text += `<b>Будинок: </b>${house}\n`;
+  if (apartment) text += `<b>Квартира: </b>${apartment}\n`;
+  if (warehouse) text += `<b>Відділення Нової Пошти: </b>${warehouse}`;
+
+  axios
+    .post(URI_API, {
+      chat_id: CHAT,
+      parse_mode: 'html',
+      text: text,
+    })
+    .then(() => {
+      sendEmail(city, street, house, warehouse);
+
+      Notiflix.Notify.success('Замовлення відправлено');
+
+      setOrders([]);
+      setTotalPrice(0);
+      setPhone('');
+      setReceiverName('');
+      setMessage('');
+      setSelectedCity('');
+      setSelectedStreet(null);
+      setSelectedHouseNumber('');
+      setSelectedWarehouse('');
+
+      localStorage.removeItem('orders');
+
+      setTimeout(() => {
+        window.location.href = '/thanks';
+      }, 1500);
+    })
+    .catch(() =>
+      Notiflix.Notify.failure(
+        'Виникла помилка під час відправки замовлення'
+      )
+    );
+};
 
   // const handlePhoneChange = event => {
   //   let inputPhone = event.target.value.trim();
